@@ -12,6 +12,27 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(180, 170, 170); 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #9c9696; 
+}
 
 .App-header {
   background-color: #282c34;
