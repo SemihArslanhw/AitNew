@@ -3,9 +3,8 @@ import { AiOutlineCloudDownload } from 'react-icons/ai'
 import ImageViewer from '../../Components/ImageViewer/ImageViewer'
 import { Slider } from '@mui/material'
 
-function FileManagement() {
+function FileManagement({dragging , setDragging , handleDragOver}) {
 
-    const [dragging, setDragging] = React.useState(false)
     const handleRef = React.useRef(null)
     const [file, setFile] = React.useState(null)
     const inputRef = React.useRef();
@@ -20,21 +19,14 @@ function FileManagement() {
     "http://192.168.2.44/media/4989c40c/fdce20099c965803a0998d00b8a7ac8ceaf29f0058fd55e660a0b15442e10601",
     "file:///home/semih/Downloads/d6697d6973ca03101d3dafd1c80a53105b8203f08c4d2471b34f3b2bea5a0c39",
     "file:///home/semih/Downloads/d6697d6973ca03101d3dafd1c80a53105b8203f08c4d2471b34f3b2bea5a0c39"  
-    ]
+    ,"","","","","",""  
+  ]
 
     const handleDragEnd = (e) => {
         e.preventDefault()
         e.stopPropagation()
         console.log('drag end')
         setDragging(false)
-    }
-
-
-    const handleDragOver = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        setDragging(true)
-        console.log('drag over')
     }
 
     const handleDrop = (e) => {
@@ -49,7 +41,7 @@ function FileManagement() {
     <div ref={handleRef} onDragEnter={handleDragOver} onDrop={()=> console.log("hi")} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
     {isImageMode && <ImageViewer selectedImageData={selectedImageData} setIsImageMode={setIsImageMode}/>}
     <div className='w-full h-full p-5'>
-    {dragging ? <div onDragLeave={handleDragEnd} onDrop={()=>{console.log("hi")}} className='w-full h-full bg-[#cbd5e1] rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
+    {dragging ? <div onDragLeave={handleDragEnd} className='w-full h-full bg-[#cbd5e1] rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
     <div 
             className="w-full h-full flex flex-col justify-center items-center p-5 bg-[#cbd5e1] rounded-lg"
             onDragOver={handleDragOver}
@@ -79,9 +71,9 @@ function FileManagement() {
           </div>
         
           </div> */}
-        <div className='w-full flex h-full flex-wrap'>
+        <div className='w-full overflow-y-auto gap-5 justify-center flex flex-wrap h-full '>
             {fakeImages.map((image)=>(
-             <div className='w-1/4 object-cover' onClick={()=>{setIsImageMode(true); setSelectedImageData(image)}}>
+             <div className='w-96 object-cover' onClick={()=>{setIsImageMode(true); setSelectedImageData(image)}}>
                     <img src="assets/images/deneme.png"></img>
              </div>
             ))}
