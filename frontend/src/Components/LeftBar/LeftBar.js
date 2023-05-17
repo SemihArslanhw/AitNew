@@ -90,7 +90,7 @@ function LeftBar({ children , isDragging , setIsDragging}) {
           {children[0]}
         </div>
         {/* children[1] is the Body component */}
-        <div className='h-[94vh] p-5 w-full flex items-center justify-center'>
+        <div className='h-[94vh] w-full flex items-center justify-center'>
           {children[1]}
         </div>
 
