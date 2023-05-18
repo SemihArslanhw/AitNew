@@ -4,7 +4,7 @@ import ImageViewer from '../../Components/ImageViewer/ImageViewer'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Slider } from '@mui/material'
 
-function FileManagement({dragging , setDragging , handleDragOver , setTempImage}) {
+function FileManagement({dragging , setDragging , handleDragOver}) {
 
     const handleRef = React.useRef(null)
     const [file, setFile] = React.useState(null)
@@ -48,10 +48,10 @@ function FileManagement({dragging , setDragging , handleDragOver , setTempImage}
         <div className='w-full overflow-y-auto gap-5 justify-center flex flex-wrap '>
             {fakeImages.map((image)=>(
                    <LazyLoadImage
-                   onDragEnter={(e)=>{handleDragOver(e);setTempImage(image)}}
+                   onDragEnter={handleDragOver}
                    onClick={()=>{setIsImageMode(true);setSelectedImageData(image)}}
                    className='w-96'
-                   src={image} // use normal <img> attributes as props
+                   src="assets/images/deneme.png" // use normal <img> attributes as props
                    />
             ))}
         </div>

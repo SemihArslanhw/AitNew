@@ -37,7 +37,6 @@ function LeftBar({ children }) {
   const handleDragEnd = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log('drag end')
     setDragging(false)
 }
 
@@ -47,13 +46,11 @@ const handleDragOver = (e) => {
     e.stopPropagation()
     setDragging(true)
     setIsHamburgerOpen(true)
-    console.log('drag over')
 }
 
 const handleDrop = (e) => {
     e.preventDefault()
-    e.stopPropagation()
-    setImage(tempImage)
+    setFile(e.dataTransfer.files[0])
     setDragging(false)
 }
 
@@ -139,7 +136,7 @@ const handleStateChange = (e) => {
     <div 
             className="w-full h-full flex flex-col justify-center items-center p-5 rounded-lg"
             onDrop={handleDrop}
-            onDragOver={(e)=>handleDragOver(e,image)}
+            onDragOver={handleDragOver}
         >
           <input 
             type="file"
@@ -159,7 +156,7 @@ const handleStateChange = (e) => {
             accept="image/png, image/jpeg"
             ref={fileInputRef}
           />
-           {image ? <img className='max-h-64' src={image}></img> : <div className='flex flex-col items-center justify-center'>
+           {file ? <img className='max-h-64' src={URL.createObjectURL(file)}></img> : <div className='flex flex-col items-center justify-center'>
             <p>+</p>
            </div>}
           </div>}
@@ -176,7 +173,7 @@ const handleStateChange = (e) => {
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1], { dragging, setDragging , handleDragOver , setTempImage})}
+          {cloneElement(children[1], { dragging, setDragging , handleDragOver })}
         </div>
 
       </div>
