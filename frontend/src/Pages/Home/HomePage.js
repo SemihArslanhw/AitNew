@@ -41,24 +41,7 @@ function FileManagement({dragging , setDragging , handleDragOver}) {
     <div ref={handleRef} onDragEnter={handleDragOver} onDrop={()=> console.log("hi")} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
     {isImageMode && <ImageViewer selectedImageData={selectedImageData} setIsImageMode={setIsImageMode}/>}
     <div className='w-full h-full p-5'>
-    {dragging ? <div onDragLeave={handleDragEnd} className='w-full h-full bg-[#cbd5e1] rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
-    <div 
-            className="w-full h-full flex flex-col justify-center items-center p-5 bg-[#cbd5e1] rounded-lg"
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-        >
-            <AiOutlineCloudDownload style={{width:"100px",height:"100px"}}/>
-            <h1>Drop File to Search</h1>
-          <input 
-            type="file"
-            onChange={(event) => setFile(event.target.files[0])}
-            hidden
-            accept="image/png, image/jpeg"
-            ref={inputRef}
-          />
-            
-        </div>
-        </div> : <div className='w-full gap-5 h-full flex-col bg-[#cbd5e1] p-5 rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
+    <div className='w-full gap-5 h-full flex-col bg-[#cbd5e1] p-5 rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
         {/* <div className='text-[#4a5568] bg-blue-400 rounded-lg flex flex-col w-1/4 h-full items-center justify-center text-2xl font-bold'>Drag and Drop File Or Click Here 
         {file && <img className='max-h-64' src={URL.createObjectURL(file)}></img>}
         <input onChange={(e)=>setFile(e.target.files[0])} id='leftInput' className='hidden' type='file'></input>
@@ -79,7 +62,6 @@ function FileManagement({dragging , setDragging , handleDragOver}) {
             ))}
         </div>
         </div>
-        }
         </div>
     </div>
   )

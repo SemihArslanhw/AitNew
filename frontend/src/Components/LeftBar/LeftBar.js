@@ -51,11 +51,13 @@ const handleDragOver = (e) => {
 const handleDrop = (e) => {
     e.stopPropagation()
     e.preventDefault()
-    console.log(e.dataTransfer.files[0])
     setFile(e.dataTransfer.files[0])
     setDragging(false)
 }
 
+const handleStateChange = (e) => {
+  setIsHamburgerOpen(e.isOpen)
+}
 
 
   var styles = {
@@ -105,7 +107,7 @@ const handleDrop = (e) => {
 
   return (
     <div onDragLeave={handleDragOver} className='flex h-full w-full text-white text-lg'>
-      <Menu isOpen={isHamburgerOpen} styles={styles}>
+      <Menu onStateChange={handleStateChange} isOpen={isHamburgerOpen} styles={styles}>
         <Link style={{display:"flex"}} to={"/"} className='w-full h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
           <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
         </Link>
@@ -115,6 +117,7 @@ const handleDrop = (e) => {
             <div className='w-full overflow-x-hidden text-white bg-slate-500  rounded-lg h-52 overflow-y-auto flex flex-col items-center justify-center'>
               {clusters.map((cluster)=>(
                 <FormControlLabel
+                key={cluster.name}
                 className='w-full justify-evenly '
                 label={cluster.name}
                 control={<Checkbox checked={true} />}
