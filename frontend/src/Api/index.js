@@ -4,7 +4,6 @@ export const PF = "http://localhost:8080/images/"
 
 export const API = axios.create({
   baseURL: "http://192.168.2.44/",
-  withCredentials: true,
 });
 
 export const loginCall = async (username , password) => {
@@ -13,7 +12,7 @@ export const loginCall = async (username , password) => {
            "username" : username,
            "password" : password,
         });
-        console.log(res.headers['set-cookie']);
+        document.cookie = `Bearer ${res.data.user.token};`;
         return res;
     } catch (err) {
         return err.message;

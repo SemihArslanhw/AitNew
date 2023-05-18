@@ -1,5 +1,5 @@
 import React from 'react'
-import { AiFillLock } from 'react-icons/ai'
+import { AiFillLock, AiOutlineLoading } from 'react-icons/ai'
 import * as API from '../../../Api/index.js'
 import axios from 'axios'
 
@@ -16,10 +16,12 @@ function LoginPage() {
     try {
       setError('')
       setLoading(true)
-
+      const res = await API.loginCall(username, password)
+      setLoading(false)
+      window.location.href = '/'
+      console.log(res)
 
     } catch (err) {
-      console.log(err)
       setError(err)
     }
     setLoading(false)
@@ -35,9 +37,9 @@ function LoginPage() {
             <input value={username} onChange={(e) => { setUsername(e.target.value) }} className='border h-10 p-2 rounded-t-lg' type='text' placeholder='Username'></input>
             <input value={password} onChange={(e) => { setPassword(e.target.value) }} className='border h-10 p-2 rounded-b-lg shadow-lg' type='password' placeholder='Password'></input>
           </div>
-          <button type='submit' className='w-full shadow-lg hover:bg-green-400 font-semibold text-sm flex items-center justify-between p-3 bg-green-600 text-white h-10 rounded-md'>
+          <button disabled={loading} type='submit' className='w-full shadow-lg hover:bg-green-400 font-semibold text-sm flex items-center justify-between p-3 bg-green-600 text-white h-10 rounded-md'>
             <AiFillLock style={{ width: "" }} />
-            <p>Sign In</p>
+            {loading ? <AiOutlineLoading className='animate-spin'/> : <p>Sign In</p>}
             <p className='w-6'></p>
           </button>
         </form>

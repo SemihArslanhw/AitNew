@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react'
+import React, { cloneElement, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { slide as Menu } from 'react-burger-menu'
 import {AiOutlineCloudDownload, AiOutlineCluster} from 'react-icons/ai'
@@ -13,6 +13,8 @@ function LeftBar({ children }) {
 
   const [dragging, setDragging] = React.useState(false)
   const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
+  const [image, setImage] = React.useState(null)
+  const [tempImage, setTempImage] = React.useState(null)
   const fileInputRef = React.useRef();
   const inputRef = React.useRef();
   const [file, setFile] = React.useState(null)
@@ -49,9 +51,9 @@ const handleDragOver = (e) => {
 }
 
 const handleDrop = (e) => {
-    e.stopPropagation()
     e.preventDefault()
-    setFile(e.dataTransfer.files[0])
+    e.stopPropagation()
+    setImage(tempImage)
     setDragging(false)
 }
 
@@ -104,9 +106,8 @@ const handleStateChange = (e) => {
     }
   }
 
-
   return (
-    <div onDragLeave={handleDragOver} className='flex h-full w-full text-white text-lg'>
+    <div onDragEnd={handleDragEnd} className='flex h-full w-full text-white text-lg'>
       <Menu onStateChange={handleStateChange} isOpen={isHamburgerOpen} styles={styles}>
         <Link style={{display:"flex"}} to={"/"} className='w-full h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
           <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
@@ -134,14 +135,12 @@ const handleStateChange = (e) => {
         </Link>
         <div style={{display:"flex"}}  className='w-full h-fit border-t-2 justify-between gap-4 flex flex-col items-center p-5'>
           <div className='w-full flex justify-between items-center'><MdImageSearch/><p> Ai Search </p><p className='w-2'></p></div>
-          {dragging ? <div onDragLeave={handleDragEnd} className='w-full h-full bg-[#cbd5e1] rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
+          {dragging ? <div className='w-full h-36   rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
     <div 
-            className="w-full h-full flex flex-col justify-center items-center p-5 bg-[#cbd5e1] rounded-lg"
-            onDragOver={handleDragOver}
+            className="w-full h-full flex flex-col justify-center items-center p-5 rounded-lg"
             onDrop={handleDrop}
+            onDragOver={(e)=>handleDragOver(e,image)}
         >
-            <AiOutlineCloudDownload style={{width:"100px",height:"100px"}}/>
-            <h1>Drop File to Search</h1>
           <input 
             type="file"
             onChange={(event) => setFile(event.target.files[0])}
@@ -149,9 +148,10 @@ const handleStateChange = (e) => {
             accept="image/png, image/jpeg"
             ref={inputRef}
           />
-            
+            <AiOutlineCloudDownload className='text-9xl animate-bounce'/>
+            <p className='text-2xl'>Drop File Here</p>
         </div>
-        </div>  : <div onClick={()=>{fileInputRef.current.click()}} className='rounded-lg border-2 border-[#4a5568] hover:bg-gray-500 border-dashed w-full h-36 flex items-center justify-center'>
+        </div>  : <div onClick={()=>{fileInputRef.current.click()}} className='rounded-lg cursor-pointer border-2 border-[#4a5568] p-5 hover:bg-gray-500 border-dashed w-full h-36 flex items-center justify-center'>
           <input 
             type="file"
             onChange={(event) => setFile(event.target.files[0])}
@@ -159,7 +159,9 @@ const handleStateChange = (e) => {
             accept="image/png, image/jpeg"
             ref={fileInputRef}
           />
-            {!dragging ? <p>+</p> : <AiOutlineCloudDownload/>}
+           {image ? <img className='max-h-64' src={image}></img> : <div className='flex flex-col items-center justify-center'>
+            <p>+</p>
+           </div>}
           </div>}
         </div>
         <Link style={{display:"flex"}} to={"/exjson"} className='w-full h-fit border-t-2 justify-around hover:bg-slate-600 flex items-center p-5'>
@@ -174,7 +176,7 @@ const handleStateChange = (e) => {
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1], { dragging, setDragging , handleDragOver})}
+          {cloneElement(children[1], { dragging, setDragging , handleDragOver , setTempImage})}
         </div>
 
       </div>

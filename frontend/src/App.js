@@ -4,7 +4,7 @@ import LoginPage from './Pages/Auth/Login/LoginPage';
 import HomePage from './Pages/Home/HomePage';
 import LeftBar from './Components/LeftBar/LeftBar';
 import Header from './Components/Header/Header';
-import UserManagement from './Pages/UserManagement/UserManagement';
+import UserManagement from './Pages/Admin/UserManagement/UserManagement';
 import NotFound from './Pages/NotFound';
 import { Helmet } from 'react-helmet';
 

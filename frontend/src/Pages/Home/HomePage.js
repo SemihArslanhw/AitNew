@@ -1,9 +1,10 @@
 import React from 'react'
 import { AiOutlineCloudDownload } from 'react-icons/ai'
 import ImageViewer from '../../Components/ImageViewer/ImageViewer'
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Slider } from '@mui/material'
 
-function FileManagement({dragging , setDragging , handleDragOver}) {
+function FileManagement({dragging , setDragging , handleDragOver , setTempImage}) {
 
     const handleRef = React.useRef(null)
     const [file, setFile] = React.useState(null)
@@ -11,34 +12,24 @@ function FileManagement({dragging , setDragging , handleDragOver}) {
     const [isImageMode, setIsImageMode] = React.useState(false)
     const [selectedImageData, setSelectedImageData] = React.useState()
     const [images, setImages] = React.useState([])
-    const [sliderValue, setSliderValue] = React.useState(50)
+
     const fakeImages = [
-    "http://192.168.2.44/media/4989c40c/fdce20099c965803a0998d00b8a7ac8ceaf29f0058fd55e660a0b15442e10601",
-    "http://192.168.2.44/media/4989c40c/fdce20099c965803a0998d00b8a7ac8ceaf29f0058fd55e660a0b15442e10601",
-    "http://192.168.2.44/media/4989c40c/fdce20099c965803a0998d00b8a7ac8ceaf29f0058fd55e660a0b15442e10601",
-    "http://192.168.2.44/media/4989c40c/fdce20099c965803a0998d00b8a7ac8ceaf29f0058fd55e660a0b15442e10601",
-    "file:///home/semih/Downloads/d6697d6973ca03101d3dafd1c80a53105b8203f08c4d2471b34f3b2bea5a0c39",
-    "file:///home/semih/Downloads/d6697d6973ca03101d3dafd1c80a53105b8203f08c4d2471b34f3b2bea5a0c39"  
-    ,"","","","","",""  
+    "https://as1.ftcdn.net/v2/jpg/02/19/32/64/1000_F_219326457_xXQLDuA44RjxiabLzNKyff4KFD6EzhDm.jpg",
+    "https://as1.ftcdn.net/v2/jpg/02/19/32/64/1000_F_219326457_xXQLDuA44RjxiabLzNKyff4KFD6EzhDm.jpg",
+    "https://as1.ftcdn.net/v2/jpg/02/19/32/64/1000_F_219326457_xXQLDuA44RjxiabLzNKyff4KFD6EzhDm.jpg",
+    "https://as1.ftcdn.net/v2/jpg/02/19/32/64/1000_F_219326457_xXQLDuA44RjxiabLzNKyff4KFD6EzhDm.jpg",
+    "https://as1.ftcdn.net/v2/jpg/02/19/32/64/1000_F_219326457_xXQLDuA44RjxiabLzNKyff4KFD6EzhDm.jpg",
+    "https://as1.ftcdn.net/v2/jpg/02/19/32/64/1000_F_219326457_xXQLDuA44RjxiabLzNKyff4KFD6EzhDm.jpg",
+    "https://as1.ftcdn.net/v2/jpg/00/96/92/30/1000_F_96923054_xIpJXwMGU5bJZ8v0tcp2PsQaarU2ZCeM.jpg",
+    "https://as1.ftcdn.net/v2/jpg/00/96/92/30/1000_F_96923054_xIpJXwMGU5bJZ8v0tcp2PsQaarU2ZCeM.jpg",
+    "https://as1.ftcdn.net/v2/jpg/00/96/92/30/1000_F_96923054_xIpJXwMGU5bJZ8v0tcp2PsQaarU2ZCeM.jpg",
+    "https://slp-statics.astockcdn.net/static_assets/staging/21spring/photos/featured-categories/card-8.webp",
+    "https://slp-statics.astockcdn.net/static_assets/staging/21spring/photos/featured-categories/card-8.webp",
+    "https://slp-statics.astockcdn.net/static_assets/staging/21spring/photos/featured-categories/card-8.webp"
   ]
 
-    const handleDragEnd = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        console.log('drag end')
-        setDragging(false)
-    }
-
-    const handleDrop = (e) => {
-        e.stopPropagation()
-        e.preventDefault()
-        console.log(e.dataTransfer.files[0])
-        setFile(e.dataTransfer.files[0])
-        setDragging(false)
-    }
-
   return (
-    <div ref={handleRef} onDragEnter={handleDragOver} onDrop={()=> console.log("hi")} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
+    <div ref={handleRef} onDrop={()=> console.log("hi")} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
     {isImageMode && <ImageViewer selectedImageData={selectedImageData} setIsImageMode={setIsImageMode}/>}
     <div className='w-full h-full p-5'>
     <div className='w-full gap-5 h-full flex-col bg-[#cbd5e1] p-5 rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
@@ -54,11 +45,14 @@ function FileManagement({dragging , setDragging , handleDragOver}) {
           </div>
         
           </div> */}
-        <div className='w-full overflow-y-auto gap-5 justify-center flex flex-wrap h-full '>
+        <div className='w-full overflow-y-auto gap-5 justify-center flex flex-wrap '>
             {fakeImages.map((image)=>(
-             <div className='w-96 object-cover' onClick={()=>{setIsImageMode(true); setSelectedImageData(image)}}>
-                    <img src="assets/images/deneme.png"></img>
-             </div>
+                   <LazyLoadImage
+                   onDragEnter={(e)=>{handleDragOver(e);setTempImage(image)}}
+                   onClick={()=>{setIsImageMode(true);setSelectedImageData(image)}}
+                   className='w-96'
+                   src={image} // use normal <img> attributes as props
+                   />
             ))}
         </div>
         </div>
