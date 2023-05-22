@@ -175,7 +175,7 @@ function LeftBar({ children }) {
               accept="image/png, image/jpeg"
               ref={fileInputRef}
             />
-            {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img className='max-h-64' src={URL.createObjectURL(file)}></img>{isSearching && <ProgressBar value={searchProgress} />}</div>
+            {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img className='max-h-64' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full h-5'><ProgressBar value={searchProgress} /></div>}</div>
               :
               <div className='flex flex-col items-center justify-center'>
                 <p>+</p>

@@ -6,9 +6,12 @@ import {MdImageSearch} from 'react-icons/md'
 import {BsTrash} from 'react-icons/bs'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import {FiUserPlus} from 'react-icons/fi'
+import UserCreate from '../UserManagement/User/UserCreate'
 
 
 function LeftBarFirst({ children }) {
+
+  const [isUserCreatingMode, setUserCreatingMode] = React.useState(false)
 
   var styles = {
     bmBurgerButton: {
@@ -56,6 +59,7 @@ function LeftBarFirst({ children }) {
 
   return (
     <div  className='flex h-full w-full text-white text-lg'>
+      {isUserCreatingMode && <UserCreate setUserCreatingMode={setUserCreatingMode}/>}
       <Menu styles={styles}>
         <Link style={{display:"flex"}} to={"/"} className='w-full h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
           <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
@@ -68,7 +72,7 @@ function LeftBarFirst({ children }) {
          <div  className='w-full p-5 flex justify-between items-center'><MdImageSearch/><p> File Management </p><p className='w-5'></p></div> 
           
         </Link>
-        <Link style={{display:"flex"}} to={"/exjson"} className='w-full h-fit border-t-2 justify-between hover:bg-slate-600 flex items-center p-5'>
+        <Link style={{display:"flex"}} to={"/usermanagement"} className='w-full h-fit border-t-2 justify-between hover:bg-slate-600 flex items-center p-5'>
           <FiUserPlus/><p> User Management </p><p className='w-1'></p>
         </Link>
       </Menu>
@@ -80,7 +84,7 @@ function LeftBarFirst({ children }) {
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1])}
+          {cloneElement(children[1],{setUserCreatingMode})}
         </div>
 
       </div>

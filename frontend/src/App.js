@@ -4,12 +4,12 @@ import LoginPage from './Pages/Auth/Login/LoginPage';
 import SearchPage from './Pages/Search/Search';
 import LeftBar from './Components/LeftBar/LeftBar';
 import Header from './Components/Header/Header';
-import UserManagement from './Pages/UserManagement/UserManagement';
+import UserManagement from './Pages/Admin/UserManagement/UserManagement';
 import NotFound from './Pages/NotFound';
 import { Helmet } from 'react-helmet';
-import LeftBarFirst from './Components/LeftBar/LeftBarFirst';
+import LeftBarFirst from './Components/LeftBar/LeftBarAdmin';
 import HomePage from './Pages/Home/HomePage';
-import FileManagement from './Pages/Admin/FileManagement';
+import FileManagement from './Pages/Admin/FileManagement/FileManagement';
 
 function App() {
   return (

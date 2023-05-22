@@ -10,24 +10,22 @@ function Search({dragging , setDragging , handleDragOver}) {
     const [isImageMode, setIsImageMode] = React.useState(false)
     const [selectedImageData, setSelectedImageData] = React.useState()
     const [images, setImages] = React.useState([])
+    const [selectedIndex , setSelectedIndex] = React.useState(0)
 
     const fakeImages = [
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-      "assets/images/deneme.png",
-
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme2.png"},
+      {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme.png"},
+      {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen3.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme4.png"},
+      {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen6.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
   ]
 
   return (
     <div ref={handleRef} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
-    {isImageMode && <ImageViewer selectedImageData={selectedImageData} setIsImageMode={setIsImageMode}/>}
+    {isImageMode && <ImageViewer selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={fakeImages} setIsImageMode={setIsImageMode}/>}
     <div className='w-full h-full p-5'>
     <div className='w-full gap-5 h-full flex-col bg-[#cbd5e1] p-5 rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
         {/* <div className='text-[#4a5568] bg-blue-400 rounded-lg flex flex-col w-1/4 h-full items-center justify-center text-2xl font-bold'>Drag and Drop File Or Click Here 
@@ -43,12 +41,12 @@ function Search({dragging , setDragging , handleDragOver}) {
         
           </div> */}
         <div className='w-full overflow-y-auto gap-5 justify-center flex flex-wrap '>
-            {fakeImages.map((image)=>(
+            {fakeImages.map((image , i)=>(
                    <LazyLoadImage
                    onDragEnter={handleDragOver}
-                   onClick={()=>{setIsImageMode(true);setSelectedImageData(image)}}
+                   onClick={()=>{setIsImageMode(true);setSelectedImageData(image);setSelectedIndex(i)}}
                    className='w-96 cursor-pointer object-cover'
-                   src={image} // use normal <img> attributes as props
+                   src={image.src} // use normal <img> attributes as props
                    />
             ))}
         </div>
