@@ -21,6 +21,12 @@ function Search({dragging , setDragging , handleDragOver}) {
       {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme4.png"},
       {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen6.png"},
       {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
   ]
 
   return (

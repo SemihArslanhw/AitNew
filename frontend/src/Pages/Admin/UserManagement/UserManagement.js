@@ -1,11 +1,43 @@
 import React from 'react'
 import {AiOutlineUnorderedList} from 'react-icons/ai'
-import {AiOutlineUserAdd} from 'react-icons/ai'
+import {AiOutlineUserAdd } from 'react-icons/ai'
+import UserCard from '../../../Components/UserManagement/UserCard/UserCard'
 
 
 function UserManagement({setUserCreatingMode}) {
 
-
+  const fakeUsers = [
+    {
+      username: 'admin',
+      password: 'admin',
+      userType: 'admin',
+      authorization: 'admin'
+    },
+    {
+      username: 'admin',
+      password: 'admin',
+      userType: 'admin',
+      authorization: 'admin'
+    },
+    {
+      username: 'admin',
+      password: 'admin',
+      userType: 'admin',
+      authorization: 'admin'
+    },
+    {
+      username: 'admin',
+      password: 'admin',
+      userType: 'admin',
+      authorization: 'admin'
+    },
+    {
+      username: 'admin',
+      password: 'admin',
+      userType: 'admin',
+      authorization: 'admin'
+    },
+  ]
 
 
   return (
@@ -22,10 +54,24 @@ function UserManagement({setUserCreatingMode}) {
                 </button>
                 
             </div>
-            <div className='w-full h-[90%] pt-5 flex flex-col'>
+            <div className='w-full h-[90%] pt-5 flex flex-col border-b'>
+                <div className='w-full flex justify-between border-b pb-4'>
+                  <div className='w-2/6'><p className='text-gray-400'>USERNAME</p></div>
+                  <div className='w-2/6'><p className='text-gray-400'>PASSWORD</p></div>
+                  <div className='w-1/6'><p className='text-gray-400'>USER TYPE</p></div>
+                  <div className='w-1/6'><p className='text-gray-400'>AUTHORIZATION</p></div>
+                  <div className='w-1/6'><p className='text-gray-400'>ACTİONS</p></div>
 
+                </div>
+                <div className='w-full h-[90%]  overflow-y-scroll'>
+                  {fakeUsers.map((user, index) => {
+                    return (
+                        <UserCard key={index} user={user}/>
+                          )})}
             </div>
+            
         </div>
+    </div>
     </div>
   )
 }
