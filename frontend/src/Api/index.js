@@ -3,7 +3,7 @@ import axios from "axios";
 export const PF = "http://localhost:8080/images/"  
 
 export const API = axios.create({
-  baseURL: "http://192.168.2.44/",
+  baseURL: "http://192.168.2.44:3000/",
   withCredentials: true,
 });
 
