@@ -18,10 +18,8 @@ function LoginPage() {
       setIsError(false)
       setLoading(true)
       await API.loginCall(username, password).then((res)=>{
-        if(res.data.status === 1005){
-          document.cookie = `token=${res.data.user.token}`
-          window.location.href = '/'
-        }
+        console.log(res.headers, "res")
+        
 
       
       }).catch((err)=>{

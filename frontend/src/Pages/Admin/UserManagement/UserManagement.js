@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {AiOutlineUnorderedList} from 'react-icons/ai'
 import {AiOutlineUserAdd } from 'react-icons/ai'
 import UserCard from '../../../Components/UserManagement/UserCard/UserCard'
+import { getUsers } from '../../../Api/User/userRequests'
 
 
 function UserManagement({setUserCreatingMode}) {
+
+  useEffect(() => {
+    getUserList()
+  }, [])
 
   const fakeUsers = [
     {
@@ -39,6 +44,14 @@ function UserManagement({setUserCreatingMode}) {
     },
   ]
 
+  const getUserList = async () => {
+    try {
+      const res = await getUsers()
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div className='w-full h-full p-5 bg-[#cbd5e1] rounded-lg'>

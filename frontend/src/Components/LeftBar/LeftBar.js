@@ -1,7 +1,7 @@
 import React, { cloneElement, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { slide as Menu } from 'react-burger-menu'
-import { AiOutlineCloudDownload, AiOutlineCluster } from 'react-icons/ai'
+import { AiOutlineCloudDownload, AiOutlineCluster, AiOutlineLoading } from 'react-icons/ai'
 import { AiOutlineArrowUp } from 'react-icons/ai'
 import { AiOutlineArrowDown } from 'react-icons/ai'
 import { MdImageSearch } from 'react-icons/md'
@@ -10,10 +10,12 @@ import { Checkbox, FormControlLabel } from '@mui/material'
 import LinearProgress from '@mui/material'
 import ProgressBar from './ProgressBar/ProgressBar'
 import { addCluster, getClusters } from '../../Api/Cluster/clusterRequests'
+import * as API from '../../Api/index'
 
 
 function LeftBar({ children }) {
-
+  
+  const [clusterLoading, setClusterLoading] = React.useState(false)
   const [dragging, setDragging] = React.useState(false)
   const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
   const [isSearching, setIsSearching] = React.useState(false)
@@ -33,17 +35,43 @@ function LeftBar({ children }) {
   }, [file])
 
   useEffect(() => {
-  getClusters().then((res)=>{
-    setClusters(res.data)
-  })
+      getAllClusters()
   }, [])
 
+  const getAllClusters = async () => {
+    setClusterLoading(true)
+    getClusters().then((res)=>{
+      setClusters(res.data)
+      setClusterLoading(false)
+    }).catch((err)=>{
+      console.log(err)
+      setClusterLoading(false)
+    })
+  }
+
+  const deleteCluster = async (id) => {
+    setClusterLoading(true)
+    await API.deleteCluster(id).then((res) => {
+      getAllClusters()
+    }).catch((err) => {
+      console.log(err)
+    })
+    setClusterLoading(false)
+  }
+
   const addClusterr = async (name) => {
-    await addCluster(name).then((res) => {
+    setClusterLoading(true)
+    await API.addCluster(name).then((res) => {
       setClusters([...clusters, res.data])
     }).catch((err) => {
       console.log(err)
     })
+    setClusterLoading(false)
+    // await addCluster(name).then((res) => {
+    //   setClusters([...clusters, res.data])
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
   }
 
   const search = async () => {
@@ -134,19 +162,23 @@ function LeftBar({ children }) {
           <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full p-5 flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
           {isClusterOpen && <div className='w-full px-5 gap-5 flex flex-col items-center justify-center'>
             <div className='w-full overflow-x-hidden text-white bg-slate-500  rounded-lg h-52 overflow-y-auto flex flex-col'>
-              {clusters?.map((cluster) => (
+             {!clusterLoading ? clusters?.map((cluster , i) => (
+                <div key={i} className='w-full px-2 justify-between flex items-center'>
                 <FormControlLabel
-                  key={cluster?.cluster_name}
-                  className='w-full justify-between items-center '
-                  label={cluster?.cluster_name}
+                  className='w-3/4 justify-between items-center '
+                  label={<p title={cluster?.cluster_name} className='w-20 text-ellipsis inline-block whitespace-nowrap overflow-hidden'>{cluster?.cluster_name}</p>}
                   control={<Checkbox checked={true} />}
                 />
-
-              ))}
+                <BsTrash onClick={()=>{deleteCluster(cluster?.cluster_id)}} className='hover:text-red-500'/>
+                </div>
+              )):<div className='w-full h-full flex justify-center items-center'>
+                <AiOutlineLoading className='animate-spin'/> 
+                </div>
+                }
             </div>
             <div className='w-full gap-5 flex'>
               <input value={clusterName} onChange={(e)=>{setClusterName(e.target.value)}} className='h-full rounded-lg border-2 mb-5 outline-none p-2 w-full' type='text' placeholder='Cluster Name'></input>
-              <button onClick={() => { addClusterr() }} className='bg-green-500 p-2 rounded-lg w-10 mb-5 text-white font-bold hover:bg-green-400 flex items-center justify-center'>+</button>
+              <button onClick={() => { addClusterr(clusterName) }} className='bg-green-500 p-2 rounded-lg w-10 mb-5 text-white font-bold hover:bg-green-400 flex items-center justify-center'>+</button>
             </div>
 
           </div>
