@@ -6,12 +6,28 @@ import {MdImageSearch} from 'react-icons/md'
 import {BsTrash} from 'react-icons/bs'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import {FiUserPlus} from 'react-icons/fi'
-import UserCreate from '../UserManagement/User/UserCreate'
+import UserCreate from '../UserManagement/UserCreate/UserCreate'
+import { getUsers } from '../../Api/User/userController'
 
 
 function LeftBarFirst({ children }) {
 
   const [isUserCreatingMode, setUserCreatingMode] = React.useState(false)
+  const [isUsersLoading, setUsersLoading] = React.useState(false)
+  const [users, setUsers] = React.useState([])
+
+  const getUserList = async () => {
+    try {
+      setUsersLoading(true)
+      const res = await getUsers()
+      setUsers(res.data)
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setUsersLoading(false)
+    }
+  }
 
   var styles = {
     bmBurgerButton: {
@@ -59,8 +75,9 @@ function LeftBarFirst({ children }) {
 
   return (
     <div  className='flex h-full w-full text-white text-lg'>
-      {isUserCreatingMode && <UserCreate setUserCreatingMode={setUserCreatingMode}/>}
+      {isUserCreatingMode && <UserCreate isUsersLoading={isUsersLoading} getUserList={getUserList} setUserCreatingMode={setUserCreatingMode}/>}
       <Menu styles={styles}>
+      <div className='w-full h-[90%] flex flex-col'>
         <Link style={{display:"flex"}} to={"/"} className='w-full h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
           <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
         </Link>
@@ -75,6 +92,10 @@ function LeftBarFirst({ children }) {
         <Link style={{display:"flex"}} to={"/usermanagement"} className='w-full h-fit border-t-2 justify-between hover:bg-slate-600 flex items-center p-5'>
           <FiUserPlus/><p> User Management </p><p className='w-1'></p>
         </Link>
+        </div>
+        <a style={{ display: "flex" }} target='_blank' href='https://www.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>
+          <p className='w-8'/><p> Archivist 0.0.1 </p><p className='w-8'></p>
+        </a>
       </Menu>
 
       <div className='w-full h-full bg-[#e5e7eb]'>
@@ -84,7 +105,7 @@ function LeftBarFirst({ children }) {
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1],{setUserCreatingMode})}
+          {cloneElement(children[1],{setUserCreatingMode , getUserList , users , isUsersLoading})}
         </div>
 
       </div>

@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AiOutlineCloudDownload } from 'react-icons/ai'
 import ImageViewer from '../../Components/ImageViewer/ImageViewer'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Slider } from '@mui/material'
+import { ImageList, ImageListItem, Slider, useMediaQuery } from '@mui/material'
+import { useTheme } from '@emotion/react';
+import { getAllImagesFull } from '../../Api/File/FileControler';
+import { ImageProxy } from '../../Api';
 
 function Search({dragging , setDragging , handleDragOver}) {
 
@@ -11,6 +14,15 @@ function Search({dragging , setDragging , handleDragOver}) {
     const [selectedImageData, setSelectedImageData] = React.useState()
     const [images, setImages] = React.useState([])
     const [selectedIndex , setSelectedIndex] = React.useState(0)
+    
+    useEffect(() => {
+      getAllImagesFull("1").then((res)=>{
+        console.log(res)
+        setImages(res.data.files)
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }, [])
 
     const fakeImages = [
       {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme.png"},
@@ -27,6 +39,10 @@ function Search({dragging , setDragging , handleDragOver}) {
       {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
       {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
       {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
+      {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen6.png"},
+      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme4.png"},
   ]
 
   return (
@@ -46,15 +62,20 @@ function Search({dragging , setDragging , handleDragOver}) {
           </div>
         
           </div> */}
-        <div className='w-full overflow-y-auto gap-5 justify-center flex flex-wrap '>
-            {fakeImages.map((image , i)=>(
+        <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
+          <ImageList variant='masonry' cols={5} gap={8}>
+            {images?.map((image , i)=>(
+              <ImageListItem key={i}>
                    <LazyLoadImage
+                   key={i}
                    onDragEnter={handleDragOver}
-                   onClick={()=>{setIsImageMode(true);setSelectedImageData(image);setSelectedIndex(i)}}
-                   className='w-96 cursor-pointer object-cover'
-                   src={image.src} // use normal <img> attributes as props
+                   onClick={()=>{setIsImageMode(true);setSelectedImageData(ImageProxy + image.thumbnail.url);setSelectedIndex(i)}}
+                   className='w-96 cursor-pointer object-cover rounded-md'
+                   src={ ImageProxy + image.thumbnail.url} // use normal <img> attributes as props
                    />
+              </ImageListItem>
             ))}
+          </ImageList>
         </div>
         </div>
         </div>

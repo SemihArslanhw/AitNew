@@ -1,9 +1,6 @@
 import React from 'react'
 import { AiFillLock, AiOutlineLoading } from 'react-icons/ai'
-import * as API from '../../../Api/index.js'
-import { getClusters } from '../../../Api/Cluster/clusterRequests.js'
-import { getUsers } from '../../../Api/User/userRequests.js'
-import { getAllFiles } from '../../../Api/File/fileRequests.js'
+import { loginCall } from '../../../Api/User/userController.js'
 
 function LoginPage() {
 
@@ -17,11 +14,8 @@ function LoginPage() {
     try {
       setIsError(false)
       setLoading(true)
-      await API.loginCall(username, password).then((res)=>{
-        console.log(res.headers, "res")
-        
-
-      
+      await loginCall(username, password).then((res)=>{
+        console.log(res.headers, "res")        
       }).catch((err)=>{
         setIsError(true)
       })

@@ -155,6 +155,7 @@ function LeftBar({ children }) {
   return (
     <div onDragEnd={handleDragEnd} className='flex h-full w-full text-white text-lg'>
       <Menu onStateChange={handleStateChange} isOpen={isHamburgerOpen} styles={styles}>
+        <div className='w-full h-[90%] flex flex-col'>
         <Link style={{ display: "flex" }} to={"/"} className='w-full h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
           <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
         </Link>
@@ -220,6 +221,10 @@ function LeftBar({ children }) {
         <Link style={{ display: "flex" }} to={"/exjson"} className='w-full h-fit border-t-2 justify-around hover:bg-slate-600 flex items-center p-5'>
           <BsTrash /><p> Recycle </p><p className='w-8'></p>
         </Link>
+        </div>
+        <a style={{ display: "flex" }} target='_blank' href='https://www.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>
+          <p className='w-8'/><p> Archivist 0.0.1 </p><p className='w-8'></p>
+        </a>
       </Menu>
 
       <div className='w-full h-full bg-[#e5e7eb]'>

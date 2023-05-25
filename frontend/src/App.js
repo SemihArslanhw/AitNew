@@ -7,7 +7,7 @@ import Header from './Components/Header/Header';
 import UserManagement from './Pages/Admin/UserManagement/UserManagement';
 import NotFound from './Pages/NotFound';
 import { Helmet } from 'react-helmet';
-import LeftBarFirst from './Components/LeftBar/LeftBarAdmin';
+import LeftBarUserManagement from './Components/LeftBar/LeftBarUserManagement';
 import HomePage from './Pages/Home/HomePage';
 import FileManagement from './Pages/Admin/FileManagement/FileManagement';
 
@@ -22,11 +22,11 @@ function App() {
     <Routes>
         
           <Route path="/home" element={<LeftBar><Header/><SearchPage/></LeftBar>} />
-          <Route path="/" element={<LeftBarFirst><Header/><HomePage/></LeftBarFirst>} />
+          <Route path="/" element={<LeftBarUserManagement><Header/><HomePage/></LeftBarUserManagement>} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path='*' element={<LeftBarFirst><Header/><NotFound/></LeftBarFirst>} />
-          <Route path="/usermanagement" element={<LeftBarFirst><Header/><UserManagement/></LeftBarFirst>} />
-          <Route path="/filemanagement" element={<LeftBarFirst><Header/><FileManagement/></LeftBarFirst>} />
+          <Route path='*' element={<LeftBarUserManagement><Header/><NotFound/></LeftBarUserManagement>} />
+          <Route path="/usermanagement" element={<LeftBarUserManagement><Header/><UserManagement/></LeftBarUserManagement>} />
+          <Route path="/filemanagement" element={<LeftBarUserManagement><Header/><FileManagement/></LeftBarUserManagement>} />
           {/* <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
           <Route path="/resetpassword/:resetToken" element={<ResetPasswordPage />} /> */}
           

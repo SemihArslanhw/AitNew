@@ -10,7 +10,7 @@ function ImageViewer({setSelectedIndex , selectedIndex , selectedImageData, setI
         <div onClick={(e) => { e.target === e.currentTarget && setIsImageMode(false) }} className='post-component'>
             <div className='post-component-body'>
                 <div className='w-full h-full flex items-center gap-5 justify-center'>
-                    <img src={selectedImageData.src} alt='photo' className='w-1/2 hover:scale-95 cursor-pointer transition-all h-full bg-black' onClick={() => { setVisible(true); }}></img>
+                    <img src={selectedImageData} alt='photo' className='w-1/2 hover:scale-95 cursor-pointer transition-all h-full bg-black' onClick={() => { setVisible(true); }}></img>
                     <Viewer
                         onChange={(e , i) => { setSelectedImageData(e); console.log(i); setSelectedIndex(i); }}
                         visible={visible}
