@@ -41,9 +41,21 @@ const loginCall = async (username, password) => {
     }
 }
 
+const updateCall = async (id, username, password, role) => {
+    try {
+        const res = await userService.updateCall(id, username, password, role);
+        console.log(res);
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+
 export {
     deleteUser ,
     getUsers ,
     registerCall ,
-    loginCall
+    loginCall,
+    updateCall
 }

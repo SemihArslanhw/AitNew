@@ -15,11 +15,12 @@ import * as API from '../../Api/index'
 
 function LeftBar({ children }) {
   
+  const [searchText, setSearchText] = React.useState('')
+  const [mapType, setMapType] = React.useState('')
   const [clusterLoading, setClusterLoading] = React.useState(false)
   const [dragging, setDragging] = React.useState(false)
   const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
   const [isSearching, setIsSearching] = React.useState(false)
-  const [files, setFiles] = React.useState([])
   const fileInputRef = React.useRef();
   const inputRef = React.useRef();
   const [searchProgress, setSearchProgress] = React.useState(0)
@@ -89,6 +90,14 @@ function LeftBar({ children }) {
     setDragging(false)
   }
 
+  const handleDragStart = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    e.dataTransfer.setData('text', 'image')
+    setDragging(true)
+    setIsHamburgerOpen(true)
+  }
+
 
   const handleDragOver = (e) => {
     e.preventDefault()
@@ -97,10 +106,19 @@ function LeftBar({ children }) {
     setIsHamburgerOpen(true)
   }
 
-  const handleDrop = (e) => {
+  const handleDrop = async (e) => {
     e.preventDefault()
-    setFile(e.dataTransfer.files[0])
+    console.log(e.dataTransfer.getData('text'))
+    urlToObject(e.dataTransfer.getData('text'))
     setDragging(false)
+  }
+
+  const urlToObject = async (url) => {
+    const response = await fetch(url);
+    // here image is url/location of image
+    const blob = await response.blob();
+    const file = new File([blob], 'image.jpg', {type: blob.type});
+    setFile(file)
   }
 
   const handleStateChange = (e) => {
@@ -206,7 +224,7 @@ function LeftBar({ children }) {
           </div> : <div onClick={() => { fileInputRef.current.click() }} className='rounded-lg h-fit cursor-pointer border-2 border-[#4a5568] p-5 hover:bg-gray-500 border-dashed w-full min-h-[200px] flex items-center justify-center'>
             <input
               type="file"
-              onChange={(event) => setFile(event.target.files[0])}
+              onChange={(event) => {setFile(event.target.files[0])}}
               hidden
               accept="image/png, image/jpeg"
               ref={fileInputRef}
@@ -230,11 +248,11 @@ function LeftBar({ children }) {
       <div className='w-full h-full bg-[#e5e7eb]'>
         {/* children[0] is the Header component */}
         <div className='bg-[#ffffff] w-full h-[6vh] items-end justify-end p-5 flex'>
-          {children[0]}
+          {cloneElement(children[0], { searchText, setSearchText, mapType , setMapType })}
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1], { dragging, setDragging, handleDragOver })}
+          {cloneElement(children[1], { handleDragOver , handleDragStart })}
         </div>
 
       </div>

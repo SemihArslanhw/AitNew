@@ -62,7 +62,7 @@ function UserManagement({ setUserCreatingMode, getUserList, users , loading}) {
         <div className='w-full h-[90%] pt-5 flex flex-col border-b'>
           <div className='w-full flex justify-between border-b pb-4'>
             <div className='w-2/6'><p className='text-gray-400'>USERNAME</p></div>
-            <div className='w-2/6'><p className='text-gray-400'>PASSWORD</p></div>
+            <div className='w-2/6'><p className='text-gray-400'>NEW PASSWORD</p></div>
             <div className='w-1/6'><p className='text-gray-400'>USER TYPE</p></div>
             <div className='w-1/6'><p className='text-gray-400'>AUTHORIZATION</p></div>
             <div className='w-1/6'><p className='text-gray-400'>ACTİONS</p></div>

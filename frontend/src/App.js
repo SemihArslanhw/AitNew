@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet';
 import LeftBarUserManagement from './Components/LeftBar/LeftBarUserManagement';
 import HomePage from './Pages/Home/HomePage';
 import FileManagement from './Pages/Admin/FileManagement/FileManagement';
+import HeaderAdmin from './Components/Header/HeaderAdmin';
 
 function App() {
   return (
@@ -24,9 +25,9 @@ function App() {
           <Route path="/home" element={<LeftBar><Header/><SearchPage/></LeftBar>} />
           <Route path="/" element={<LeftBarUserManagement><Header/><HomePage/></LeftBarUserManagement>} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path='*' element={<LeftBarUserManagement><Header/><NotFound/></LeftBarUserManagement>} />
-          <Route path="/usermanagement" element={<LeftBarUserManagement><Header/><UserManagement/></LeftBarUserManagement>} />
-          <Route path="/filemanagement" element={<LeftBarUserManagement><Header/><FileManagement/></LeftBarUserManagement>} />
+          <Route path='*' element={<LeftBarUserManagement><HeaderAdmin/><NotFound/></LeftBarUserManagement>} />
+          <Route path="/usermanagement" element={<LeftBarUserManagement><HeaderAdmin/><UserManagement/></LeftBarUserManagement>} />
+          <Route path="/filemanagement" element={<LeftBarUserManagement><HeaderAdmin/><FileManagement/></LeftBarUserManagement>} />
           {/* <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
           <Route path="/resetpassword/:resetToken" element={<ResetPasswordPage />} /> */}
           

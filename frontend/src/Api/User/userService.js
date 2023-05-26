@@ -46,9 +46,24 @@ import { API } from "../index";
     }
 }
 
+   const updateCall = async (id, username, password, role) => {
+    try {
+        const res = await API.put("auth/" + id, {
+            "username": username,
+            "password": password,
+            "role": role,
+        });
+        console.log(res);
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
 export {
     deleteUser ,
     getUsers,
     registerCall,
-    loginCall
+    loginCall,
+    updateCall
 }

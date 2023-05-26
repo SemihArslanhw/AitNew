@@ -1,7 +1,7 @@
 import React from 'react'
 import { AiOutlineEdit, AiOutlineDelete, AiOutlineLoading } from 'react-icons/ai'
 import { BsTrash } from 'react-icons/bs'
-import { deleteUser } from '../../../Api/User/userController'
+import { deleteUser, updateCall } from '../../../Api/User/userController'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import {TiTickOutline} from 'react-icons/ti'
 import { TiTimes } from 'react-icons/ti'
@@ -11,7 +11,7 @@ function UserCard({ user, getUserList }) {
   const [deleteLoading, setDeleteLoading] = React.useState(false)
   const [isUpdating, setIsUpdating] = React.useState(false)
   const [userName, setUserName] = React.useState(user.username)
-  const [password, setPassword] = React.useState(user.password)
+  const [password, setPassword] = React.useState("")
   const [userRole, setUserRole] = React.useState(user.role)
 
   const deleteUserr = async (id) => {
@@ -28,7 +28,12 @@ function UserCard({ user, getUserList }) {
   }
 
   const updateUserr = async (id) => {
-
+     updateCall(id , userName , password , userRole).then((res)=>{
+        getUserList()
+        setIsUpdating(false)
+     }).catch((err)=>{
+        console.log(err)
+      })
   }
 
   return (
@@ -36,7 +41,7 @@ function UserCard({ user, getUserList }) {
       <div className='w-2/6'>
         <div className='flex justify-center items-center'>
           {isUpdating ?
-            <input placeholder={user.username} autoFocus className='bg-slate-400 text-white rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
+            <input value={userName} onChange={(e)=>{setUserName(e.target.value)}} placeholder={user.username} autoFocus className='bg-slate-400 text-white rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
 
             </input>
             :
@@ -49,7 +54,7 @@ function UserCard({ user, getUserList }) {
       <div className='w-2/6'>
         <div className='flex justify-center items-center'>
         {isUpdating ?
-            <input placeholder="Yeni Şifre" className='bg-slate-400 text-white rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
+            <input placeholder="Yeni Şifre" value={password} onChange={(e)=>{setPassword(e.target.value)}} className='bg-slate-400 text-white rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
             </input>
             :
             <div className='bg-slate-400 rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
@@ -83,7 +88,7 @@ function UserCard({ user, getUserList }) {
       </div>
       {isUpdating ? 
       <div className='w-1/6 flex gap-5'>
-      <button onClick={() => { setIsUpdating(!isUpdating); }} title='düzenle' className='bg-green-500 p-2 rounded-lg w-10 font-bold hover:bg-green-400 flex items-center justify-center'><TiTickOutline /></button>
+      <button onClick={() => { updateUserr(user._id); }} title='düzenle' className='bg-green-500 p-2 rounded-lg w-10 font-bold hover:bg-green-400 flex items-center justify-center'><TiTickOutline /></button>
       <button onClick={() => { setIsUpdating(!isUpdating); }} title='düzenle' className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><TiTimes /></button>
     </div>
       : <div className='w-1/6 flex gap-5'>

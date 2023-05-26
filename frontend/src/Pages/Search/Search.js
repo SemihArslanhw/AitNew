@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineCloudDownload } from 'react-icons/ai'
 import ImageViewer from '../../Components/ImageViewer/ImageViewer'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -7,47 +7,26 @@ import { useTheme } from '@emotion/react';
 import { getAllImagesFull } from '../../Api/File/FileControler';
 import { ImageProxy } from '../../Api';
 
-function Search({dragging , setDragging , handleDragOver}) {
+function Search({handleDragStart}) {
 
     const handleRef = React.useRef(null)
     const [isImageMode, setIsImageMode] = React.useState(false)
     const [selectedImageData, setSelectedImageData] = React.useState()
     const [images, setImages] = React.useState([])
     const [selectedIndex , setSelectedIndex] = React.useState(0)
-    
+
     useEffect(() => {
       getAllImagesFull("1").then((res)=>{
-        console.log(res)
         setImages(res.data.files)
       }).catch((err)=>{
         console.log(err)
-      })
+      })    
     }, [])
 
-    const fakeImages = [
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme2.png"},
-      {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme.png"},
-      {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen3.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme4.png"},
-      {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen6.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme7.png"},
-      {src:"assets/images/desen.png", alt:"deneme" , path:"assets/images/desen6.png"},
-      {src:"assets/images/deneme.png", alt:"deneme" , path:"assets/images/deneme4.png"},
-  ]
 
   return (
     <div ref={handleRef} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
-    {isImageMode && <ImageViewer selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={fakeImages} setIsImageMode={setIsImageMode}/>}
+    {isImageMode && <ImageViewer selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode}/>}
     <div className='w-full h-full p-5'>
     <div className='w-full gap-5 h-full flex-col bg-[#cbd5e1] p-5 rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
         {/* <div className='text-[#4a5568] bg-blue-400 rounded-lg flex flex-col w-1/4 h-full items-center justify-center text-2xl font-bold'>Drag and Drop File Or Click Here 
@@ -63,13 +42,13 @@ function Search({dragging , setDragging , handleDragOver}) {
         
           </div> */}
         <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
-          <ImageList variant='masonry' cols={5} gap={8}>
+          <ImageList variant='masonry' cols={6} gap={8}>
             {images?.map((image , i)=>(
               <ImageListItem key={i}>
                    <LazyLoadImage
                    key={i}
-                   onDragEnter={handleDragOver}
-                   onClick={()=>{setIsImageMode(true);setSelectedImageData(ImageProxy + image.thumbnail.url);setSelectedIndex(i)}}
+                   onDragEnter={handleDragStart}
+                   onClick={()=>{setIsImageMode(true);setSelectedImageData(image);setSelectedIndex(i)}}
                    className='w-96 cursor-pointer object-cover rounded-md'
                    src={ ImageProxy + image.thumbnail.url} // use normal <img> attributes as props
                    />
