@@ -11,11 +11,12 @@ import LinearProgress from '@mui/material'
 import ProgressBar from './ProgressBar/ProgressBar'
 import { addCluster, getClusters } from '../../Api/Cluster/clusterRequests'
 import * as API from '../../Api/index'
+import { getAllImagesFull, searchByFileNameService } from '../../Api/File/FileControler'
 
 
 function LeftBar({ children }) {
   
-  const [searchText, setSearchText] = React.useState('')
+  const [images, setImages] = React.useState([])
   const [mapType, setMapType] = React.useState('')
   const [clusterLoading, setClusterLoading] = React.useState(false)
   const [dragging, setDragging] = React.useState(false)
@@ -30,13 +31,8 @@ function LeftBar({ children }) {
   const [clusterName, setClusterName] = React.useState('')
 
   useEffect(() => {
-
-    search()
-
-  }, [file])
-
-  useEffect(() => {
       getAllClusters()
+      search()
   }, [])
 
   const getAllClusters = async () => {
@@ -60,6 +56,15 @@ function LeftBar({ children }) {
     setClusterLoading(false)
   }
 
+  const search = async () => {
+    setIsSearching(true)
+    console.log("searching")
+    await setInterval(() => {
+      setIsSearching(false)
+    }
+      , 2000)
+  }
+
   const addClusterr = async (name) => {
     setClusterLoading(true)
     await API.addCluster(name).then((res) => {
@@ -75,13 +80,35 @@ function LeftBar({ children }) {
     // })
   }
 
-  const search = async () => {
+  const searchByFileName = async (page , name) => {
     setIsSearching(true)
-    console.log("searching")
-    await setInterval(() => {
+    if(name === ''){
+      getAllImagesFull(page).then((res) => {
+        console.log("bitti")
+        setImages(res.data.files)
+        setIsSearching(false)
+      }).catch((err) => {
+        console.log(err)
+        setIsSearching(false)
+      }
+      )
+      return
+    }
+    searchByFileNameService(page, name).then((res) => {
+      if(res.data.files.length === 0){
+        setImages([])
+        setIsSearching(false)
+        return
+      }
+      setImages(res.data.files)
+    }
+    ).catch((err) => {
+      console.log(err)
+    }
+    ).finally(() => {
       setIsSearching(false)
     }
-      , 2000)
+    )
   }
 
   const handleDragEnd = (e) => {
@@ -109,15 +136,16 @@ function LeftBar({ children }) {
   const handleDrop = async (e) => {
     e.preventDefault()
     console.log(e.dataTransfer.getData('text'))
-    urlToObject(e.dataTransfer.getData('text'))
     setDragging(false)
+    await urlToObject(e.dataTransfer.getData('text'))
+    await search()
   }
 
   const urlToObject = async (url) => {
     const response = await fetch(url);
     // here image is url/location of image
     const blob = await response.blob();
-    const file = new File([blob], 'image.jpg', {type: blob.type});
+    const file = await new File([blob], 'image.jpg', {type: blob.type});
     setFile(file)
   }
 
@@ -218,13 +246,13 @@ function LeftBar({ children }) {
                 accept="image/png, image/jpeg"
                 ref={inputRef}
               />
-              <AiOutlineCloudDownload className='text-9xl animate-bounce' />
+              <AiOutlineCloudDownload onDrop={handleDrop} onDragOver={handleDragOver} className='text-9xl animate-bounce' />
               <p className='text-2xl'>Drop File Here</p>
             </div>
           </div> : <div onClick={() => { fileInputRef.current.click() }} className='rounded-lg h-fit cursor-pointer border-2 border-[#4a5568] p-5 hover:bg-gray-500 border-dashed w-full min-h-[200px] flex items-center justify-center'>
             <input
               type="file"
-              onChange={(event) => {setFile(event.target.files[0])}}
+              onChange={async(event) => {setFile(event.target.files[0]) ; await search()}}
               hidden
               accept="image/png, image/jpeg"
               ref={fileInputRef}
@@ -240,7 +268,7 @@ function LeftBar({ children }) {
           <BsTrash /><p> Recycle </p><p className='w-8'></p>
         </Link>
         </div>
-        <a style={{ display: "flex" }} target='_blank' href='https://www.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>
+        <a style={{ display: "flex" }} target='_blank' href='https://www.ai.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>
           <p className='w-8'/><p> Archivist 0.0.1 </p><p className='w-8'></p>
         </a>
       </Menu>
@@ -248,11 +276,11 @@ function LeftBar({ children }) {
       <div className='w-full h-full bg-[#e5e7eb]'>
         {/* children[0] is the Header component */}
         <div className='bg-[#ffffff] w-full h-[6vh] items-end justify-end p-5 flex'>
-          {cloneElement(children[0], { searchText, setSearchText, mapType , setMapType })}
+          {cloneElement(children[0], { mapType , setMapType , searchByFileName , isSearching })}
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1], { handleDragOver , handleDragStart })}
+          {cloneElement(children[1], { handleDragOver , handleDragStart , isSearching , images , setImages})}
         </div>
 
       </div>

@@ -69,7 +69,7 @@ function UserManagement({ setUserCreatingMode, getUserList, users , loading}) {
 
           </div>
           <div className='w-full h-[90%]  overflow-y-auto'>
-            {!loading ? users.map((user, index) => {
+            {!loading ? users?.map((user, index) => {
               return (
                 <UserCard key={index} getUserList={getUserList} user={user} />
               )
