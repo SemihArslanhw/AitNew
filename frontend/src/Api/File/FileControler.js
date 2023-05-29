@@ -1,4 +1,4 @@
-import { addLabelToFile, deleteLabelFromFile, getAllImages, getFileById, searchByFileName } from "./FileService";
+import { addLabelToFile, deleteLabelFromFile, getAllImages, getFileById, searchByFileName, uploadFile } from "./FileService";
 
 const getAllImagesFull = async (page) => {
     try {
@@ -45,6 +45,14 @@ const searchByFileNameService = async (page , fileName) => {
     }
 }
 
+const uploadFileService = async (file) => {
+    try {
+        const res = await uploadFile(file);
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
 
 
 export {
@@ -52,5 +60,6 @@ export {
     addLabelToFileService,
     getFileByIdService,
     deleteLabelFromFileService,
-    searchByFileNameService
+    searchByFileNameService,
+    uploadFileService
 }

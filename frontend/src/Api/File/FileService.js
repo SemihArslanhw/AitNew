@@ -42,6 +42,16 @@ const deleteLabelFromFile = async (fileId, labelId) => {
     }
 }
 
+const uploadFile = async (file) => {
+    try {
+        //send file to server res.find
+        const res = await API.post("file-management/file/upload" ,file);
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
 const searchByFileName = async (page , fileName) => {
     try {
         const res = await API.post("file-management/files/search/"+page ,
@@ -60,5 +70,6 @@ export {
     addLabelToFile,
     getFileById,
     deleteLabelFromFile,
-    searchByFileName
+    searchByFileName,
+    uploadFile
 }
