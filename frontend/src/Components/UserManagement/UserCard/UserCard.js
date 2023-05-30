@@ -6,7 +6,7 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import {TiTickOutline} from 'react-icons/ti'
 import { TiTimes } from 'react-icons/ti'
 
-function UserCard({ user, getUserList }) {
+function UserCard({ user, getUserList , isGreen }) {
 
   const [deleteLoading, setDeleteLoading] = React.useState(false)
   const [isUpdating, setIsUpdating] = React.useState(false)
@@ -37,7 +37,7 @@ function UserCard({ user, getUserList }) {
   }
 
   return (
-    <div className='w-full bg-slate-800 flex  justify-between items-center py-5 '>
+    <div className={`w-full flex ${isGreen ? "bg-slate-600" : "bg-slate-700"} justify-between items-center py-5`}>
       <div className='w-2/6'>
         <div className='flex justify-center items-center'>
           {isUpdating ?
@@ -89,11 +89,11 @@ function UserCard({ user, getUserList }) {
       {isUpdating ? 
       <div className='w-1/6 flex gap-5'>
       <button onClick={() => { updateUserr(user._id); }} title='düzenle' className='bg-green-500 p-2 rounded-lg w-10 font-bold hover:bg-green-400 flex items-center justify-center'><TiTickOutline /></button>
-      <button onClick={() => { setIsUpdating(!isUpdating); }} title='düzenle' className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><TiTimes /></button>
+      <button onClick={() => { setIsUpdating(!isUpdating); }} title='kapat' className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><TiTimes /></button>
     </div>
       : <div className='w-1/6 flex gap-5'>
       <button onClick={() => { setIsUpdating(!isUpdating); }} title='düzenle' className='bg-yellow-500 p-2 rounded-lg w-10 font-bold hover:bg-yellow-400 flex items-center justify-center'><AiOutlineEdit /></button>
-      {deleteLoading ? <button title='sil' disabled className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><AiOutlineLoading className='animate-spin' /></button>
+      {deleteLoading ? <button title='bekle' disabled className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><AiOutlineLoading className='animate-spin' /></button>
         :
         <button onClick={() => { deleteUserr(user._id) }} title='sil' className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><AiOutlineDelete /></button>
       }

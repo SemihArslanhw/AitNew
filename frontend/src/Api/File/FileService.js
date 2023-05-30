@@ -42,6 +42,15 @@ const deleteLabelFromFile = async (fileId, labelId) => {
     }
 }
 
+const getHiddenFiles = async (page) => {
+    try {
+        const res = await API.get("file-management/files/hidden/"+page);
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
 const uploadFile = async (file) => {
     try {
         //send file to server res.find
@@ -71,5 +80,6 @@ export {
     getFileById,
     deleteLabelFromFile,
     searchByFileName,
-    uploadFile
+    uploadFile,
+    getHiddenFiles
 }

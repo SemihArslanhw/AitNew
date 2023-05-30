@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { AiOutlineCloudDownload, AiOutlineLoading } from 'react-icons/ai'
+import React, { useEffect} from 'react'
+import { AiOutlineLoading } from 'react-icons/ai'
 import ImageViewer from '../../Components/ImageViewer/ImageViewer'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { ImageList, ImageListItem, Slider, useMediaQuery } from '@mui/material'
-import { useTheme } from '@emotion/react';
-import { getAllImagesFull, searchByFileNameService } from '../../Api/File/FileControler';
+import { ImageList, ImageListItem } from '@mui/material'
+import { getAllImagesFull} from '../../Api/File/FileControler';
 import { ImageProxy } from '../../Api';
 
 function Search({ handleDragStart, isSearching , images , setImages }) {
@@ -14,19 +13,10 @@ function Search({ handleDragStart, isSearching , images , setImages }) {
   const [selectedImageData, setSelectedImageData] = React.useState()
   const [selectedIndex, setSelectedIndex] = React.useState(0)
 
-  useEffect(() => {
-    getAllImagesFull("1").then((res) => {
-      setImages(res.data.files)
-    }).catch((err) => {
-      console.log(err)
-    })
-
-  }, [])
-
 
   return (
     <div ref={handleRef} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
-      {isImageMode && <ImageViewer selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode} />}
+      {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode} />}
       <div className='w-full h-full p-5'>
         <div className='w-full gap-5 h-full flex-col bg-[#cbd5e1] p-5 rounded-lg border-2 border-[#4a5568] border-dashed flex items-center'>
           {/* <div className='text-[#4a5568] bg-blue-400 rounded-lg flex flex-col w-1/4 h-full items-center justify-center text-2xl font-bold'>Drag and Drop File Or Click Here 

@@ -3,7 +3,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { MdAccountCircle } from 'react-icons/md';
 import IconButton from '@mui/material/IconButton';
-import {AiOutlineSearch} from 'react-icons/ai'
+import { AiOutlineSearch } from 'react-icons/ai'
+import { Link } from 'react-router-dom';
 
 
 function HeaderAdmin() {
@@ -21,7 +22,7 @@ function HeaderAdmin() {
   return (
     <div className='flex h-full items-center justify-center text-black'>
       <div className='h-full flex items-center justify-center'>
-        
+
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -47,8 +48,16 @@ function HeaderAdmin() {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem >Profile</MenuItem>
-          <MenuItem >My account</MenuItem>
+          <MenuItem >
+            <Link className='w-full h-full' to={"/"}>
+              Settings
+            </Link>
+          </MenuItem>
+          <MenuItem >
+            <Link className='w-full h-full' to={"/login"}>
+              Logout
+            </Link>
+          </MenuItem>
         </Menu>
       </div>
     </div>

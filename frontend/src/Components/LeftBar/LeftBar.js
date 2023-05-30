@@ -7,11 +7,10 @@ import { AiOutlineArrowDown } from 'react-icons/ai'
 import { MdImageSearch } from 'react-icons/md'
 import { BsTrash } from 'react-icons/bs'
 import { Checkbox, FormControlLabel } from '@mui/material'
-import LinearProgress from '@mui/material'
 import ProgressBar from './ProgressBar/ProgressBar'
-import { addCluster, getClusters } from '../../Api/Cluster/clusterRequests'
+import { getClusters } from '../../Api/Cluster/clusterRequests'
 import * as API from '../../Api/index'
-import { getAllImagesFull, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
+import { getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
 
 
 function LeftBar({ children }) {
@@ -29,22 +28,31 @@ function LeftBar({ children }) {
   const [clusters, setClusters] = React.useState([])
   const [isClusterOpen, setIsClusterOpen] = React.useState(false)
   const [clusterName, setClusterName] = React.useState('')
-  const [checked, setChecked] = React.useState([]);
+
+
 
   useEffect(() => {
     getAllClusters()
-
+    getFirstPage()
   }, [])
 
+  const getFirstPage = async () => {
+    setIsSearching(true)
+    getAllImagesFull("1").then((res) => {
+      setImages(res.data.files)
+    }).catch((err) => {
+      console.log(err)
+    }).finally(() => {
+      setIsSearching(false)
+    }
+    )
+  }
+
   const getAllClusters = async () => {
-    var temp = []
     setClusterLoading(true)
     getClusters().then((res) => {
-      res.data.map((cluster , i) => {
-        temp[i] = checked[i] ? true : false
-      })
-      setChecked(temp)
-      setClusters(res.data)
+      const modifiedData = res.data.map(obj => ({ ...obj, checked: false }));
+      setClusters(modifiedData);
       setClusterLoading(false)
     }).catch((err) => {
       console.log(err)
@@ -52,10 +60,26 @@ function LeftBar({ children }) {
     })
   }
 
+  const getHiddenImages = async (page) => {
+    setIsSearching(true)
+    getHiddenFilesService(page).then((res) => {
+      setImages(res.data.files)
+    }).catch((err) => {
+      console.log(err)
+    }).finally(() => {
+      setIsSearching(false)
+    }
+    )
+    
+  }
+
   const deleteCluster = async (id) => {
     setClusterLoading(true)
+
     await API.deleteCluster(id).then((res) => {
-      getAllClusters()
+      var temp = clusters
+      temp = temp.filter((cluster) => cluster.cluster_id !== id)
+      setClusters(temp.slice())
     }).catch((err) => {
       console.log(err)
     })
@@ -64,7 +88,6 @@ function LeftBar({ children }) {
 
   const search = async (file) => {
     setIsSearching(true)
-    console.log(file)
     if (file) {
       uploadFileService(file).then((res) => {
         console.log(res)
@@ -78,8 +101,8 @@ function LeftBar({ children }) {
   const addClusterr = async (name) => {
     setClusterLoading(true)
     await API.addCluster(name).then((res) => {
-      setClusters([...clusters, res.data])
-      setChecked([...checked , false])
+      res.data.checked = false
+      setClusters([...clusters, res.data ])
     }).catch((err) => {
       console.log(err)
     })
@@ -95,7 +118,6 @@ function LeftBar({ children }) {
     setIsSearching(true)
     if (name === '') {
       getAllImagesFull(page).then((res) => {
-        console.log("bitti")
         setImages(res.data.files)
         setIsSearching(false)
       }).catch((err) => {
@@ -163,10 +185,11 @@ function LeftBar({ children }) {
     setIsHamburgerOpen(e.isOpen)
   }
   
-  const handleOptionChange = (e , i) => {
-    var temp = checked.slice()
-    temp[i] = !temp[i]
-    setChecked(temp)
+  const handleOptionChange = (id) => {
+    var temp = clusters
+    temp.find((cluster) => cluster._id === id).checked = !temp.find((cluster) => cluster._id === id).checked
+    setClusters(temp.slice())
+
   }
 
   var styles = {
@@ -217,10 +240,10 @@ function LeftBar({ children }) {
     <div onDragEnd={handleDragEnd} className='flex h-full w-full text-white text-lg'>
       <Menu onStateChange={handleStateChange} isOpen={isHamburgerOpen} styles={styles}>
         <div className='w-full h-[90%] flex flex-col'>
-          <Link style={{ display: "flex" }} to={"/"} className='w-full h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
+          <div onClick={()=>{getFirstPage()}} style={{ display: "flex" }} className='w-full cursor-pointer h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
             <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
-          </Link>
-          <Link style={{ display: "flex" }} to={"/home"} className='w-full gap-5 h-fit border-t-2 justify-around hover:bg-slate-600 flex flex-col items-center'>
+          </div>
+          <Link style={{ display: "flex" }} className='w-full gap-5 h-fit border-t-2 justify-around hover:bg-slate-600 flex flex-col items-center'>
             <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full p-5 flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
             {isClusterOpen && <div className='w-full px-5 gap-5 flex flex-col items-center justify-center'>
               <div className='w-full overflow-x-hidden text-white bg-slate-500  rounded-lg h-52 overflow-y-auto flex flex-col'>
@@ -230,9 +253,9 @@ function LeftBar({ children }) {
                       className='w-3/4 justify-between items-center '
                       label={<p title={cluster?.cluster_name} className='w-20 text-ellipsis inline-block whitespace-nowrap overflow-hidden'>{cluster?.cluster_name}</p>}
                       control={
-                        <Checkbox checked={checked[i]} onClick={(e)=>{handleOptionChange(e,i)}} />
+                        <Checkbox checked={cluster.checked} onClick={(e)=>{handleOptionChange(cluster._id)}} />
                       }
-                      onChange={(e) => { console.log(e.target.checked) }}
+                      
                     />
                     <BsTrash onClick={() => { deleteCluster(cluster?.cluster_id) }} className='hover:text-red-500' />
                   </div>
@@ -275,18 +298,18 @@ function LeftBar({ children }) {
                 accept="image/png, image/jpeg"
                 ref={fileInputRef}
               />
-              {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img className='max-h-64' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full h-5'><ProgressBar value={searchProgress} /></div>}</div>
+              {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full h-5'><ProgressBar value={searchProgress} /></div>}</div>
                 :
                 <div className='flex flex-col items-center justify-center'>
                   <p>+</p>
                 </div>}
             </div>}
           </div>
-          <Link style={{ display: "flex" }} to={"/exjson"} className='w-full h-fit border-t-2 justify-around hover:bg-slate-600 flex items-center p-5'>
+          <div onClick={()=>{getHiddenImages(1)}} style={{ display: "flex" }} className='w-full cursor-pointer h-fit border-t-2 justify-around hover:bg-slate-600 flex items-center p-5'>
             <BsTrash /><p> Recycle </p><p className='w-8'></p>
-          </Link>
+          </div>
         </div>
-        <a style={{ display: "flex" }} target='_blank' href='https://www.ai.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>
+        <a style={{ display: "flex" }} target='_blank' rel='noreferrer' href='https://www.ai.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>
           <p className='w-8' /><p> Archivist 0.0.1 </p><p className='w-8'></p>
         </a>
       </Menu>
@@ -298,7 +321,7 @@ function LeftBar({ children }) {
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1], { handleDragOver, handleDragStart, isSearching, images, setImages })}
+          {cloneElement(children[1], { handleDragOver, handleDragStart, isSearching , images, setImages })}
         </div>
 
       </div>

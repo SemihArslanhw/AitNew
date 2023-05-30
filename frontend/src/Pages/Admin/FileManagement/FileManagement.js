@@ -1,14 +1,23 @@
 import React from 'react'
 import ProgressBar from '../../../Components/LeftBar/ProgressBar/ProgressBar'
+import { AiOutlineClockCircle } from 'react-icons/ai'
 
 function FileManagement() {
 
+  
   const [searchProgress, setSearchProgress] = React.useState(0)
 
   return (
     <div className='w-full h-full p-5 bg-[#cbd5e1] rounded-lg'>
         <div className='flex flex-col p-5 justify-between gap-3 rounded-lg items-center w-full h-full bg-[#374151]'>
-            <h1 className='text-2xl'>File Management</h1>
+            <div className='w-full flex justify-between items-center h-10 px-5'>
+              <p></p>
+              <h1 className='text-2xl'>File Management</h1>
+              <div title='Ayarla' className='p-2 cursor-pointer hover:bg-gray-400 bg-gray-500 rounded-lg'>
+              <AiOutlineClockCircle className='w-7 h-7 rounded-lg '/>
+              </div>
+              
+              </div>
             <div className='w-full h-full flex'>
               <div className='w-1/2 h-full border-r-2 p-5 gap-5 flex flex-col'>
                 <p className='h-10'>System Status : <span className='text-green-500'>Running</span></p>
