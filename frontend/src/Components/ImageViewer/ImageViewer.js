@@ -5,7 +5,7 @@ import { ImageProxy } from '../../Api';
 import { AiFillEye, AiFillEyeInvisible, AiOutlineLoading } from 'react-icons/ai';
 import { FormControl, InputLabel, MenuItem, Select, Skeleton } from '@mui/material';
 import { getClusters } from '../../Api/Cluster/clusterRequests';
-import { addLabelToFileService, deleteLabelFromFileService } from '../../Api/File/FileControler';
+import { addLabelToFileService, deleteLabelFromFileService, hideFileService, unhideFileService } from '../../Api/File/FileControler';
 import { GrClose } from 'react-icons/gr'
 import { getFileById } from '../../Api/File/FileService';
 
@@ -86,6 +86,19 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         )
     }
 
+    const handleHideFile = () => {
+          hideFileService(selectedImageData._id).then((res) => {
+            setAllImages(allImages.filter((image) => image._id !== selectedImageData._id))
+            setIsImageMode(false)})
+            .catch((err) => {console.log(err)})
+        }
+    
+    const handleUnHideFile = () => {
+        unhideFileService(selectedImageData._id).then((res) => {
+            setAllImages(allImages.filter((image) => image._id !== selectedImageData._id))
+            setIsImageMode(false)})
+            .catch((err) => {console.log(err)})
+    }
 
     return (
         <div onClick={(e) => { e.target === e.currentTarget && setIsImageMode(false) }} className='post-component'>
@@ -93,9 +106,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                 <div className='w-full h-full flex-col gap-5 items-center justify-center'>
                     <div className='h-[5%] w-full flex justify-between items-center'>
                         {!selectedImageData.isHidden ?
-                            <AiFillEyeInvisible className='cursor-pointer hover:bg-black hover:text-white text-black h-7 w-10 border border-gray-900 rounded-lg' onClick={() => { setIsImageMode(false); }}></AiFillEyeInvisible>
+                            <AiFillEyeInvisible className='cursor-pointer hover:bg-black hover:text-white text-black h-7 w-10 border border-gray-900 rounded-lg' onClick={() => { handleHideFile() }}></AiFillEyeInvisible>
                             :
-                            <AiFillEye className='cursor-pointer hover:bg-black hover:text-white text-black h-7 w-10 border border-gray-900 rounded-lg' onClick={() => { setIsImageMode(false); }}></AiFillEye>}
+                            <AiFillEye className='cursor-pointer hover:bg-black hover:text-white text-black h-7 w-10 border border-gray-900 rounded-lg' onClick={() => { handleUnHideFile() }}></AiFillEye>}
                         <GrClose onClick={(e) => { setIsImageMode(false) }} className='cursor-pointer text-black h-8 mr-2'>X</GrClose>
                     </div>
                     <div className='w-full h-[95%] flex items-center gap-5 justify-center'>

@@ -6,13 +6,38 @@ import { ImageList, ImageListItem } from '@mui/material'
 import { getAllImagesFull} from '../../Api/File/FileControler';
 import { ImageProxy } from '../../Api';
 
-function Search({ handleDragStart, isSearching , images , setImages }) {
+function Search({ handleDragStart, mapingType , isSearching , images , setImages }) {
 
   const handleRef = React.useRef(null)
   const [isImageMode, setIsImageMode] = React.useState(false)
   const [selectedImageData, setSelectedImageData] = React.useState()
   const [selectedIndex, setSelectedIndex] = React.useState(0)
+  const [cols , setCols] = React.useState(6)
 
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if(window.innerWidth < 640){
+        setCols(1)
+      }else if(window.innerWidth < 768){
+        setCols(2)
+      }else if(window.innerWidth < 1024){
+        setCols(3)
+      }else if(window.innerWidth < 1280){
+        setCols(4)
+      }else if(window.innerWidth < 1536){
+        setCols(5)
+      }else{
+        setCols(6)
+      }
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  },[]);
 
   return (
     <div ref={handleRef} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
@@ -38,7 +63,7 @@ function Search({ handleDragStart, isSearching , images , setImages }) {
             </div>
             :
             <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
-              <ImageList variant='masonry' cols={6} gap={8}>
+              <ImageList variant={mapingType}  cols={cols} gap={8}>
                 {images?.map((image, i) => (
                   <ImageListItem key={i}>
                     <LazyLoadImage

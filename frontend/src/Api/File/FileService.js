@@ -73,6 +73,28 @@ const searchByFileName = async (page , fileName) => {
     }
 }
 
+const hideFile = async (fileId) => {
+    try {
+        const res = await API.post("file-management/file/hide" , {
+            "id": fileId
+            });
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+const unhideFile = async (fileId) => {
+    try {
+        const res = await API.post("file-management/file/unhide" , {
+            "id": fileId
+            });
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
 
 export {
     getAllImages,
@@ -81,5 +103,7 @@ export {
     deleteLabelFromFile,
     searchByFileName,
     uploadFile,
-    getHiddenFiles
+    getHiddenFiles,
+    hideFile,
+    unhideFile
 }

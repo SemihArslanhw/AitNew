@@ -1,19 +1,21 @@
 import React from 'react'
 import ProgressBar from '../../../Components/LeftBar/ProgressBar/ProgressBar'
 import { AiOutlineClockCircle } from 'react-icons/ai'
+import Calender from '../../../Components/FileManagement/Calender/Calender'
 
 function FileManagement() {
 
-  
+  const [isCalanderMode, setIsCalenderMode] = React.useState(false)
   const [searchProgress, setSearchProgress] = React.useState(0)
 
   return (
     <div className='w-full h-full p-5 bg-[#cbd5e1] rounded-lg'>
+      {isCalanderMode && <Calender setIsCalenderMode={setIsCalenderMode}/>}
         <div className='flex flex-col p-5 justify-between gap-3 rounded-lg items-center w-full h-full bg-[#374151]'>
             <div className='w-full flex justify-between items-center h-10 px-5'>
               <p></p>
               <h1 className='text-2xl'>File Management</h1>
-              <div title='Ayarla' className='p-2 cursor-pointer hover:bg-gray-400 bg-gray-500 rounded-lg'>
+              <div onClick={()=>{setIsCalenderMode(true)}} title='Ayarla' className='p-2 cursor-pointer hover:bg-gray-400 bg-gray-500 rounded-lg'>
               <AiOutlineClockCircle className='w-7 h-7 rounded-lg '/>
               </div>
               

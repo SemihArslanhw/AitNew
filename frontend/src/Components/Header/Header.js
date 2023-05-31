@@ -5,10 +5,11 @@ import { MdAccountCircle } from 'react-icons/md';
 import IconButton from '@mui/material/IconButton';
 import { AiOutlineLoading, AiOutlineSearch } from 'react-icons/ai'
 import { Link } from 'react-router-dom';
+import { Bs9Square, BsFillGrid3X3GapFill } from 'react-icons/bs';
+import { GrApps, GrGrid } from 'react-icons/gr';
 
 
-
-function Header({ mapType, setMapType, searchByFileName, isSearching }) {
+function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [searchText, setSearchText] = React.useState('')
@@ -39,11 +40,11 @@ function Header({ mapType, setMapType, searchByFileName, isSearching }) {
             </button>}
           </div>
         </div>
-        <div className='p-1 hover:bg-slate-400 cursor-pointer rounded-full bg-slate-600 '>
+        <div onClick={()=>setMapingType("masonry")} className='p-1 h-10 w-10 flex justify-center items-center hover:bg-slate-400 cursor-pointer rounded-full bg-slate-600 '>
           <img className='w-7' src='assets/images/mosaic.png' />
         </div>
-        <div className='p-1 hover:bg-slate-400 cursor-pointer rounded-full bg-slate-600 '>
-          <img className='w-7' src='assets/images/mosaic.png' />
+        <div onClick={()=>setMapingType("standart")} className='p-1 h-10 w-10 flex justify-center items-center hover:bg-slate-400 cursor-pointer rounded-full bg-slate-600 '>
+          <BsFillGrid3X3GapFill className='text-white w-6 h-6'/>
         </div>
 
         <IconButton

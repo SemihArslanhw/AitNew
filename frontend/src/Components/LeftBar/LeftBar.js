@@ -15,6 +15,7 @@ import { getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploa
 
 function LeftBar({ children }) {
 
+  const [mapingType, setMapingType] = React.useState('masonry')
   const [images, setImages] = React.useState([])
   const [mapType, setMapType] = React.useState('')
   const [clusterLoading, setClusterLoading] = React.useState(false)
@@ -317,11 +318,11 @@ function LeftBar({ children }) {
       <div className='w-full h-full bg-[#e5e7eb]'>
         {/* children[0] is the Header component */}
         <div className='bg-[#ffffff] w-full h-[6vh] items-end justify-end p-5 flex'>
-          {cloneElement(children[0], { mapType, setMapType, searchByFileName, isSearching })}
+          {cloneElement(children[0], { mapingType, setMapingType, searchByFileName, isSearching })}
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1], { handleDragOver, handleDragStart, isSearching , images, setImages })}
+          {cloneElement(children[1], { handleDragOver, handleDragStart , mapingType, isSearching , images, setImages })}
         </div>
 
       </div>
