@@ -2,9 +2,10 @@ import React, { useEffect} from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
 import ImageViewer from '../../Components/ImageViewer/ImageViewer'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { ImageList, ImageListItem } from '@mui/material'
+import { ImageList, ImageListItem, Pagination } from '@mui/material'
 import { getAllImagesFull} from '../../Api/File/FileControler';
 import { ImageProxy } from '../../Api';
+import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
 
 function Search({ handleDragStart, mapingType , isSearching , images , setImages }) {
 
@@ -41,6 +42,7 @@ function Search({ handleDragStart, mapingType , isSearching , images , setImages
 
   return (
     <div ref={handleRef} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
+      <SearchPagination/>
       {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode} />}
       <div className='w-full h-full p-5'>
         <div className='w-full gap-5 h-full flex-col bg-[#cbd5e1] p-5 rounded-lg border-2 border-[#4a5568] border-dashed flex items-center'>

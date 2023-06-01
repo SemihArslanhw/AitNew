@@ -3,10 +3,10 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { MdAccountCircle } from 'react-icons/md';
 import IconButton from '@mui/material/IconButton';
-import { AiOutlineLoading, AiOutlineSearch } from 'react-icons/ai'
+import { AiFillSetting, AiOutlineLoading, AiOutlineSearch } from 'react-icons/ai'
 import { Link } from 'react-router-dom';
 import { Bs9Square, BsFillGrid3X3GapFill } from 'react-icons/bs';
-import { GrApps, GrGrid } from 'react-icons/gr';
+import { GrApps, GrGrid, GrLogout } from 'react-icons/gr';
 
 
 function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
@@ -25,13 +25,13 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
   return (
     <div className='flex h-full items-center justify-center text-black'>
       <div className='h-full gap-3 flex items-center justify-center'>
-        <div className='flex w-fit items-center h-full'>
+        <div className='flex w-fit items-center h-full group'>
           <input
             value={searchText}
             onChange={(e) => { setSearchText(e.target.value) }}
             onKeyUp={(e) => { if (e.key === 'Enter') { searchByFileName(1, searchText) } }}
             placeholder='Search...'
-            className='bg-slate-600 focus:scale-x-150 focus:bg-slate-500 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
+            className='bg-slate-600 group-focus-within:scale-x-150  focus:bg-slate-500 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
           >
           </input>
           <div onClick={() => { searchByFileName(1, searchText) }} className='w-5 h-full bg-slate-600 border-l flex items-center justify-center hover:bg-slate-300 p-5 rounded-r-lg'>
@@ -48,7 +48,8 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
         </div>
 
         <IconButton
-          size="large"
+          size='large'
+          sx={{  height:50  }}
           aria-label="account of current user"
           aria-controls="menu-appbar"
           aria-haspopup="true"
@@ -72,12 +73,14 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <div className='h-fit gap-2 px-2 w-20 flex flex-col '>
-          <Link className='w-full h-full' to={"/"}>
-            Settings
+          <div className='h-fit gap-2 px-2 w-28 flex flex-col '>
+          <Link className='w-full h-full flex items-center gap-2' to={"/"}>
+           <AiFillSetting className='h-7'/>
+           Settings
           </Link>
 
-          <Link className='w-full h-full' to={"/login"}>
+          <Link className='w-full h-full flex items-center gap-2' to={"/login"}>
+            <GrLogout className='h-7'/>
             Logout
           </Link>
           </div>

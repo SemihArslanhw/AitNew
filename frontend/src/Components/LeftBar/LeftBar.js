@@ -87,7 +87,7 @@ function LeftBar({ children }) {
     setClusterLoading(false)
   }
 
-  const search = async (file) => {
+  const search = async () => {
     setIsSearching(true)
     if (file) {
       uploadFileService(file).then((res) => {
@@ -177,8 +177,16 @@ function LeftBar({ children }) {
   const urlToObject = async (url) => {
     const response = await fetch(url);
     // here image is url/location of image
-    const blob = await response.blob();
-    const file = await new File([blob], 'image.jpg', { type: blob.type });
+
+    //CREATE req file
+    const data = await response.arrayBuffer();
+    const metadata = {
+      type: 'image/jpeg'
+    };
+    const file = new File([data], 'image.jpg', metadata);
+  
+    //const blob = await response.blob();
+    //const file = await new File([blob], 'image.jpg', { type: blob.type });
     setFile(file)
   }
 
