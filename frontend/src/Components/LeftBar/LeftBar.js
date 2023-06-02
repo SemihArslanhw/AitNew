@@ -224,17 +224,18 @@ function LeftBar({ children }) {
     },
     bmMenuWrap: {
       position: 'fixed',
+      width: '250px',
       height: '100%'
     },
     bmMenu: {
-      background: '#373a47',
+      background: '#1a202c',
       fontSize: '1.15em'
     },
     bmMorphShape: {
       fill: '#373a47'
     },
     bmItemList: {
-      color: '#b8b7ad',
+      color: '#edf2f7',
       padding: '0.8em'
     },
     bmItem: {
@@ -246,16 +247,16 @@ function LeftBar({ children }) {
   }
 
   return (
-    <div onDragEnd={handleDragEnd} className='flex h-full w-full text-white text-lg'>
+    <div onDragEnd={handleDragEnd} className='flex h-full text-sm w-full text-white'>
       <Menu onStateChange={handleStateChange} isOpen={isHamburgerOpen} styles={styles}>
         <div className='w-full h-[90%] flex flex-col'>
           <div onClick={()=>{getFirstPage()}} style={{ display: "flex" }} className='w-full cursor-pointer h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
             <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
           </div>
-          <Link style={{ display: "flex" }} className='w-full gap-5 h-fit border-t-2 justify-around hover:bg-slate-600 flex flex-col items-center'>
-            <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full p-5 flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
-            {isClusterOpen && <div className='w-full px-5 gap-5 flex flex-col items-center justify-center'>
-              <div className='w-full overflow-x-hidden text-white bg-slate-500  rounded-lg h-52 overflow-y-auto flex flex-col'>
+          <Link style={{ display: "flex" }} className='w-full h-fit border-t-2 justify-around  flex flex-col items-center'>
+            <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full hover:bg-slate-600 rounded-lg p-5 flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
+            {isClusterOpen && <div className='w-full  gap-5 flex flex-col items-center justify-center'>
+              <div className='w-full overflow-x-hidden text-white bg-slate-500 rounded-lg h-52 overflow-y-auto flex flex-col'>
                 {!clusterLoading ? clusters?.map((cluster, i) => (
                   <div key={i} className='w-full px-2 justify-between flex items-center'>
                     <FormControlLabel
@@ -273,19 +274,19 @@ function LeftBar({ children }) {
                 </div>
                 }
               </div>
-              <div className='w-full gap-5 flex'>
-                <input value={clusterName} onChange={(e) => { setClusterName(e.target.value) }} className='h-full rounded-lg border-2 mb-5 outline-none p-2 w-full' type='text' placeholder='Cluster Name'></input>
-                <button onClick={() => { addClusterr(clusterName) }} className='bg-green-500 p-2 rounded-lg w-10 mb-5 text-white font-bold hover:bg-green-400 flex items-center justify-center'>+</button>
+              <div className='w-full flex'>
+                <input value={clusterName} onChange={(e) => { setClusterName(e.target.value) }} className='h-full rounded-l-lg bg-gray-600 border border-cyan-600 outline-none mb-5 p-2 w-full' type='text' placeholder='Cluster Name'></input>
+                <button onClick={() => { addClusterr(clusterName) }} className='p-2 rounded-r-lg w-16 mb-5 text-white font-bold hover:bg-cyan-600 flex items-center justify-center'>Add</button>
               </div>
 
             </div>
             }
           </Link>
-          <div style={{ display: "flex" }} className='w-full h-fit border-t-2 justify-between gap-4 flex flex-col items-center p-5'>
+          <div style={{ display: "flex" }} className='w-full h-fit border-t-2 justify-between gap-4 flex flex-col items-center py-5'>
             <div className='w-full flex justify-between items-center'><MdImageSearch /><p> Ai Search </p><p className='w-2'></p></div>
             {dragging ? <div className='w-full h-36  rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
               <div
-                className="w-full h-full flex flex-col  justify-center items-center p-5 rounded-lg"
+                className="w-full h-full flex flex-col  justify-center items-center  rounded-lg"
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
@@ -296,8 +297,8 @@ function LeftBar({ children }) {
                   accept="image/png, image/jpeg"
                   ref={inputRef}
                 />
-                <AiOutlineCloudDownload onDrop={handleDrop} onDragOver={handleDragOver} className='text-9xl animate-bounce' />
-                <p className='text-2xl'>Drop File Here</p>
+                <AiOutlineCloudDownload onDrop={handleDrop} onDragOver={handleDragOver} className='text-5xl animate-bounce' />
+                <p className='text-xl'>Drop File Here</p>
               </div>
             </div> : <div onClick={() => { fileInputRef.current.click() }} className='rounded-lg h-fit cursor-pointer border-2 border-[#4a5568] p-5 hover:bg-gray-500 border-dashed w-full min-h-[200px] flex items-center justify-center'>
               <input
@@ -310,7 +311,7 @@ function LeftBar({ children }) {
               {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full h-5'><ProgressBar value={searchProgress} /></div>}</div>
                 :
                 <div className='flex flex-col items-center justify-center'>
-                  <p>+</p>
+                  <div className='w-16 h-16 bg-green-500 text-2xl rounded-full flex justify-center items-center'>+</div>
                 </div>}
             </div>}
           </div>
@@ -319,7 +320,7 @@ function LeftBar({ children }) {
           </div>
         </div>
         <a style={{ display: "flex" }} target='_blank' rel='noreferrer' href='https://www.ai.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>
-          <p className='w-8' /><p> Archivist 0.0.1 </p><p className='w-8'></p>
+          <p className='w-1' /><p> Archivist 0.0.1 </p><p className='w-1'></p>
         </a>
       </Menu>
 

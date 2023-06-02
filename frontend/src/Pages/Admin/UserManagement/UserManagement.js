@@ -47,6 +47,7 @@ function UserManagement({ setUserCreatingMode, getUserList, users , loading}) {
 
   return (
     <div className='w-full h-full p-5 bg-[#cbd5e1] rounded-lg'>
+      <div className='flex items-center w-full h-full justify-center p-5 bg-slate-400 rounded-lg'>
       <div className='flex flex-col justify-between rounded-lg items-center w-full h-full bg-[#374151] p-10'>
         <div className='h-[10%] border-b w-full flex justify-between items-center'>
           <div className='flex gap-5 items-center'>
@@ -85,6 +86,7 @@ function UserManagement({ setUserCreatingMode, getUserList, users , loading}) {
           </div>
 
         </div>
+      </div>
       </div>
     </div>
   )

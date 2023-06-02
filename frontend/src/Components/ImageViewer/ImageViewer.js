@@ -106,7 +106,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                 <div className='w-full h-full flex-col gap-5 items-center justify-center'>
                     <div className='h-[5%] w-full flex justify-between items-center'>
                         {!selectedImageData.isHidden ?
-                            <AiFillEyeInvisible className='cursor-pointer hover:bg-black hover:text-white text-black h-7 w-10 border border-gray-900 rounded-lg' onClick={() => { handleHideFile() }}></AiFillEyeInvisible>
+                            <AiFillEyeInvisible className='cursor-pointer hover:bg-cyan-500 hover:text-white text-cyan-500 h-7 w-10 border border-cyan-500 rounded-lg' onClick={() => { handleHideFile() }}></AiFillEyeInvisible>
                             :
                             <AiFillEye className='cursor-pointer hover:bg-black hover:text-white text-black h-7 w-10 border border-gray-900 rounded-lg' onClick={() => { handleUnHideFile() }}></AiFillEye>}
                         <GrClose onClick={(e) => { setIsImageMode(false) }} className='cursor-pointer text-black h-8 mr-2'>X</GrClose>
@@ -185,7 +185,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                                 <div className='h-2/6 w-full flex flex-col gap-3 p-2 overflow-y-auto items-center'>
                                     {!labelsLoading ? selectedImageData?.ai_prediction?.labels?.map((label) => {
                                         return label !== null && (
-                                            <div className='flex bg-slate-500 text-white p-3 rounded-lg justify-between items-center w-full'>
+                                            <div className='flex bg-cyan-600 text-white p-3 rounded-lg justify-between items-center w-full'>
                                                 <p className='h-10 flex justify-center items-center'>{label.cluster_name}</p>
                                                 <div onClick={() => handleDeleteLabel(label.cluster_id)} className='hover:text-white cursor-pointer rounded-lg hover:bg-slate-400 h-10 px-2 flex items-center'>
                                                     <GrClose className='hover:text-white' />

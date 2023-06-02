@@ -46,18 +46,11 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
         <div onClick={()=>setMapingType("standart")} className='p-1 h-10 w-10 flex justify-center items-center hover:bg-slate-400 cursor-pointer rounded-full bg-slate-600 '>
           <BsFillGrid3X3GapFill className='text-white w-6 h-6'/>
         </div>
-
-        <IconButton
-          size='large'
-          sx={{  height:50  }}
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-        >
-          <MdAccountCircle />
-        </IconButton>
+       
+        <div onClick={handleMenu} className='w-10 h-10 p-1 flex justify-center items-center hover:bg-slate-400 text-white cursor-pointer rounded-full bg-slate-600 '>
+          <MdAccountCircle className='w-full h-full'/>
+        </div>
+          
         <Menu
           id="menu-appbar"
           anchorEl={anchorEl}

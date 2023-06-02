@@ -9,8 +9,9 @@ function FileManagement() {
   const [searchProgress, setSearchProgress] = React.useState(0)
 
   return (
-    <div className='w-full h-full p-5 bg-[#cbd5e1] rounded-lg'>
+    <div className='w-full h-full p-5 bg-[#cbd5e1]'>
       {isCalanderMode && <Calender setIsCalenderMode={setIsCalenderMode}/>}
+      <div className='flex items-center w-full h-full justify-center p-5 bg-slate-400 rounded-lg'>
         <div className='flex flex-col p-5 justify-between gap-3 rounded-lg items-center w-full h-full bg-[#374151]'>
             <div className='w-full flex justify-between items-center h-10 px-5'>
               <p></p>
@@ -118,6 +119,7 @@ function FileManagement() {
               </div>
             </div>
             
+        </div>
         </div>
     </div>
   )

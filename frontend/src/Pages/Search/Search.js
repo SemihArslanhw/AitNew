@@ -41,11 +41,11 @@ function Search({ handleDragStart, mapingType , isSearching , images , setImages
   },[]);
 
   return (
-    <div ref={handleRef} className='w-full h-full bg-[#cbd5e1] rounded-lg'>
+    <div ref={handleRef} className='w-full h-full p-5 bg-slate-200'>
       <SearchPagination/>
       {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode} />}
-      <div className='w-full h-full p-5'>
-        <div className='w-full gap-5 h-full flex-col bg-[#cbd5e1] p-5 rounded-lg border-2 border-[#4a5568] border-dashed flex items-center'>
+      <div className='w-full h-full bg-slate-300 rounded-lg p-5'>
+        <div className='w-full gap-5 h-full flex-col bg-slate-600 p-1 rounded-lg border-2 border-[#4a5568] flex items-center'>
           {/* <div className='text-[#4a5568] bg-blue-400 rounded-lg flex flex-col w-1/4 h-full items-center justify-center text-2xl font-bold'>Drag and Drop File Or Click Here 
         {file && <img className='max-h-64' src={URL.createObjectURL(file)}></img>}
         <input onChange={(e)=>setFile(e.target.files[0])} id='leftInput' className='hidden' type='file'></input>
@@ -59,13 +59,13 @@ function Search({ handleDragStart, mapingType , isSearching , images , setImages
         
           </div> */}
           {/* Search Body */}
-          {isSearching ? <div className='w-full h-full text-black gap-10 flex flex-col items-center justify-center'>
+          {isSearching ? <div className='w-full h-full text-white gap-10 flex flex-col items-center justify-center'>
             <AiOutlineLoading className='animate-spin  w-20 h-20' />
             <p>Search is in progress please wait.....</p>
             </div>
             :
             <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
-              <ImageList variant={mapingType}  cols={cols} gap={8}>
+              <ImageList variant={mapingType}  cols={8} gap={8}>
                 {images?.map((image, i) => (
                   <ImageListItem key={i}>
                     <LazyLoadImage

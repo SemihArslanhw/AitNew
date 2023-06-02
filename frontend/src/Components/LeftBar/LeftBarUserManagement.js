@@ -52,17 +52,18 @@ function LeftBarFirst({ children }) {
     },
     bmMenuWrap: {
       position: 'fixed',
+      width: '250px',
       height: '100%'
     },
     bmMenu: {
-      background: '#373a47',
+      background: '#1a202c',
       fontSize: '1.15em'
     },
     bmMorphShape: {
       fill: '#373a47'
     },
     bmItemList: {
-      color: '#b8b7ad',
+      color: '#edf2f7',
       padding: '0.8em'
     },
     bmItem: {
@@ -74,23 +75,26 @@ function LeftBarFirst({ children }) {
   }
 
   return (
-    <div  className='flex h-full w-full text-white text-lg'>
+    <div  className='flex h-full w-full text-sm text-white font-bold'>
       {isUserCreatingMode && <UserCreate isUsersLoading={isUsersLoading} getUserList={getUserList} setUserCreatingMode={setUserCreatingMode}/>}
       <Menu styles={styles}>
       <div className='w-full h-[90%] flex flex-col'>
         <Link style={{display:"flex"}} to={"/"} className='w-full h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
           <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
         </Link>
-        <Link style={{display:"flex"}} to={"/home"}  className='w-full gap-5 h-fit border-t-2 justify-around hover:bg-slate-600 flex flex-col items-center'>
+        <Link style={{display:"flex"}} to={"/home"}  className='w-full gap-5 h-fit border-t border-black justify-around hover:bg-slate-600 flex flex-col items-center'>
          <div  className='w-full p-5 flex justify-between items-center'><AiOutlineHome/><p> Home </p><p className='w-5'></p></div> 
           
         </Link>
-        <Link style={{display:"flex"}} to={"/filemanagement"}  className='w-full gap-5 h-fit border-t-2 justify-around hover:bg-slate-600 flex flex-col items-center'>
+        <Link style={{display:"flex"}} to={"/usermanagement"} className='w-full h-fit border-t border-b border-black justify-between hover:bg-slate-600 flex items-center p-5'>
+          <FiUserPlus/><p> User Management </p><p className='w-1'></p>
+        </Link>
+        <Link style={{display:"flex"}} to={"/filemanagement"}  className='w-full gap-5 h-fit border-t border-black justify-around hover:bg-slate-600 flex flex-col items-center'>
          <div  className='w-full p-5 flex justify-between items-center'><MdImageSearch/><p> File Management </p><p className='w-5'></p></div> 
           
         </Link>
-        <Link style={{display:"flex"}} to={"/usermanagement"} className='w-full h-fit border-t-2 justify-between hover:bg-slate-600 flex items-center p-5'>
-          <FiUserPlus/><p> User Management </p><p className='w-1'></p>
+        <Link style={{display:"flex"}} to={"/usermanagement"} className='w-full flex-wrap h-fit border-t border-b border-black justify-between hover:bg-slate-600 flex items-center p-5'>
+        <FiUserPlus/><p> Export Predict Json </p><p className='w-1'></p>
         </Link>
         </div>
         <a style={{ display: "flex" }} target='_blank' href='https://www.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>

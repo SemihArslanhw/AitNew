@@ -22,13 +22,13 @@ function Calender({ setIsCalenderMode }) {
           <form autoComplete='off' className='w-full h-[90%] flex flex-col gap-5 py-5 items-center'>
             <div className='w-full h-[90%] flex flex-col gap-5 py-5 items-center'>
             <div className='w-full'>
-              <p className='font-extralight text-gray-500'>Current Working Hours</p>
+              <p className='text-white'>Current Working Hours</p>
             </div>
             <div className='w-full flex items-center justify-between '>
               <p>Start at :</p>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['TimePicker']}>
-                  <TimePicker value={time} sx={{color:"whitesmoke"}} onChange={(e)=>{setTime(e)}} />
+                  <TimePicker value={time} className='bg-slate-800 text-white' sx={{svg:{color:"#fff"},input:{color:"white"}}} onChange={(e)=>{setTime(e)}} />
                 </DemoContainer>
               </LocalizationProvider>
             </div>
@@ -46,8 +46,8 @@ function Calender({ setIsCalenderMode }) {
             </div>
             </div>
             <div className='w-full h-20 flex items-center justify-end gap-8 border-t'>
-              <button onClick={()=>{setIsCalenderMode(false)}} className='w-40 h-10 bg-slate-500 rounded-lg hover:bg-orange-500'>Update</button>
-              <button onClick={()=>{setIsCalenderMode(false)}} className='w-40 h-10 bg-slate-500 rounded-lg hover:bg-red-500'>Cancel</button>
+              <button onClick={()=>{setIsCalenderMode(false)}} className='w-40 h-10 bg-slate-800 rounded-lg hover:bg-orange-500'>Update</button>
+              <button onClick={()=>{setIsCalenderMode(false)}} className='w-40 h-10 bg-slate-800 rounded-lg hover:bg-red-500'>Cancel</button>
             </div>
           </form>
         </div>

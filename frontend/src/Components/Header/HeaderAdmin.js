@@ -3,8 +3,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { MdAccountCircle } from 'react-icons/md';
 import IconButton from '@mui/material/IconButton';
-import { AiOutlineSearch } from 'react-icons/ai'
+import { AiFillSetting, AiOutlineSearch } from 'react-icons/ai'
 import { Link } from 'react-router-dom';
+import { GrLogout } from 'react-icons/gr';
 
 
 function HeaderAdmin() {
@@ -23,16 +24,9 @@ function HeaderAdmin() {
     <div className='flex h-full items-center justify-center text-black'>
       <div className='h-full flex items-center justify-center'>
 
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-        >
-          <MdAccountCircle />
-        </IconButton>
+      <div onClick={handleMenu} className='w-10 h-10 p-1 flex justify-center items-center hover:bg-slate-400 text-white cursor-pointer rounded-full bg-slate-600 '>
+          <MdAccountCircle className='w-full h-full'/>
+        </div>
         <Menu
           id="menu-appbar"
           anchorEl={anchorEl}
@@ -48,16 +42,17 @@ function HeaderAdmin() {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem >
-            <Link className='w-full h-full' to={"/"}>
-              Settings
-            </Link>
-          </MenuItem>
-          <MenuItem >
-            <Link className='w-full h-full' to={"/login"}>
-              Logout
-            </Link>
-          </MenuItem>
+          <div className='h-fit gap-2 px-2 w-28 flex flex-col '>
+          <Link className='w-full h-full flex items-center gap-2' to={"/"}>
+           <AiFillSetting className='h-7'/>
+           Settings
+          </Link>
+
+          <Link className='w-full h-full flex items-center gap-2' to={"/login"}>
+            <GrLogout className='h-7'/>
+            Logout
+          </Link>
+          </div>
         </Menu>
       </div>
     </div>
