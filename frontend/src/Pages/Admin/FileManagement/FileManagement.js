@@ -26,7 +26,7 @@ function FileManagement() {
                 <p className='h-10'>System Status : <span className='text-green-500'>Running</span></p>
                 <div className='flex flex-col w-full'>
                   <p className='text-2xl'>Scan</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-slate-400 rounded-lg p-3'>
+                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-500 rounded-lg p-3'>
                     <p className='text-2xl'>Status</p>
                     <div className='w-full flex justify-between items-center'>
                       <p className='text-xl'>/ Files</p>
@@ -40,7 +40,7 @@ function FileManagement() {
                 </div>
                 <div className='flex flex-col w-full'>
                   <p className='text-2xl'>Extract</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-slate-400 rounded-lg p-3'>
+                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-500 rounded-lg p-3'>
                     <p className='text-2xl'>Status</p>
                     <div className='w-full flex justify-between items-center'>
                       <p className='text-xl'>/ Files</p>
@@ -54,7 +54,7 @@ function FileManagement() {
                 </div>
                 <div className='flex flex-col w-full'>
                   <p className='text-2xl'>Predict</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-slate-400 rounded-lg p-3'>
+                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-500 rounded-lg p-3'>
                     <p className='text-2xl'>Status</p>
                     <div className='w-full flex justify-between items-center'>
                       <p className='text-xl'>/ Files</p>
@@ -72,8 +72,8 @@ function FileManagement() {
                 <p className='h-10'></p>
                 <div className='flex flex-col w-full'>
                   <p className='text-2xl'>Scan</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-slate-800 rounded-lg p-3'>
-                    <p className='text-2xl'>Status</p>
+                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-900 rounded-lg p-3'>
+                    <p className='text-2xl'></p>
                     <div className='w-full flex justify-between items-center'>
                       <p className='text-xl'>/ Files</p>
                       <div className='flex gap-5'>
@@ -87,8 +87,8 @@ function FileManagement() {
                 </div>
                 <div className='flex flex-col w-full'>
                   <p className='text-2xl'>Extract</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-slate-800 rounded-lg p-3'>
-                    <p className='text-2xl'>Status</p>
+                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-900 rounded-lg p-3'>
+                    <p className='text-2xl'></p>
                     <div className='w-full flex justify-between items-center'>
                       <p className='text-xl'>/ Files</p>
                       <div className='flex gap-5'>
@@ -101,8 +101,8 @@ function FileManagement() {
                 </div>
                 <div className='flex flex-col w-full'>
                   <p className='text-2xl'>Predict</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-slate-800 rounded-lg p-3'>
-                    <p className='text-2xl'>Status</p>
+                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-900 rounded-lg p-3'>
+                    <p className='text-2xl'></p>
                     <div className='w-full flex justify-between items-center'>
                       <p className='text-xl'>/ Files</p>
                       <div className='flex gap-5'>

@@ -7,13 +7,13 @@ import { getAllImagesFull} from '../../Api/File/FileControler';
 import { ImageProxy } from '../../Api';
 import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
 
-function Search({ handleDragStart, mapingType , isSearching , images , setImages }) {
+function Search({ handleDragOver , handleDragStart, mapingType , isSearching , images , setImages }) {
 
   const handleRef = React.useRef(null)
   const [isImageMode, setIsImageMode] = React.useState(false)
   const [selectedImageData, setSelectedImageData] = React.useState()
   const [selectedIndex, setSelectedIndex] = React.useState(0)
-  const [cols , setCols] = React.useState(6)
+  const [cols , setCols] = React.useState(7)
 
 
   useEffect(() => {
@@ -21,17 +21,18 @@ function Search({ handleDragStart, mapingType , isSearching , images , setImages
       if(window.innerWidth < 640){
         setCols(1)
       }else if(window.innerWidth < 768){
-        setCols(2)
+        setCols(1)
       }else if(window.innerWidth < 1024){
-        setCols(3)
+        setCols(2)
       }else if(window.innerWidth < 1280){
-        setCols(4)
+        setCols(3)
       }else if(window.innerWidth < 1536){
         setCols(5)
       }else{
-        setCols(6)
+        setCols(7)
       }
     };
+    handleWindowResize();
 
     window.addEventListener('resize', handleWindowResize);
 
@@ -41,11 +42,11 @@ function Search({ handleDragStart, mapingType , isSearching , images , setImages
   },[]);
 
   return (
-    <div ref={handleRef} className='w-full h-full p-5 bg-slate-200'>
+    <div ref={handleRef} className='w-full h-full p-5 px-10 bg-slate-200'>
       <SearchPagination/>
       {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode} />}
-      <div className='w-full h-full bg-slate-300 rounded-lg p-5'>
-        <div className='w-full gap-5 h-full flex-col bg-slate-600 p-1 rounded-lg border-2 border-[#4a5568] flex items-center'>
+      <div className='w-full h-full bg-slate-300 rounded-lg p-4'>
+        <div className='w-full gap-5 h-full flex-col bg-gray-700 p-2 rounded-lg border-2 border-[#4a5568] flex items-center'>
           {/* <div className='text-[#4a5568] bg-blue-400 rounded-lg flex flex-col w-1/4 h-full items-center justify-center text-2xl font-bold'>Drag and Drop File Or Click Here 
         {file && <img className='max-h-64' src={URL.createObjectURL(file)}></img>}
         <input onChange={(e)=>setFile(e.target.files[0])} id='leftInput' className='hidden' type='file'></input>
@@ -65,12 +66,13 @@ function Search({ handleDragStart, mapingType , isSearching , images , setImages
             </div>
             :
             <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
-              <ImageList variant={mapingType}  cols={8} gap={8}>
+              <ImageList variant={mapingType}  cols={cols} gap={8}>
                 {images?.map((image, i) => (
                   <ImageListItem key={i}>
                     <LazyLoadImage
                       key={i}
-                      onDragEnter={handleDragStart}
+                      onDragEnter={(e)=>{handleDragOver(e)}}
+                      onDragStart={(e)=>{handleDragStart(e)}}
                       onClick={() => { setIsImageMode(true); setSelectedImageData(image); setSelectedIndex(i) }}
                       className='w-96 cursor-pointer object-cover rounded-md'
                       src={ImageProxy + image.thumbnail.url} // use normal <img> attributes as props

@@ -24,6 +24,15 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         ).catch((err) => {
             console.log(err)
         })
+        document.getElementById("root").addEventListener('keydown', (e) => {
+            console.log(e.key)
+            if (e.key === 27) {
+                setIsImageMode(false)
+            }
+        })
+        return () => {
+
+        }
     }, [])
 
     const copyToClipboard = (e) => {
@@ -101,7 +110,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     }
 
     return (
-        <div onClick={(e) => { e.target === e.currentTarget && setIsImageMode(false) }} className='post-component'>
+        <div onClick={(e) => { e.target === e.currentTarget && setIsImageMode(false) }} id='bodyy' className='post-component'>
             <div className='post-component-body'>
                 <div className='w-full h-full flex-col gap-5 items-center justify-center'>
                     <div className='h-[5%] w-full flex justify-between items-center'>

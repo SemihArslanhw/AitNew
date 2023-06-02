@@ -1,10 +1,7 @@
 import React, { cloneElement, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { slide as Menu } from 'react-burger-menu'
-import {AiOutlineCloudDownload, AiOutlineCluster , AiOutlineArrowUp , AiOutlineArrowDown , AiOutlineHome} from 'react-icons/ai'
-import {MdImageSearch} from 'react-icons/md'
-import {BsTrash} from 'react-icons/bs'
-import { Checkbox, FormControlLabel } from '@mui/material'
+import { AiOutlineHome, AiOutlineFolderOpen} from 'react-icons/ai'
+import {BsFolderSymlinkFill, BsTrash} from 'react-icons/bs'
 import {FiUserPlus} from 'react-icons/fi'
 import UserCreate from '../UserManagement/UserCreate/UserCreate'
 import { getUsers } from '../../Api/User/userController'
@@ -77,31 +74,30 @@ function LeftBarFirst({ children }) {
   return (
     <div  className='flex h-full w-full text-sm text-white font-bold'>
       {isUserCreatingMode && <UserCreate isUsersLoading={isUsersLoading} getUserList={getUserList} setUserCreatingMode={setUserCreatingMode}/>}
-      <Menu styles={styles}>
+      <div className='min-w-[224px] w-[224px] flex flex-col bg-slate-800'>
       <div className='w-full h-[90%] flex flex-col'>
         <Link style={{display:"flex"}} to={"/"} className='w-full h-fit  hover:bg-slate-600 flex flex-row items-center justify-center p-5 '>
           <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
         </Link>
         <Link style={{display:"flex"}} to={"/home"}  className='w-full gap-5 h-fit border-t border-black justify-around hover:bg-slate-600 flex flex-col items-center'>
-         <div  className='w-full p-5 flex justify-between items-center'><AiOutlineHome/><p> Home </p><p className='w-5'></p></div> 
+         <div  className='w-full p-5 flex justify-between items-center'><AiOutlineHome className='text-lg'/><p> Home </p><p className='w-5'></p></div> 
           
         </Link>
         <Link style={{display:"flex"}} to={"/usermanagement"} className='w-full h-fit border-t border-b border-black justify-between hover:bg-slate-600 flex items-center p-5'>
-          <FiUserPlus/><p> User Management </p><p className='w-1'></p>
+          <FiUserPlus className='text-lg'/><p> User Management </p><p className='w-1'></p>
         </Link>
         <Link style={{display:"flex"}} to={"/filemanagement"}  className='w-full gap-5 h-fit border-t border-black justify-around hover:bg-slate-600 flex flex-col items-center'>
-         <div  className='w-full p-5 flex justify-between items-center'><MdImageSearch/><p> File Management </p><p className='w-5'></p></div> 
+         <div  className='w-full p-5 flex justify-between items-center'><AiOutlineFolderOpen className='text-lg'/><p> File Management </p><p className='w-5'></p></div> 
           
         </Link>
         <Link style={{display:"flex"}} to={"/usermanagement"} className='w-full flex-wrap h-fit border-t border-b border-black justify-between hover:bg-slate-600 flex items-center p-5'>
-        <FiUserPlus/><p> Export Predict Json </p><p className='w-1'></p>
+        <BsFolderSymlinkFill className='text-lg'/><p> Export Predict Json </p><p className='w-1'></p>
         </Link>
         </div>
         <a style={{ display: "flex" }} target='_blank' href='https://www.ait.com.tr' className='w-full h-fit text-gray-500 justify-around hover:bg-slate-600 flex items-center p-5'>
           <p className='w-8'/><p> Archivist 0.0.1 </p><p className='w-8'></p>
         </a>
-      </Menu>
-
+      </div>
       <div className='w-full h-full bg-[#e5e7eb]'>
         {/* children[0] is the Header component */}
         <div className='bg-[#ffffff] w-full h-[6vh] items-end justify-end p-5 flex'>
