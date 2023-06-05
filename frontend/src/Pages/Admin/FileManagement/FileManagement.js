@@ -55,7 +55,7 @@ function FileManagement() {
 useEffect(() => {
   setLoading(true)
   getConfig().then((res)=>{
-        setCalendarData(res.data.routineTimes)
+        setCalendarData(res?.data?.routineTimes)
   }).finally(()=>{
     setLoading(false)
   })

@@ -8,12 +8,14 @@ import dayjs from 'dayjs';
 
 function Calender({ calenderData , setIsCalenderMode }) {
 
-  const [hour, setHour] = React.useState(calenderData?.workingTime.hours || 0)
-  const [minute, setMinute] = React.useState(calenderData?.workingTime.minutes || 0)
+  const [hour, setHour] = React.useState(0)
+  const [minute, setMinute] = React.useState(0)
   const [time , setTime] = React.useState(dayjs(calenderData?.startTime,'HH:mm'))
 
   useEffect(() => {
     console.log(calenderData)
+    setHour(calenderData?.workingTime.hours)
+    setMinute(calenderData?.workingTime.minutes)
     setTime(dayjs(calenderData?.startTime,'HH:mm'))
   }, [])
 
