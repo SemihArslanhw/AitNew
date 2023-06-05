@@ -31,7 +31,7 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
             onChange={(e) => { setSearchText(e.target.value) }}
             onKeyUp={(e) => { if (e.key === 'Enter') { searchByFileName(1, searchText) } }}
             placeholder='Search...'
-            className='bg-slate-600 group-focus-within:scale-x-150  focus:bg-slate-500 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
+            className='bg-slate-600 group-focus-within:scale-x-150 focus:bg-slate-500 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
           >
           </input>
           <div onClick={() => { searchByFileName(1, searchText) }} className='w-5 h-full bg-slate-600 border-l flex items-center justify-center hover:bg-slate-300 p-5 rounded-r-lg'>

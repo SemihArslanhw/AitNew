@@ -1,16 +1,11 @@
 import * as React from 'react';
-import LinearProgress from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-
 
 export default function LinearProgressWithLabel(props) {
-    return (
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Box sx={{ width: '100%' }}>
-          <LinearProgress variant="determinate" {...props} />
-        </Box>
-       
-      </Box>
-    );
-  }
+  return (
+     <div className={`w-full h-${props.height} text-sm font-bold bg-gray-200 flex items-center rounded-lg`}>
+       <div style={{width:`${props.value}%`}} className={`flex justify-center ${props.height < 10 ? "text-sm" : "text-base"} bg-gray-700 items-center rounded-lg h-full`}>
+        {props.value !== 0 ? props.value + "%" : <p>&nbsp;</p>} 
+       </div>
+     </div>
+  );
+}

@@ -24,7 +24,7 @@ function LeftBar({ children }) {
   const [isSearching, setIsSearching] = React.useState(false)
   const fileInputRef = React.useRef();
   const inputRef = React.useRef();
-  const [searchProgress, setSearchProgress] = React.useState(0)
+  const [searchProgress, setSearchProgress] = React.useState(40)
   const [file, setFile] = React.useState(null)
   const [clusters, setClusters] = React.useState([])
   const [isClusterOpen, setIsClusterOpen] = React.useState(false)
@@ -252,7 +252,7 @@ function LeftBar({ children }) {
             <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
           </div>
           <Link style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between flex flex-col items-center'>
-            <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full hover:bg-slate-600 p-2 rounded-lg flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
+            <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
             {isClusterOpen && <div className='w-full  gap-5 flex flex-col items-center justify-center'>
               <div className='w-full overflow-x-hidden text-white bg-slate-700 rounded-lg h-52 overflow-y-auto flex flex-col'>
                 {!clusterLoading ? clusters?.map((cluster, i) => (
@@ -306,7 +306,7 @@ function LeftBar({ children }) {
                 accept="image/png, image/jpeg"
                 ref={fileInputRef}
               />
-              {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64 min-h-54' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full h-5'><ProgressBar value={searchProgress} /></div>}</div>
+              {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64 min-h-54' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full h-5'><ProgressBar height="3" value={searchProgress} /></div>}</div>
                 :
                 <div className='flex flex-col items-center justify-center'>
                   <div className='w-16 h-16 bg-green-500 text-2xl rounded-full flex justify-center items-center'>+</div>
