@@ -55,7 +55,6 @@ useEffect(() => {
   }
 
   socket.current.onmessage = (message) => {
-    console.log(JSON.parse(message.data))
     const data = JSON.parse(message.data)
     data.map((item)=>{
       switch (item.type) {

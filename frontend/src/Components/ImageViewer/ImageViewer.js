@@ -17,6 +17,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     const [labelsLoading, setLabelsLoading] = useState(false);
 
     useEffect(() => {
+        document.addEventListener("keydown", function (event) {
+            if (event.keyCode == 27) console.log("enter");
+        });
         getAllClusters()
         getFileById(selectedImageData._id).then((res) => {
             setSelectedImageData(res.data)
