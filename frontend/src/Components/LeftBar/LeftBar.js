@@ -11,6 +11,7 @@ import ProgressBar from './ProgressBar/ProgressBar'
 import { getClusters } from '../../Api/Cluster/clusterRequests'
 import * as API from '../../Api/index'
 import { getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
+import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
 
 
 function LeftBar({ children }) {
@@ -29,17 +30,21 @@ function LeftBar({ children }) {
   const [clusters, setClusters] = React.useState([])
   const [isClusterOpen, setIsClusterOpen] = React.useState(false)
   const [clusterName, setClusterName] = React.useState('')
-
-
+  const [page, setPage] = React.useState(1)
+  const [totalPage, setTotalPage] = React.useState(1)
 
   useEffect(() => {
     getAllClusters()
-    getFirstPage()
   }, [])
 
-  const getFirstPage = async () => {
+  useEffect(() => {
+    getPage()
+  }, [page])
+
+  const getPage = async () => {
     setIsSearching(true)
-    getAllImagesFull("1").then((res) => {
+    getAllImagesFull(page).then((res) => {
+      setTotalPage(res.data.pages)
       setImages(res.data.files)
     }).catch((err) => {
       console.log(err)
@@ -246,9 +251,10 @@ function LeftBar({ children }) {
 
   return (
     <div onDragEnd={handleDragEnd} className='flex h-full font-bold text-white'>
+      <SearchPagination page={page} totalPage={totalPage} setPage={setPage} />
       <div className='min-w-[224px] w-[224px] h-full overflow-y-auto flex flex-col bg-slate-800'>
         <div className='w-full h-[90%] flex flex-col'>
-          <div onClick={()=>{getFirstPage()}} style={{ display: "flex" }} className='w-full cursor-pointer h-fit p-5 hover:bg-slate-600 flex flex-row items-center justify-center px-5 '>
+          <div onClick={()=>{getPage()}} style={{ display: "flex" }} className='w-full cursor-pointer h-fit p-5 hover:bg-slate-600 flex flex-row items-center justify-center px-5 '>
             <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
           </div>
           <Link style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between flex flex-col items-center'>
@@ -313,7 +319,7 @@ function LeftBar({ children }) {
                 </div>}
             </div>}
           </div>
-          <div style={{ display: "flex" }} className='w-full p-2 cursor-pointer h-fit border-t border-gray-900 justify-between flex items-center py-5'>
+          <div style={{ display: "flex" }} className='w-full p-2 cursor-pointer h-fit border-t border-b border-gray-900 justify-between flex items-center py-2'>
           <div onClick={()=>{getHiddenImages(1)}}  className='w-full p-2 flex justify-between items-center hover:bg-slate-600 rounded-lg'><BsTrash /><p> Recycle </p><p className='w-8'></p></div>
           </div>
         </div>

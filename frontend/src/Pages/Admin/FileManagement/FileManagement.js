@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ProgressBar from '../../../Components/LeftBar/ProgressBar/ProgressBar'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import Calender from '../../../Components/FileManagement/Calender/Calender'
 import { getConfig } from '../../../Api/Config/ConfigController'
+import Jobs from '../../../Components/FileManagement/Jobs/Jobs'
 
 function FileManagement() {
 
-  const socket = new WebSocket("ws://192.168.2.44/wstunnel/")
+  const socket = useRef()
   const [isCalanderMode, setIsCalenderMode] = React.useState(false)
   const [searchProgress, setSearchProgress] = React.useState(20)
   const [calendarData, setCalendarData] = React.useState([])
@@ -27,24 +28,8 @@ function FileManagement() {
   const [message , setMessage] = React.useState("")
   const [messageStart , setMessageStart] = React.useState("")
   const [jobs , setJobs] = React.useState([])
+  const [total , setTotal] = React.useState(0)
 
-  
-
-  const buttons = {
-    scan: "scan",
-    stopscan: "stopscan",
-    extract: "extract",
-    stopextract: "stopextract",
-    predict: "predict",
-    stoppredict: "stoppredict"
-  };
-
-  const jobStates = {
-    idle: "idle",
-    running: "running",
-    finished: "finished",
-    error: "error"
-  };
   
   const leftSection = {
     scanned: "scanned",
@@ -53,27 +38,28 @@ function FileManagement() {
   };
 
 useEffect(() => {
+  socket.current = new WebSocket("ws://192.168.2.44/wstunnel/")
   setLoading(true)
   getConfig().then((res)=>{
-        setCalendarData(res?.data?.routineTimes)
+        setCalendarData(res.data.routineTimes)
   }).finally(()=>{
     setLoading(false)
   })
 
-  socket.onopen = () => {
+  socket.current.onopen = () => {
     console.log("connected")
   }
 
-  socket.onerror = (err) => {
+  socket.current.onerror = (err) => {
     console.log(err)
   }
 
-  socket.onmessage = (message) => {
+  socket.current.onmessage = (message) => {
+    console.log(JSON.parse(message.data))
     const data = JSON.parse(message.data)
     data.map((item)=>{
       switch (item.type) {
         case "serverStatus" :
-           console.log(item)
            setCurrentState(item.currentState)
            setExtract(item.extract)
            setExtractPercantage(item.extractPercentage)
@@ -88,6 +74,7 @@ useEffect(() => {
             setScanned(item.scanned)
             setScannedPercantage(item.scannedPercentage)
             setJobs(item.jobs)
+            setTotal(item.total)
           break;
             default:
         case "info" : 
@@ -109,19 +96,20 @@ useEffect(() => {
    
     }
 
-  socket.addEventListener("open", function (event) {
-    socket.send(JSON.stringify({
+  socket.current.addEventListener("open", function (event) {
+    socket.current.send(JSON.stringify({
       "type": "init",
       "payload": "admin"
           }))})
 
    return () => {
-      socket.close()
+      socket.current.close()
     }
   }, [])
 
-  const sendToServer = (socket, payload) => {
-    return socket.send(JSON.stringify({
+  const sendToServer = (payload) => {
+    console.log(payload);
+    return socket.current.send(JSON.stringify({
       "type": "click",
       "payload": {
         "button": payload,
@@ -150,10 +138,10 @@ useEffect(() => {
                 <p className='text-xl h-10 font-bold'>System Status : <span className='text-green-300 font-semibold'>{currentState}</span></p>
                 <div className='flex flex-col w-full'>
                   <h1 className='text-lg font-extrabold'>SCAN</h1>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-500 rounded-lg p-3'>
-                    <p className='text-2xl h-14'>Status</p>
+                  <div className='w-full flex gap-6 flex-col h-fit bg-gray-500 rounded-lg p-3'>
+                    <p className=' h-fit'>Status</p>
                     <div className='w-full flex justify-between items-center'>
-                      <p className=''>{scan}/{scanned} Files</p>
+                      <p className=''>{scanned} / <span className='text-2xl'>{total}</span> Files</p>
                       <div className='flex gap-4'>
                         <p className='text-base'>Last Scan Date :</p>
                         <p className='text-base'>{jobs?.find(e=>e.name === "scan")?.lastRun}</p>
@@ -164,10 +152,10 @@ useEffect(() => {
                 </div>
                 <div className='flex flex-col w-full'>
                   <p className=''>EXTRACT</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-500 rounded-lg p-3'>
-                    <p className=' h-14'>Status</p>
+                  <div className='w-full flex gap-6 flex-col h-fit bg-gray-500 rounded-lg p-3'>
+                    <p className=' h-fit'>Status</p>
                     <div className='w-full flex justify-between items-center'>
-                      <p className='t'>{extract}/{extracted} Files</p>
+                      <p className='t'>{extracted} / <span className='text-2xl'>{total}</span> Files</p>
                       <div className='flex gap-4'>
                         <p className='text-base'>Last extract date :</p>
                         <p className='text-base'>{jobs?.find(e=>e.name === "extract")?.lastRun}</p>
@@ -178,10 +166,10 @@ useEffect(() => {
                 </div>
                 <div className='flex flex-col w-full'>
                   <p className=''>PREDICT</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-500 rounded-lg p-3'>
-                    <p className=' h-14'>Status</p>
+                  <div className='w-full flex gap-6 flex-col h-fit bg-gray-500 rounded-lg p-3'>
+                    <p className=' h-fit'>Status</p>
                     <div className='w-full flex justify-between items-center'>
-                      <p className=''>{predict}/{predicted} Files</p>
+                      <p className=''>{predicted} / <span className='text-2xl'>{total}</span> Files</p>
                       <div className='flex gap-4'>
                         <p className='text-base'>Last predict date :</p>
                         <p className='text-base'>{jobs?.find(e=>e.name === "predict")?.lastRun}</p>
@@ -193,50 +181,13 @@ useEffect(() => {
               </div>
               {/*Right side*/}
               <div className='w-1/2 font-extrabold h-full p-5 gap-5 flex flex-col'>
-                <p className='h-10'>{message !== "" && <div>{messageStart} : <span className='text-green-500 font-semibold'> {message}</span></div>}</p>
-                <div className='flex flex-col w-full'>
-                  <p className=''>SCAN</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-900 rounded-lg p-3'>
-                    <p className=' h-14'></p>
-                    <div className='w-full flex justify-between items-center'>
-                      <p className=''>{scan}/{scanned} Files</p>
-                      <div className='flex gap-5'>
-                        <button onClick={()=>{sendToServer(socket , buttons.scan)}} className='bg-slate-700 font-sans hover:bg-slate-600 rounded-lg w-32'>Scan</button>
-                        <button onClick={()=>{sendToServer(socket , buttons.stopscan)}} className='bg-red-900 rounded-lg w-16 font-bold text-xs'>X</button>
-                      </div>
-                      
-                    </div>
-                    <ProgressBar heigth="10" value={scanPercantage} />
-                  </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                  <p className=''>EXTRACT</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-900 rounded-lg p-3'>
-                    <p className='h-14'></p>
-                    <div className='w-full flex justify-between items-center'>
-                      <p className=''>{extract}/{extracted} Files</p>
-                      <div className='flex gap-5'>
-                        <button onClick={()=>{sendToServer(socket , buttons.extract)}} className='bg-slate-700 font-sans hover:bg-slate-600 rounded-lg w-32'>Scan</button>
-                        <button onClick={()=>{sendToServer(socket , buttons.stopextract)}} className='bg-red-900 rounded-lg w-16 font-bold text-xs'>X</button>
-                      </div>
-                    </div>
-                    <ProgressBar heigth="10" value={extractPercantage} />
-                  </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                  <p className=''>PREDICT</p>
-                  <div className='w-full flex gap-3 flex-col h-32 bg-gray-900 rounded-lg p-3'>
-                    <p className='h-14'></p>
-                    <div className='w-full flex justify-between items-center'>
-                      <p className=''>{predict}/{predicted} Files</p>
-                      <div className='flex gap-5'>
-                        <button onClick={()=>{sendToServer(socket , buttons.predict)}} className='bg-slate-700 font-sans hover:bg-slate-600 rounded-lg w-32'>Scan</button>
-                        <button onClick={()=>{sendToServer(socket , buttons.stoppredict)}} className='bg-red-900 rounded-lg w-16 font-bold text-xs'>X</button>
-                      </div>
-                    </div>
-                    <ProgressBar heigth="10" value={predictPercantage} />
-                  </div>
-                </div>
+                
+                <p className='font-semibold h-10'>{message !== "" && <div>{messageStart} <span className='text-emerald-600 font-semibold'> {message}</span></div>}</p>
+                {jobs?.map((job)=>{
+                 return <Jobs job={job} sendToServer={sendToServer} key={job.name} />
+                })
+                }
+               
               </div>
               <div>
 

@@ -124,10 +124,14 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
                             onChange={(e, i) => { setSelectedImageData(e); setSelectedIndex(i); }}
+                            noImgDetails={true}
+                            images={allImages.map((image) => { image.src = ImageProxy + image?.thumbnail?.url; return image })}
                             visible={true}
                             noClose={true}
-                            images={allImages.map((image) => { image.src = ImageProxy + image?.thumbnail?.url; return image })}
+                            noToolbar={true}
+                            noFooter={true}
                             activeIndex={selectedIndex}
+                            className=''
                             container={document.getElementById("container")}
                         />
 

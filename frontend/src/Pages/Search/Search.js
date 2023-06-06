@@ -5,7 +5,6 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { ImageList, ImageListItem, Pagination } from '@mui/material'
 import { getAllImagesFull} from '../../Api/File/FileControler';
 import { ImageProxy } from '../../Api';
-import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
 
 function Search({ handleDragOver , handleDragStart, mapingType , isSearching , images , setImages }) {
 
@@ -43,7 +42,6 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
 
   return (
     <div ref={handleRef} className='w-full h-full p-5 px-10 bg-slate-200'>
-      <SearchPagination/>
       {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode} />}
       <div className='w-full h-full bg-slate-300 rounded-lg p-4'>
         <div className='w-full gap-5 h-full flex-col bg-gray-700 p-2 rounded-lg border-2 border-[#4a5568] flex items-center'>
