@@ -6,7 +6,7 @@ function HomePage() {
 
   const navigate = useNavigate()
   useEffect(() => {
-  navigate('/filemanagement', { replace: true })
+  navigate('/home', { replace: true })
   }, [])
 
   return (

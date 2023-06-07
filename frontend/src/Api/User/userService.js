@@ -39,12 +39,24 @@ import { API } from "../index";
         });
         console.log(res);
         document.cookie = "token=" + res.data.user.token;
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         window.location = "/";
         return res;
     } catch (err) {
         return err.message;
     }
 }
+
+   const logoutCall = async () => {
+    try {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        localStorage.removeItem("user");
+        window.location = "/login";
+    } catch (err) {
+        return err.message;
+    }
+}
+
 
    const updateCall = async (id, username, password, role) => {
     try {
@@ -65,5 +77,6 @@ export {
     getUsers,
     registerCall,
     loginCall,
-    updateCall
+    updateCall,
+    logoutCall
 }

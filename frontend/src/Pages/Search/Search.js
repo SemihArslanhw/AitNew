@@ -34,9 +34,16 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
     handleWindowResize();
 
     window.addEventListener('resize', handleWindowResize);
+    const handleEsc = (event) => {
+      console.log(event.keyCode)
+      if (event.keyCode === 27) {
+       console.log('Close')
+     }
+   }; 
+    window.addEventListener('keydown', handleEsc);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);window.removeEventListener('keydown', handleEsc);
     };
   },[]);
 
@@ -66,6 +73,7 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
             <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
               <ImageList variant={mapingType}  cols={cols} gap={8}>
                 {images?.map((image, i) => (
+                  
                   <ImageListItem key={i}>
                     <LazyLoadImage
                       key={i}

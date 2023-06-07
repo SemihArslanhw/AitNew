@@ -17,9 +17,8 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     const [labelsLoading, setLabelsLoading] = useState(false);
 
     useEffect(() => {
-        document.addEventListener("keydown", function (event) {
-            if (event.keyCode == 27) console.log("enter");
-        });
+
+
         getAllClusters()
         getFileById(selectedImageData._id).then((res) => {
             setSelectedImageData(res.data)
@@ -27,15 +26,12 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         ).catch((err) => {
             console.log(err)
         })
-        document.getElementById("root").addEventListener('keydown', (e) => {
-            console.log(e.key)
-            if (e.key === 27) {
-                setIsImageMode(false)
-            }
-        })
-        return () => {
+        const handleEsc = (event) => {
+            if (event.keyCode === 27) {
+             console.log('Close')
+           }
+         }; 
 
-        }
     }, [])
 
     const copyToClipboard = (e) => {
@@ -63,6 +59,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         addLabelToFileService(selectedImageData._id, e.target.value).then((res) => {
             getFileById(selectedImageData._id).then((res) => {
                 setSelectedImageData(res.data)
+                
             }
             ).catch((err) => {
                 console.log(err)
@@ -127,12 +124,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
                             onChange={(e, i) => { setSelectedImageData(e); setSelectedIndex(i); }}
-                            noImgDetails={true}
                             images={allImages.map((image) => { image.src = ImageProxy + image?.thumbnail?.url; return image })}
                             visible={true}
                             noClose={true}
-                            noToolbar={true}
-                            noFooter={true}
                             activeIndex={selectedIndex}
                             className=''
                             container={document.getElementById("container")}
@@ -186,7 +180,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             defaultValue="Select Label"
-                                            label="Role"
+                                            label="Label"
                                             onChange={handleOptionsChange}
                                             style={{ color: 'white' }}
                                         >

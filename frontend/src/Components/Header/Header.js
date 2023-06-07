@@ -7,6 +7,7 @@ import { AiFillSetting, AiOutlineLoading, AiOutlineSearch } from 'react-icons/ai
 import { Link } from 'react-router-dom';
 import { Bs9Square, BsFillGrid3X3GapFill } from 'react-icons/bs';
 import { GrApps, GrGrid, GrLogout } from 'react-icons/gr';
+import { logoutCall } from '../../Api/User/userController';
 
 
 function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
@@ -31,9 +32,10 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
             onChange={(e) => { setSearchText(e.target.value) }}
             onKeyUp={(e) => { if (e.key === 'Enter') { searchByFileName(1, searchText) } }}
             placeholder='Search...'
-            className='bg-slate-600 group-focus-within:scale-x-150 focus:bg-slate-500 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
+            className='bg-slate-600 group-focus-within:bg-slate-500 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
           >
           </input>
+          <div className='group-focus-within:w-24 h-full group-focus-within:p-5 duration-500 transition-all  group-focus-within:bg-slate-500'></div>
           <div onClick={() => { searchByFileName(1, searchText) }} className='w-5 h-full bg-slate-600 border-l flex items-center justify-center hover:bg-slate-300 p-5 rounded-r-lg'>
             {isSearching ? <div><AiOutlineLoading className='animate-spin text-white' /></div> : <button className=''>
               <AiOutlineSearch className='text-white' />
@@ -67,15 +69,15 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
           onClose={handleClose}
         >
           <div className='h-fit gap-2 px-2 w-28 flex flex-col '>
-          <Link className='w-full h-full flex items-center gap-2' to={"/"}>
+          <Link className='w-full h-full flex items-center gap-2' to={"/filemanagement"}>
            <AiFillSetting className='h-7'/>
            Settings
           </Link>
 
-          <Link className='w-full h-full flex items-center gap-2' to={"/login"}>
+          <div onClick={()=>{logoutCall()}} className='w-full cursor-pointer h-full flex items-center gap-2' to={"/login"}>
             <GrLogout className='h-7'/>
             Logout
-          </Link>
+          </div>
           </div>
         </Menu>
       </div>

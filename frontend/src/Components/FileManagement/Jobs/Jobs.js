@@ -39,7 +39,7 @@ function Jobs({ job, sendToServer }) {
                      job.currentState 
                      === 
                      jobStates.running ? <div className='text-green-500 flex items-center gap-2'><p>{jobUpper + "ing"}</p><AiOutlineLoading className='animate-spin'/></div>
-                     : job.currentState === jobStates.finished ? null 
+                     : job.currentState === jobStates.finished || job.currentState === jobStates.idle ? null 
                      : job.currentState === jobStates.error ? "Error"
                      : "Idle"                    
                     }
@@ -47,7 +47,7 @@ function Jobs({ job, sendToServer }) {
                 <div className='w-full h-[32px] flex justify-between items-center'>
                     <div className='font-extrabold flex justify-end'>{job.done} <p className='font-bold'>/</p> {job.total} Files</div>
                     <div className='flex gap-5'>
-                        <button disabled={job.currentState === jobStates.running} onClick={() => { sendToServer(buttons[job.name][0]) }} className={` font-sans ${job.currentState === jobStates.running ? "bg-slate-800" : "bg-slate-500 hover:bg-slate-700"} rounded-lg w-32`}>{job.currentState !== jobStates.running ? jobUpper : "Waiting..."}</button>
+                        <button disabled={job.currentState === jobStates.running } onClick={() => { sendToServer(buttons[job.name][0]) }} className={` font-sans ${job.currentState === jobStates.running ? "bg-slate-800" : "bg-slate-500 hover:bg-slate-700"} rounded-lg w-32`}>{job.currentState !== jobStates.running ? jobUpper : "Waiting..."}</button>
                         <button disabled={job.currentState !== jobStates.running} onClick={() => { sendToServer(buttons[job.name][1]) }} className={`  ${job.currentState !== jobStates.running ? "bg-red-900" : "bg-red-500 hover:bg-red-700"} rounded-lg w-16 font-bold text-xs `} >X</button>
                     </div>
 

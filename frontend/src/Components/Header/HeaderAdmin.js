@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { AiFillSetting, AiOutlineSearch } from 'react-icons/ai'
 import { Link } from 'react-router-dom';
 import { GrLogout } from 'react-icons/gr';
+import { logoutCall } from '../../Api/User/userController';
 
 
 function HeaderAdmin() {
@@ -48,10 +49,10 @@ function HeaderAdmin() {
            Settings
           </Link>
 
-          <Link className='w-full h-full flex items-center gap-2' to={"/login"}>
+          <div onClick={()=>{logoutCall()}} className='w-full cursor-pointer h-full flex items-center gap-2' to={"/login"}>
             <GrLogout className='h-7'/>
             Logout
-          </Link>
+          </div>
           </div>
         </Menu>
       </div>

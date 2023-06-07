@@ -41,7 +41,7 @@ useEffect(() => {
   socket.current = new WebSocket("ws://192.168.2.44/wstunnel/")
   setLoading(true)
   getConfig().then((res)=>{
-        setCalendarData(res.data.routineTimes)
+        setCalendarData(res?.data?.routineTimes)
   }).finally(()=>{
     setLoading(false)
   })

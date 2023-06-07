@@ -51,11 +51,19 @@ const updateCall = async (id, username, password, role) => {
     }
 }
 
+const logoutCall = async () => {
+    try {
+        userService.logoutCall();
+    } catch (err) {
+        return err.message;
+    }
+}
 
 export {
     deleteUser ,
     getUsers ,
     registerCall ,
     loginCall,
-    updateCall
+    updateCall,
+    logoutCall
 }
