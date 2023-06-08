@@ -35,7 +35,6 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
 
     window.addEventListener('resize', handleWindowResize);
     const handleEsc = (event) => {
-      console.log(event.keyCode)
       if (event.keyCode === 27) {
        console.log('Close')
      }
@@ -76,12 +75,11 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
                   
                   <ImageListItem key={i}>
                     <LazyLoadImage
+                      tabIndex={i}
                       key={i}
-                      onDragEnter={(e)=>{handleDragOver(e)}}
-                      onDragStart={(e)=>{handleDragStart(e)}}
                       onClick={() => { setIsImageMode(true); setSelectedImageData(image); setSelectedIndex(i) }}
                       className='w-96 cursor-pointer object-cover rounded-md'
-                      src={ImageProxy + image.thumbnail.url} // use normal <img> attributes as props
+                      src={ image.thumbnail.url} // use normal <img> attributes as props
                     />
                   </ImageListItem>
                 ))}

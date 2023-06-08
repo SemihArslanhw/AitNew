@@ -10,6 +10,16 @@ const getConfig = async () => {
     
     }
 
+const updateJobTimes = async (jobStart , workingHours , workingMinutes) => {
+    try {
+        const res = await ConfigService.updateJobTimes(jobStart , workingHours , workingMinutes);
+        return res;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 export {
-    getConfig
+    getConfig,
+    updateJobTimes
 }

@@ -5,17 +5,34 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
+import { updateJobTimes } from '../../../Api/Config/ConfigController';
+import { AiOutlineLoading } from 'react-icons/ai';
 
 function Calender({ calenderData , setIsCalenderMode }) {
 
   const [hour, setHour] = React.useState(calenderData?.workingTime.hours || 0)
   const [minute, setMinute] = React.useState(calenderData?.workingTime.minutes || 0)
-  const [time , setTime] = React.useState(dayjs(calenderData?.startTime,'HH:mm'))
+  const [time , setTime] = React.useState(calenderData?.startTime)
+  const [valueTime, setValueTime] = React.useState(dayjs(calenderData?.startTime,'HH:mm'));
+  const [loading , setLoading] = React.useState(false)
 
   useEffect(() => {
     console.log(calenderData)
-    setTime(dayjs(calenderData?.startTime,'HH:mm'))
+    setTime(calenderData?.startTime)
+    setValueTime(dayjs(calenderData?.startTime,'HH:mm'))
   }, [])
+
+  const handleUpdate = async(e) => {
+    e.preventDefault()
+    console.log(time , hour , minute)
+    updateJobTimes(time , hour , minute).then(res=>{
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+    }).finally(()=>{
+    setLoading(false)
+    })
+  }
 
   return (
     <div onClick={(e) => { e.target === e.currentTarget && setIsCalenderMode(false) }} className='calendar-component'>
@@ -34,7 +51,7 @@ function Calender({ calenderData , setIsCalenderMode }) {
               <p>Start at :</p>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['TimePicker']}>
-                  <TimePicker value={time} className='bg-slate-800 text-white' sx={{svg:{color:"#fff"},input:{color:"white"}}} onChange={(e)=>{setTime(dayjs(e.$H + ":" + e.$m,"HH:mm"));console.log(e.$H + ":" + e.$m)}} />
+                  <TimePicker value={valueTime} className='bg-slate-800 text-white' sx={{svg:{color:"#fff"},input:{color:"white"}}} onChange={(e)=>{setValueTime(dayjs(e.$H + ":" + e.$m,"HH:mm"));setTime((e.$H >= 10 ? e.$H : ("0" + e.$H))  + ":" + (e.$m >= 10 ? e.$m : ("0" + e.$m)))}} />
                 </DemoContainer>
               </LocalizationProvider>
             </div>
@@ -52,7 +69,7 @@ function Calender({ calenderData , setIsCalenderMode }) {
             </div>
             </div>
             <div className='w-full h-20 flex items-center justify-end gap-8 border-t'>
-              <button onClick={()=>{setIsCalenderMode(false)}} className='w-40 h-10 bg-slate-800 rounded-lg hover:bg-orange-500'>Update</button>
+              <button onClick={(e)=>{handleUpdate(e)}} disabled={loading} className='w-40 h-10 cursor-pointer bg-slate-800 rounded-lg hover:bg-orange-500 flex items-center justify-center'>{loading ? <AiOutlineLoading className='animate-spin'/> : "Upload"}</button>
               <button onClick={()=>{setIsCalenderMode(false)}} className='w-40 h-10 bg-slate-800 rounded-lg hover:bg-red-500'>Close</button>
             </div>
           </form>

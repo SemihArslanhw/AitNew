@@ -10,12 +10,12 @@ const ProtectedRoute = ({
     user = JSON.parse(user);
 
     if (!user) {
-        alert("Lütfen Giriş Yapınız")
+        alert("Please Login First")
         return <Navigate to={redirectLoginPath} />;
     }
 
     if (permissions && !permissions.includes(user.role)) {
-        alert(" Yetkiniz " + user + " Yetkiniz Bulunmamaktadır Girebilmeniz İçin Yetkili Bir Kişiye Başvurunuz")
+        alert("You don't have permission to access this page , please contact with admin")
         return <Navigate to={redirectPath} />;
     }
 

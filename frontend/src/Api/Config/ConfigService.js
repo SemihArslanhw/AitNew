@@ -10,6 +10,22 @@ const getConfig = async () => {
 
     }
 
+const updateJobTimes = async (jobStart , workingHours , workingMinutes) => {
+    try {
+        const res = await API.post("config-management/time", {
+            "jobStart": jobStart,
+            "workingHours": workingHours,
+            "workingMinutes": workingMinutes
+        });
+        return res;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+
+
 export {
-    getConfig
+    getConfig,
+    updateJobTimes
 }

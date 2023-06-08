@@ -8,10 +8,12 @@ import { MdImageSearch } from 'react-icons/md'
 import { BsTrash } from 'react-icons/bs'
 import { Checkbox, FormControlLabel, LinearProgress } from '@mui/material'
 import ProgressBar from './ProgressBar/ProgressBar'
-import { getClusters } from '../../Api/Cluster/clusterRequests'
 import * as API from '../../Api/index'
 import { getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
 import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
+import {useDropzone} from 'react-dropzone'
+import { addCluster, getClusters } from '../../Api/Cluster/ClusterController'
+
 
 function LeftBar({ children }) {
 
@@ -96,8 +98,7 @@ function LeftBar({ children }) {
   }
 
   const search = async (file) => {
-    const modifiedData = clusters.map(obj => ({ ...obj, checked: false }));
-    setClusters(modifiedData);
+
     setIsSearching(true)
     if (file) {
       uploadFileService(file).then((res) => {
@@ -111,7 +112,7 @@ function LeftBar({ children }) {
 
   const addClusterr = async (name) => {
     setClusterLoading(true)
-    await API.addCluster(name).then((res) => {
+    await addCluster(name).then((res) => {
       res.data.checked = false
       setClusters([...clusters, res.data])
     }).catch((err) => {
@@ -157,56 +158,6 @@ function LeftBar({ children }) {
     )
   }
 
-  const handleDragEnd = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragging(false)
-  }
-
-  const handleDragStart = (e) => {
-    e.dataTransfer.setData('text', e.target.src)
-    setDragging(true)
-    setIsHamburgerOpen(true)
-  }
-
-  const handleFileChange = async (e) => {
-    console.log("selam")
-    setFile(e.target.files[0]);
-    await search(file) 
-  }
-
-  const handleDragOver = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragging(true)
-    setIsHamburgerOpen(true)
-  }
-
-  const handleDrop = async (e) => {
-    e.preventDefault()
-    setDragging(false)
-    console.log(e.dataTransfer.getData('text'))
-    if(e.dataTransfer.getData('text') === ''){
-      return
-    }else{
-      await urlToObject(e.dataTransfer.getData('text'))
-    }
- 
-  }
-
-  const urlToObject = async (url) => {
-    const response = await fetch(url);
-    // here image is url/location of image
-    //CREATE req file
-    const data = await response.arrayBuffer();
-    const file = new File([data], 'image.jpg', { type: 'image/jpeg' });
-
-    //const blob = await response.blob();
-    //const file = await new File([blob], 'image.jpg', { type: blob.type });
-    setFile(file)
-    await search(file)
-  }
-
   const handleStateChange = (e) => {
     setIsHamburgerOpen(e.isOpen)
   }
@@ -217,6 +168,21 @@ function LeftBar({ children }) {
     setClusters(temp.slice())
 
   }
+
+  const onDrop = useCallback(acceptedFiles => {
+    console.log(acceptedFiles)
+    setFile(acceptedFiles[0])
+    search(acceptedFiles[0])
+  }, [])
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+    onDrop,
+    paramName: "file",
+    maxFilesize: 40, // MB
+    maxFiles: 1,
+    addRemoveLinks: true,
+    uploadMultiple: false,
+    acceptedFiles: "image/*",
+  })
 
   var styles = {
     bmBurgerButton: {
@@ -264,15 +230,15 @@ function LeftBar({ children }) {
   }
 
   return (
-    <div onDragEnd={handleDragEnd} className='flex h-full font-bold text-white'>
+    <div className='flex h-full font-bold text-white'>
       <SearchPagination page={page} totalPage={totalPage} setPage={setPage} />
       <div className='min-w-[224px] w-[224px] h-full overflow-y-auto flex flex-col bg-slate-800'>
         <div className='w-full h-[90%] flex flex-col'>
           <div onClick={() => { getPage() }} style={{ display: "flex" }} className='w-full cursor-pointer h-fit p-5 hover:bg-slate-600 flex flex-row items-center justify-center px-5 '>
             <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
           </div>
-          <Link style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between flex flex-col items-center'>
-            <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
+          <div style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between flex flex-col items-center'>
+            <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full cursor-pointer hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
             {isClusterOpen && <div className='w-full  gap-5 flex flex-col items-center justify-center'>
               <div className='w-full overflow-x-hidden text-white bg-slate-700 rounded-lg h-52 overflow-y-auto flex flex-col'>
                 {!clusterLoading ? clusters?.map((cluster, i) => (
@@ -299,10 +265,33 @@ function LeftBar({ children }) {
 
             </div>
             }
-          </Link>
+          </div>
           <div style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between gap-4 flex flex-col items-center py-5'>
             <div className='w-full p-2 flex justify-between items-center'><MdImageSearch /><p> Ai Search </p><p className='w-2'></p></div>
-            {dragging ? <div className='w-full h-56  rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
+            <div className='w-full h-fit rounded-lg' {...getRootProps()}>
+      <input {...getInputProps()} />
+      {
+        isDragActive ?
+        <div className='w-full h-56  rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
+        <div
+          className="w-full h-full flex flex-col  justify-center items-center  rounded-lg"
+        >
+   
+          <AiOutlineCloudDownload  className='text-5xl animate-bounce' />
+          <p  className='text-xl'>Drop File Here</p>
+        </div>
+      </div> :
+           <div  className='rounded-lg h-fit cursor-pointer border-2 border-[#4a5568] p-5 hover:bg-gray-500 border-dashed w-full min-h-[200px] flex items-center justify-center'>
+           {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64 min-h-54' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full  justify-between items-center flex-col'><LinearProgress className='w-full h-10' /></div>}</div>
+             :
+             <div className='flex flex-col items-center justify-center'>
+               <div className='w-16 h-16 bg-green-500 text-2xl rounded-full flex justify-center items-center'>+</div>
+             </div>}
+         </div>
+      }
+    </div>
+    {file && <p onClick={()=>{setFile(null); getPage(page)}} className='hover:border-b text-white text-sm cursor-pointer'>Remove file</p>}
+            {/* {dragging ? <div className='w-full h-56  rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
               <div
                 className="w-full h-full flex flex-col  justify-center items-center  rounded-lg"
                 onDrop={handleDrop}
@@ -310,7 +299,7 @@ function LeftBar({ children }) {
               >
                 <input
                   type="file"
-                  onChange={async (event) => { setFile(event.target.files[0]);}}
+                  onChange={async (event) => { setFile(event.target.files[0]); }}
                   hidden
                   accept="image/png, image/jpeg"
                   ref={inputRef}
@@ -321,20 +310,21 @@ function LeftBar({ children }) {
             </div> : <div onDrop={handleDrop} onDragOver={handleDragOver} onClick={() => { fileInputRef.current.click() }} className='rounded-lg h-fit cursor-pointer border-2 border-[#4a5568] p-5 hover:bg-gray-500 border-dashed w-full min-h-[200px] flex items-center justify-center'>
               <input
                 type="file"
-                onChange={async (event) => { handleFileChange(event)}}
+                onChange={async (event) => { handleFileChange(event) }}
                 hidden
                 accept="image/png, image/jpeg"
                 ref={fileInputRef}
               />
-              {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64 min-h-54' src={URL.createObjectURL(file)}></img>{isSearching && <LinearProgress className='w-full h-10'/>}</div>
+              {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64 min-h-54' src={URL.createObjectURL(file)}></img>{isSearching && <LinearProgress className='w-full h-10' />}</div>
                 :
                 <div className='flex flex-col items-center justify-center'>
                   <div className='w-16 h-16 bg-green-500 text-2xl rounded-full flex justify-center items-center'>+</div>
                 </div>}
-            </div>}
+            </div>} */}
+
           </div>
           <div style={{ display: "flex" }} className='w-full p-2 cursor-pointer h-fit border-t border-b border-gray-900 justify-between flex items-center py-2'>
-            <div onClick={() => { getHiddenImages(1) }} className='w-full p-2 flex justify-between items-center hover:bg-slate-600 rounded-lg'><BsTrash /><p> Recycle </p><p className='w-8'></p></div>
+            <div onClick={() => { getHiddenImages(page) }} className='w-full p-2 flex justify-between items-center hover:bg-slate-600 rounded-lg'><BsTrash /><p> Recycle </p><p className='w-8'></p></div>
           </div>
         </div>
         <a style={{ display: "flex" }} target='_blank' rel='noreferrer' href='https://www.ai.ait.com.tr' className='w-full h-fit  text-gray-500 justify-between hover:bg-slate-600 flex items-center p-5'>
@@ -348,7 +338,7 @@ function LeftBar({ children }) {
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1], { handleDragOver, handleDragStart, mapingType, isSearching, images, setImages })}
+          {cloneElement(children[1], {  mapingType, isSearching, images, setImages })}
         </div>
 
       </div>

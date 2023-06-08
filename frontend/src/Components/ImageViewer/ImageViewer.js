@@ -4,10 +4,13 @@ import Viewer from 'react-viewer';
 import { ImageProxy } from '../../Api';
 import { AiFillEye, AiFillEyeInvisible, AiOutlineLoading } from 'react-icons/ai';
 import { FormControl, InputLabel, MenuItem, Select, Skeleton } from '@mui/material';
-import { getClusters } from '../../Api/Cluster/clusterRequests';
 import { addLabelToFileService, deleteLabelFromFileService, hideFileService, unhideFileService } from '../../Api/File/FileControler';
 import { GrClose } from 'react-icons/gr'
 import { getFileById } from '../../Api/File/FileService';
+import { getClusters } from '../../Api/Cluster/ClusterController';
+import { useEscapeKey } from '../../Hooks/UseEscape';
+
+
 
 function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIsImageMode, setAllImages, allImages, setSelectedImageData }) {
 
@@ -16,6 +19,11 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     const [isCopied, setIsCopied] = useState(false);
     const [labelsLoading, setLabelsLoading] = useState(false);
 
+    useEscapeKey(() => {
+        setIsImageMode(false)
+    }
+    );
+    
     useEffect(() => {
 
 
@@ -26,11 +34,8 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         ).catch((err) => {
             console.log(err)
         })
-        const handleEsc = (event) => {
-            if (event.keyCode === 27) {
-             console.log('Close')
-           }
-         }; 
+
+
 
     }, [])
 
@@ -117,7 +122,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                         {!selectedImageData.isHidden ?
                             <AiFillEyeInvisible className='cursor-pointer hover:bg-cyan-500 hover:text-white text-cyan-500 h-7 w-10 border border-cyan-500 rounded-lg' onClick={() => { handleHideFile() }}></AiFillEyeInvisible>
                             :
-                            <AiFillEye className='cursor-pointer hover:bg-black hover:text-white text-black h-7 w-10 border border-gray-900 rounded-lg' onClick={() => { handleUnHideFile() }}></AiFillEye>}
+                            <AiFillEye className='cursor-pointer hover:bg-cyan-500 hover:text-white text-cyan-500 h-7 w-10 border border-cyan-500 rounded-lg' onClick={() => { handleUnHideFile() }}></AiFillEye>}
                         <GrClose onClick={(e) => { setIsImageMode(false) }} className='cursor-pointer text-black h-8 mr-2'>X</GrClose>
                     </div>
                     <div className='w-full h-[95%] flex items-center gap-5 justify-center'>
@@ -184,9 +189,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                                             onChange={handleOptionsChange}
                                             style={{ color: 'white' }}
                                         >
-                                            {clusterLoading ? <p>Loading....</p> : clusters?.map((cluster) => {
+                                            {clusterLoading ? <p>Loading....</p> : clusters?.map((cluster , i) => {
                                                 return (
-                                                    <MenuItem value={cluster.cluster_id}>{cluster.cluster_name}</MenuItem>
+                                                    <MenuItem key={i} value={cluster.cluster_id}>{cluster.cluster_name}</MenuItem>
                                                 )
                                             })}
                                         </Select>
@@ -198,7 +203,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                                             <div className='flex bg-cyan-600 text-white p-3 rounded-lg justify-between items-center w-full'>
                                                 <p className='h-10 flex justify-center items-center'>{label.cluster_name}</p>
                                                 <div onClick={() => handleDeleteLabel(label.cluster_id)} className='hover:text-white cursor-pointer rounded-lg hover:bg-slate-400 h-10 px-2 flex items-center'>
-                                                    <GrClose className='hover:text-white' />
+                                                    <p className='text-white'>X</p>
                                                 </div>
                                             </div>
                                         )
