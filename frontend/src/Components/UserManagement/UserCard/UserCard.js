@@ -37,7 +37,7 @@ function UserCard({ user, getUserList , isGreen }) {
   }
 
   return (
-    <div className={`w-full flex ${isGreen ? "bg-slate-600" : "bg-slate-700"} justify-between items-center py-5`}>
+    <div className={`w-full flex ${isGreen ? "bg-slate-700" : "bg-gray-800"} justify-between items-center py-5`}>
       <div className='w-2/6'>
         <div className='flex justify-center items-center'>
           {isUpdating ?
@@ -84,7 +84,8 @@ function UserCard({ user, getUserList , isGreen }) {
         }
       </div>
       <div className='w-1/6 flex items-center justify-between'>
-
+        {userRole === "Admin" ? <TiTickOutline className='text-green-500 flex ml-10 w-10 h-16' /> : <TiTimes className='text-red-500 ml-10 w-10 h-16' />}
+ 
       </div>
       {isUpdating ? 
       <div className='w-1/6 flex gap-5'>

@@ -90,7 +90,7 @@ function LeftBarFirst({ children }) {
          <div  className='w-full p-5 flex justify-between items-center'><AiOutlineFolderOpen className='text-lg'/><p> File Management </p><p className='w-5'></p></div> 
           
         </Link>
-        <Link style={{display:"flex"}} to={"/usermanagement"} className='w-full flex-wrap h-fit border-t border-b border-black justify-between hover:bg-slate-600 flex items-center p-5'>
+        <Link style={{display:"flex"}} className='w-full flex-wrap h-fit border-t border-b border-black justify-between hover:bg-slate-600 flex items-center p-5'>
         <BsFolderSymlinkFill className='text-lg'/><p> Export Predict Json </p><p className='w-1'></p>
         </Link>
         </div>

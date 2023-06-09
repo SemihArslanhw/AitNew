@@ -1,8 +1,8 @@
-import { addLabelToFile, deleteLabelFromFile, getAllImages, getFileById, getHiddenFiles, hideFile, searchByFileName, unhideFile, uploadFile } from "./FileService";
+import * as FileService from "./FileService";
 
 const getAllImagesFull = async (page) => {
     try {
-        const res = await getAllImages(page);
+        const res = await FileService.getAllImages(page);
         return res;
     } catch (err) {
         return err.message;
@@ -11,7 +11,7 @@ const getAllImagesFull = async (page) => {
 
 const addLabelToFileService = async (fileId, labelId) => {
    try {
-        const res = await addLabelToFile(fileId, labelId);
+        const res = await FileService.addLabelToFile(fileId, labelId);
         return res;
     } catch (err) {
         return err.message;
@@ -20,7 +20,7 @@ const addLabelToFileService = async (fileId, labelId) => {
 
 const getFileByIdService = async (id) => {
     try {
-        const res = getFileById(id);
+        const res = FileService.getFileById(id);
         return res;
     } catch (err) {
         return err.message;
@@ -29,7 +29,7 @@ const getFileByIdService = async (id) => {
 
 const deleteLabelFromFileService = async (fileId, labelId) => {
     try {
-        const res = await deleteLabelFromFile(fileId, labelId);
+        const res = await FileService.deleteLabelFromFile(fileId, labelId);
         return res;
     } catch (err) {
         return err.message;
@@ -38,7 +38,7 @@ const deleteLabelFromFileService = async (fileId, labelId) => {
 
 const searchByFileNameService = async (page , fileName) => {
     try {
-        const res = searchByFileName(page , fileName);
+        const res = FileService.searchByFileName(page , fileName);
         return res;
     } catch (err) {
         return err.message;
@@ -47,7 +47,7 @@ const searchByFileNameService = async (page , fileName) => {
 
 const uploadFileService = async (file) => {
     try {
-        const res = await uploadFile(file);
+        const res = await FileService.uploadFile(file);
         return res;
     } catch (err) {
         return err.message;
@@ -56,7 +56,7 @@ const uploadFileService = async (file) => {
 
 const getHiddenFilesService = async (page) => {
     try {
-        const res = await getHiddenFiles(page);
+        const res = await FileService.getHiddenFiles(page);
         return res;
     } catch (err) {
         return err.message;
@@ -65,7 +65,7 @@ const getHiddenFilesService = async (page) => {
 
 const hideFileService = async (fileId) => {
     try {
-        const res = await hideFile(fileId);
+        const res = await FileService.hideFile(fileId);
         return res;
     } catch (err) {
         return err.message;
@@ -74,7 +74,16 @@ const hideFileService = async (fileId) => {
 
 const unhideFileService = async (fileId) => {
     try {
-        const res = await unhideFile(fileId);
+        const res = await FileService.unhideFile(fileId);
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+const filterByLabel = async (page, labels) => {
+    try {
+        const res = await FileService.filterByLabel(page, labels);
         return res;
     } catch (err) {
         return err.message;
@@ -91,5 +100,6 @@ export {
     uploadFileService,
     getHiddenFilesService,
     hideFileService,
-    unhideFileService
+    unhideFileService,
+    filterByLabel
 }

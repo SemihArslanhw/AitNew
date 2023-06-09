@@ -13,6 +13,7 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
   const [selectedImageData, setSelectedImageData] = React.useState()
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [cols , setCols] = React.useState(7)
+  const [showingImages , setShowingImages] = React.useState([])
 
 
   useEffect(() => {
@@ -34,21 +35,24 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
     handleWindowResize();
 
     window.addEventListener('resize', handleWindowResize);
-    const handleEsc = (event) => {
-      if (event.keyCode === 27) {
-       console.log('Close')
-     }
-   }; 
-    window.addEventListener('keydown', handleEsc);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener('resize', handleWindowResize)
     };
   },[]);
 
+  const getImages = (selectedImg) => {
+    setSelectedImageData(selectedImg)
+    const temp = images
+    console.log(images)
+    temp.filter((image) => image._id === selectedImg._id).src = ImageProxy + selectedImg?.thumbnail?.url
+    console.log(temp)
+    setShowingImages(temp.slice())
+    }
+
   return (
     <div ref={handleRef} className='w-full h-full p-5 px-10 bg-slate-200'>
-      {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode} />}
+      {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} showingImages={showingImages} setIsImageMode={setIsImageMode} />}
       <div className='w-full h-full bg-slate-300 rounded-lg p-4'>
         <div className='w-full gap-5 h-full flex-col bg-gray-700 p-2 rounded-lg border-2 border-[#4a5568] flex items-center'>
           {/* <div className='text-[#4a5568] bg-blue-400 rounded-lg flex flex-col w-1/4 h-full items-center justify-center text-2xl font-bold'>Drag and Drop File Or Click Here 
@@ -70,6 +74,7 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
             </div>
             :
             <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
+              {images?.length === 0 && <p>No Files Founded !</p>}
               <ImageList variant={mapingType}  cols={cols} gap={8}>
                 {images?.map((image, i) => (
                   
@@ -77,7 +82,7 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
                     <LazyLoadImage
                       tabIndex={i}
                       key={i}
-                      onClick={() => { setIsImageMode(true); setSelectedImageData(image); setSelectedIndex(i) }}
+                      onClick={() => { setIsImageMode(true); setSelectedIndex(i) ; getImages(image) }}
                       className='w-96 cursor-pointer object-cover rounded-md'
                       src={ image.thumbnail.url} // use normal <img> attributes as props
                     />

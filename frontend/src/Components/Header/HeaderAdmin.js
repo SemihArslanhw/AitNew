@@ -44,7 +44,7 @@ function HeaderAdmin() {
           onClose={handleClose}
         >
           <div className='h-fit gap-2 px-2 w-28 flex flex-col '>
-          <Link className='w-full h-full flex items-center gap-2' to={"/"}>
+          <Link className='w-full h-full flex items-center gap-2' to={"/filemanagement"}>
            <AiFillSetting className='h-7'/>
            Settings
           </Link>

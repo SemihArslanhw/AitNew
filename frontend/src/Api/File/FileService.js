@@ -97,6 +97,18 @@ const unhideFile = async (fileId) => {
     }
 }
 
+const filterByLabel = async (page, labels) => {
+    try {
+        const res = await API.post("file-management/files/filter/" + page,
+            labels
+        );
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+
 
 export {
     getAllImages,
@@ -107,5 +119,6 @@ export {
     uploadFile,
     getHiddenFiles,
     hideFile,
-    unhideFile
+    unhideFile,
+    filterByLabel
 }

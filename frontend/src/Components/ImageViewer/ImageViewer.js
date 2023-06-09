@@ -12,7 +12,7 @@ import { useEscapeKey } from '../../Hooks/UseEscape';
 
 
 
-function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIsImageMode, setAllImages, allImages, setSelectedImageData }) {
+function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIsImageMode, allImages , setAllImages,  setSelectedImageData , showingImages }) {
 
     const [clusters, setClusters] = useState([]);
     const [clusterLoading, setClusterLoading] = useState(false);
@@ -26,7 +26,6 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     
     useEffect(() => {
 
-
         getAllClusters()
         getFileById(selectedImageData._id).then((res) => {
             setSelectedImageData(res.data)
@@ -34,9 +33,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         ).catch((err) => {
             console.log(err)
         })
-
-
-
+        console.log(showingImages)
     }, [])
 
     const copyToClipboard = (e) => {
@@ -129,12 +126,13 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
                             onChange={(e, i) => { setSelectedImageData(e); setSelectedIndex(i); }}
-                            images={allImages.map((image) => { image.src = ImageProxy + image?.thumbnail?.url; return image })}
+                            images={showingImages}
                             visible={true}
                             noClose={true}
                             activeIndex={selectedIndex}
                             className=''
                             container={document.getElementById("container")}
+                            spinner={() => <AiOutlineLoading className='animate-spin w-8 h-8' />}
                         />
 
                         <div className='w-1/3 h-full font-bold text-black bg-slate-300 p-2 rounded-lg'>

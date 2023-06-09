@@ -9,7 +9,7 @@ import { BsTrash } from 'react-icons/bs'
 import { Checkbox, FormControlLabel, LinearProgress } from '@mui/material'
 import ProgressBar from './ProgressBar/ProgressBar'
 import * as API from '../../Api/index'
-import { getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
+import { filterByLabel, getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
 import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
 import {useDropzone} from 'react-dropzone'
 import { addCluster, getClusters } from '../../Api/Cluster/ClusterController'
@@ -166,7 +166,7 @@ function LeftBar({ children }) {
     var temp = clusters
     temp.find((cluster) => cluster._id === id).checked = !temp.find((cluster) => cluster._id === id).checked
     setClusters(temp.slice())
-
+    optionSend()
   }
 
   const onDrop = useCallback(acceptedFiles => {
@@ -183,6 +183,31 @@ function LeftBar({ children }) {
     uploadMultiple: false,
     acceptedFiles: "image/*",
   })
+
+  const optionSend = () => {
+    var temp = clusters
+    let tempArr = []
+    temp.map((cluster) => {if(cluster.checked){ tempArr.push(cluster.cluster_id)}})
+    //Make tempArr {cluster[] : cluster._id}
+    tempArr = tempArr.map((cluster) => { return cluster })
+    if(tempArr.length === 0){
+      getPage()
+    }else{
+          setIsSearching(true)
+    filterByLabel(page ,{ clusters : tempArr}).then((res) => {
+      console.log(res.data.files)
+      setImages(res.data.files)
+    }
+    ).catch((err) => {
+      console.log(err)
+    }
+    ).finally(() => {
+      setIsSearching(false)
+    }
+    )
+    }
+
+  }
 
   var styles = {
     bmBurgerButton: {

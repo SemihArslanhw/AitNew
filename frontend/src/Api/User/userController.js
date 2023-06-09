@@ -32,7 +32,6 @@ const registerCall = async (username, password, role) => {
 const loginCall = async (username, password) => {
     try {
         const res = await userService.loginCall(username, password);
-        console.log(res);
         document.cookie = "token=" + res.data.user.token;
         window.location = "/";
         return res;
