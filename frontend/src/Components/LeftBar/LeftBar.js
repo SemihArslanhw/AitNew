@@ -158,9 +158,6 @@ function LeftBar({ children }) {
     )
   }
 
-  const handleStateChange = (e) => {
-    setIsHamburgerOpen(e.isOpen)
-  }
 
   const handleOptionChange = (id) => {
     var temp = clusters

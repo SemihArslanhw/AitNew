@@ -12,28 +12,24 @@ import { useEscapeKey } from '../../Hooks/UseEscape';
 
 
 
-function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIsImageMode, allImages , setAllImages,  setSelectedImageData , showingImages }) {
+function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIsImageMode, allImages , setAllImages,  setSelectedImageData  }) {
 
     const [clusters, setClusters] = useState([]);
     const [clusterLoading, setClusterLoading] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const [labelsLoading, setLabelsLoading] = useState(false);
-
+    const [showingImages , setShowingImages] = useState([selectedImageData])
+     
+    console.log(selectedImageData)
+    selectedImageData.src = ImageProxy + selectedImageData?.thumbnail?.url
     useEscapeKey(() => {
         setIsImageMode(false)
     }
     );
     
     useEffect(() => {
-
         getAllClusters()
-        getFileById(selectedImageData._id).then((res) => {
-            setSelectedImageData(res.data)
-        }
-        ).catch((err) => {
-            console.log(err)
-        })
-        console.log(showingImages)
+
     }, [])
 
     const copyToClipboard = (e) => {
@@ -125,11 +121,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                     <div className='w-full h-[95%] flex items-center gap-5 justify-center'>
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
-                            onChange={(e, i) => { setSelectedImageData(e); setSelectedIndex(i); }}
-                            images={showingImages}
+                            images={[selectedImageData]}                  
                             visible={true}
                             noClose={true}
-                            activeIndex={selectedIndex}
                             className=''
                             container={document.getElementById("container")}
                             spinner={() => <AiOutlineLoading className='animate-spin w-8 h-8' />}

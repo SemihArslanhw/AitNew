@@ -11,7 +11,7 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
   const handleRef = React.useRef(null)
   const [isImageMode, setIsImageMode] = React.useState(false)
   const [selectedImageData, setSelectedImageData] = React.useState()
-  const [selectedIndex, setSelectedIndex] = React.useState(0)
+  const [selectedIndex, setSelectedIndex] = React.useState(2)
   const [cols , setCols] = React.useState(7)
   const [showingImages , setShowingImages] = React.useState([])
 
@@ -76,13 +76,12 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
             <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
               {images?.length === 0 && <p>No Files Founded !</p>}
               <ImageList variant={mapingType}  cols={cols} gap={8}>
-                {images?.map((image, i) => (
-                  
+                {images?.map((image, i) => ( 
                   <ImageListItem key={i}>
                     <LazyLoadImage
                       tabIndex={i}
                       key={i}
-                      onClick={() => { setIsImageMode(true); setSelectedIndex(i) ; getImages(image) }}
+                      onClick={() => { setIsImageMode(true); setSelectedIndex(i);setSelectedImageData(image.src = image.thumbnail.url) ; getImages(image) }}
                       className='w-96 cursor-pointer object-cover rounded-md'
                       src={ image.thumbnail.url} // use normal <img> attributes as props
                     />

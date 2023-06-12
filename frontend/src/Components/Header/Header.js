@@ -35,7 +35,7 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
             className='bg-slate-600 group-focus-within:bg-slate-500 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
           >
           </input>
-          <div className='group-focus-within:w-24 h-full group-focus-within:p-5 duration-500 transition-all  group-focus-within:bg-slate-500'></div>
+          <div className='group-focus-within:w-24 h-full group-focus-within:px-5 py-5 duration-500 transition-all  group-focus-within:bg-slate-500'></div>
           <div onClick={() => { searchByFileName(1, searchText) }} className='w-5 h-full bg-slate-600 border-l flex items-center justify-center hover:bg-slate-300 p-5 rounded-r-lg'>
             {isSearching ? <div><AiOutlineLoading className='animate-spin text-white' /></div> : <button className=''>
               <AiOutlineSearch className='text-white' />
