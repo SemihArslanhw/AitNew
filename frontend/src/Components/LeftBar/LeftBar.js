@@ -214,7 +214,7 @@ function LeftBar({ children }) {
                       }
 
                     />
-                    <BsTrash onClick={() => { deleteCluster(cluster?.cluster_id) }} className='hover:text-red-500' />
+                    <BsTrash onClick={() => { deleteCluster(cluster?.cluster_id) }} className='hover:text-red-500 cursor-pointer' />
                   </div>
                 )) : <div className='w-full h-full flex justify-center items-center'>
                   <AiOutlineLoading className='animate-spin' />

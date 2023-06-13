@@ -73,7 +73,7 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
             </div>
             :
             <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
-              {images?.length === 0 && <p>No Files Founded !</p>}
+              {images?.length === 0 && <p className='text-xl p-10'>No Files Founded !</p>}
               <ImageList variant={mapingType}  cols={cols} gap={8}>
                 {images?.map((image, i) => ( 
                   <ImageListItem key={i}>

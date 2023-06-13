@@ -14,11 +14,12 @@ function Header({ setMapingType, searchByFileName, isSearching }) {
   const [searchText, setSearchText] = React.useState('')
   const [user , setUser] = React.useState(JSON.parse(localStorage.getItem('user')))
 
+  const adminRoles = ["Admin" , "Developer"]
+
   const handleClose = () => {
     setAnchorEl(null);
+    setUser(JSON.parse(localStorage.getItem('user')))
   };
-
-
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,7 +38,7 @@ function Header({ setMapingType, searchByFileName, isSearching }) {
           >
           </input>
           <div className='group-focus-within:w-24 h-full group-focus-within:px-5 py-5 duration-500 transition-all  group-focus-within:bg-slate-500'></div>
-          <div onClick={() => { searchByFileName(1, searchText) }} className='w-5 h-full bg-slate-600 border-l flex items-center justify-center hover:bg-slate-300 p-5 rounded-r-lg'>
+          <div onClick={() => { searchByFileName(1, searchText) }} className='w-5 h-full cursor-pointer bg-slate-600 border-l flex items-center justify-center hover:bg-slate-300 p-5 rounded-r-lg'>
             {isSearching ? <div><AiOutlineLoading className='animate-spin text-white' /></div> : <button className=''>
               <AiOutlineSearch className='text-white' />
             </button>}
@@ -70,7 +71,7 @@ function Header({ setMapingType, searchByFileName, isSearching }) {
           onClose={handleClose}
         >
           <div className='h-fit gap-2 px-2 w-28 flex flex-col '>
-          {user.role === "Admin" || user.role === "Developer" &&           
+          {adminRoles.includes(user.role) &&           
           <Link className='w-full h-full flex items-center gap-2' to={"/filemanagement"}>
            <AiFillSetting className='h-7'/>
            Settings

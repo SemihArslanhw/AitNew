@@ -15,14 +15,13 @@ function LoginPage() {
       setIsError(false)
       setLoading(true)
       await loginCall(username, password).then((res)=>{
-        if(res.status !== 200){
+        if(res.message === "Wrong password!"){
           setIsError(true)
         }
       }).catch((err)=>{
         alert("There was an error! Please re-check your form.")
       })
       setLoading(false)
-
     } catch (err) {
       alert("There was an error! Please re-check your form.")
     }
