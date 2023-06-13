@@ -1,13 +1,10 @@
 import React, { cloneElement, useCallback, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { slide as Menu } from 'react-burger-menu'
 import { AiOutlineCloudDownload, AiOutlineCluster, AiOutlineLoading } from 'react-icons/ai'
 import { AiOutlineArrowUp } from 'react-icons/ai'
 import { AiOutlineArrowDown } from 'react-icons/ai'
 import { MdImageSearch } from 'react-icons/md'
 import { BsTrash } from 'react-icons/bs'
 import { Checkbox, FormControlLabel, LinearProgress } from '@mui/material'
-import ProgressBar from './ProgressBar/ProgressBar'
 import * as API from '../../Api/index'
 import { filterByLabel, getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
 import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
@@ -19,14 +16,8 @@ function LeftBar({ children }) {
 
   const [mapingType, setMapingType] = React.useState('masonry')
   const [images, setImages] = React.useState([])
-  const [mapType, setMapType] = React.useState('')
   const [clusterLoading, setClusterLoading] = React.useState(false)
-  const [dragging, setDragging] = React.useState(false)
-  const [isHamburgerOpen, setIsHamburgerOpen] = React.useState(false)
   const [isSearching, setIsSearching] = React.useState(false)
-  const fileInputRef = React.useRef();
-  const inputRef = React.useRef();
-  const [searchProgress, setSearchProgress] = React.useState(40)
   const [file, setFile] = React.useState(null)
   const [clusters, setClusters] = React.useState([])
   const [isClusterOpen, setIsClusterOpen] = React.useState(false)
@@ -119,11 +110,6 @@ function LeftBar({ children }) {
       console.log(err)
     })
     setClusterLoading(false)
-    // await addCluster(name).then((res) => {
-    //   setClusters([...clusters, res.data])
-    // }).catch((err) => {
-    //   console.log(err)
-    // })
   }
 
   const searchByFileName = async (page, name) => {
@@ -206,56 +192,11 @@ function LeftBar({ children }) {
 
   }
 
-  var styles = {
-    bmBurgerButton: {
-      position: 'fixed',
-      width: '3rem',
-      height: '3.1vh',
-      left: '36px',
-      top: '13px'
-    },
-    bmBurgerBars: {
-      background: '#373a47'
-    },
-    bmBurgerBarsHover: {
-      background: '#a90000'
-    },
-    bmCrossButton: {
-      height: '24px',
-      width: '24px'
-    },
-    bmCross: {
-      background: '#bdc3c7'
-    },
-    bmMenuWrap: {
-      position: 'fixed',
-      width: '250px',
-      height: '100%'
-    },
-    bmMenu: {
-      background: '#1a202c',
-      fontSize: '1.15em'
-    },
-    bmMorphShape: {
-      fill: '#373a47'
-    },
-    bmItemList: {
-      color: '#edf2f7',
-      padding: '0.8em'
-    },
-    bmItem: {
-      display: 'inline-block'
-    },
-    bmOverlay: {
-      background: 'rgba(0, 0, 0, 0.3)'
-    }
-  }
-
   return (
     <div className='flex h-full font-bold text-white'>
       <SearchPagination page={page} totalPage={totalPage} setPage={setPage} />
-      <div className='min-w-[224px] w-[224px] h-full overflow-y-auto flex flex-col bg-slate-800'>
-        <div className='w-full h-[90%] flex flex-col'>
+      <div className='min-w-[224px] w-[224px] h-screen overflow-y-auto justify-between flex flex-col bg-slate-800'>
+        <div className='w-full h-fit flex flex-col'>
           <div onClick={() => { getPage() }} style={{ display: "flex" }} className='w-full cursor-pointer h-fit p-5 hover:bg-slate-600 flex flex-row items-center justify-center px-5 '>
             <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
           </div>
@@ -312,7 +253,7 @@ function LeftBar({ children }) {
          </div>
       }
     </div>
-    {file && <p onClick={()=>{setFile(null); getPage(page)}} className='hover:border-b text-white text-sm cursor-pointer'>Remove file</p>}
+    {file && <p onClick={()=>{setFile(null); getPage()}} className='hover:border-b text-white text-sm cursor-pointer'>Remove file</p>}
             {/* {dragging ? <div className='w-full h-56  rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
               <div
                 className="w-full h-full flex flex-col  justify-center items-center  rounded-lg"
@@ -349,7 +290,7 @@ function LeftBar({ children }) {
             <div onClick={() => { getHiddenImages(page) }} className='w-full p-2 flex justify-between items-center hover:bg-slate-600 rounded-lg'><BsTrash /><p> Recycle </p><p className='w-8'></p></div>
           </div>
         </div>
-        <a style={{ display: "flex" }} target='_blank' rel='noreferrer' href='https://www.ai.ait.com.tr' className='w-full h-fit  text-gray-500 justify-between hover:bg-slate-600 flex items-center p-5'>
+          <a style={{ display: "flex" }} target='_blank' rel='noreferrer' href='https://www.ai.ait.com.tr' className='w-full h-fit mb-10  text-gray-500 justify-between hover:bg-slate-600 flex items-center p-5'>
           <p className='w-1' /><p> Archivist 0.0.1 </p><p className='w-1'></p>
         </a>
       </div>

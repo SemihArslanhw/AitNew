@@ -2,9 +2,8 @@ import React, { useEffect} from 'react'
 import { AiOutlineLoading } from 'react-icons/ai'
 import ImageViewer from '../../Components/ImageViewer/ImageViewer'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { ImageList, ImageListItem, Pagination } from '@mui/material'
-import { getAllImagesFull} from '../../Api/File/FileControler';
-import { ImageProxy } from '../../Api';
+import { ImageList, ImageListItem } from '@mui/material'
+
 
 function Search({ handleDragOver , handleDragStart, mapingType , isSearching , images , setImages }) {
 
@@ -45,7 +44,7 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
     setSelectedImageData(selectedImg)
     const temp = images
     console.log(images)
-    temp.filter((image) => image._id === selectedImg._id).src = ImageProxy + selectedImg?.thumbnail?.url
+    temp.filter((image) => image._id === selectedImg._id).src = selectedImg?.thumbnail?.url
     console.log(temp)
     setShowingImages(temp.slice())
     }

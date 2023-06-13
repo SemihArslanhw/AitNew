@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import "./ImageViewer.css"
 import Viewer from 'react-viewer';
-import { ImageProxy } from '../../Api';
 import { AiFillEye, AiFillEyeInvisible, AiOutlineLoading } from 'react-icons/ai';
-import { FormControl, InputLabel, MenuItem, Select, Skeleton } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { addLabelToFileService, deleteLabelFromFileService, hideFileService, unhideFileService } from '../../Api/File/FileControler';
 import { GrClose } from 'react-icons/gr'
 import { getFileById } from '../../Api/File/FileService';
@@ -18,10 +17,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     const [clusterLoading, setClusterLoading] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const [labelsLoading, setLabelsLoading] = useState(false);
-    const [showingImages , setShowingImages] = useState([selectedImageData])
      
     console.log(selectedImageData)
-    selectedImageData.src = ImageProxy + selectedImageData?.thumbnail?.url
+    selectedImageData.src = selectedImageData?.thumbnail?.url
     useEscapeKey(() => {
         setIsImageMode(false)
     }
@@ -33,7 +31,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     }, [])
 
     const copyToClipboard = (e) => {
-        navigator.clipboard.writeText(selectedImageData.winPath)
+        window.navigator.clipboard.writeText(selectedImageData.winPath)
         setIsCopied(true)
         setTimeout(() => {
             setIsCopied(false)

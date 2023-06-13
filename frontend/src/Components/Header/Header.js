@@ -1,23 +1,24 @@
 import React from 'react'
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { MdAccountCircle } from 'react-icons/md';
-import IconButton from '@mui/material/IconButton';
 import { AiFillSetting, AiOutlineLoading, AiOutlineSearch } from 'react-icons/ai'
 import { Link } from 'react-router-dom';
-import { Bs9Square, BsFillGrid3X3GapFill } from 'react-icons/bs';
-import { GrApps, GrGrid, GrLogout } from 'react-icons/gr';
+import { BsFillGrid3X3GapFill } from 'react-icons/bs';
+import { GrLogout } from 'react-icons/gr';
 import { logoutCall } from '../../Api/User/userController';
 
 
-function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
+function Header({ setMapingType, searchByFileName, isSearching }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [searchText, setSearchText] = React.useState('')
+  const [user , setUser] = React.useState(JSON.parse(localStorage.getItem('user')))
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -43,7 +44,7 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
           </div>
         </div>
         <div onClick={()=>setMapingType("masonry")} className='p-1 h-10 w-10 flex justify-center items-center hover:bg-slate-400 cursor-pointer rounded-full bg-slate-600 '>
-          <img className='w-7' src='assets/images/mosaic.png' />
+          <img alt='mosaic' className='w-7' src='assets/images/mosaic.png' />
         </div>
         <div onClick={()=>setMapingType("standart")} className='p-1 h-10 w-10 flex justify-center items-center hover:bg-slate-400 cursor-pointer rounded-full bg-slate-600 '>
           <BsFillGrid3X3GapFill className='text-white w-6 h-6'/>
@@ -69,10 +70,11 @@ function Header({ mapingType, setMapingType, searchByFileName, isSearching }) {
           onClose={handleClose}
         >
           <div className='h-fit gap-2 px-2 w-28 flex flex-col '>
+          {user.role === "Admin" || user.role === "Developer" &&           
           <Link className='w-full h-full flex items-center gap-2' to={"/filemanagement"}>
            <AiFillSetting className='h-7'/>
            Settings
-          </Link>
+          </Link>}
 
           <div onClick={()=>{logoutCall()}} className='w-full cursor-pointer h-full flex items-center gap-2' to={"/login"}>
             <GrLogout className='h-7'/>
