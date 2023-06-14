@@ -34,10 +34,9 @@ function Header({ setMapingType, searchByFileName, isSearching }) {
             onChange={(e) => { setSearchText(e.target.value) }}
             onKeyUp={(e) => { if (e.key === 'Enter') { searchByFileName(1, searchText) } }}
             placeholder='Search...'
-            className='bg-slate-600 group-focus-within:bg-slate-500 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
+            className='bg-slate-600 focus:bg-slate-500 focus:w-96 w-64 text-white placeholder:text-gray-200 origin-right p-5 transition-all duration-500 rounded-l-lg outline-none h-5/6 flex items-center'
           >
           </input>
-          <div className='group-focus-within:w-24 h-full group-focus-within:px-5 py-5 duration-500 transition-all  group-focus-within:bg-slate-500'></div>
           <div onClick={() => { searchByFileName(1, searchText) }} className='w-5 h-full cursor-pointer bg-slate-600 border-l flex items-center justify-center hover:bg-slate-300 p-5 rounded-r-lg'>
             {isSearching ? <div><AiOutlineLoading className='animate-spin text-white' /></div> : <button className=''>
               <AiOutlineSearch className='text-white' />
