@@ -9,7 +9,7 @@ import * as API from '../../Api/index'
 import { filterByLabel, getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
 import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
 import {useDropzone} from 'react-dropzone'
-import { addCluster, getClusters } from '../../Api/Cluster/ClusterController'
+import { addCluster, getClusters , deleteCluster } from '../../Api/Cluster/ClusterController'
 
 
 function LeftBar({ children }) {
@@ -75,10 +75,10 @@ function LeftBar({ children }) {
 
   }
 
-  const deleteCluster = async (id) => {
+  const deleteClusterr = async (id) => {
     setClusterLoading(true)
 
-    await API.deleteCluster(id).then((res) => {
+    await deleteCluster(id).then((res) => {
       var temp = clusters
       temp = temp.filter((cluster) => cluster.cluster_id !== id)
       setClusters(temp.slice())
@@ -214,7 +214,7 @@ function LeftBar({ children }) {
                       }
 
                     />
-                    <BsTrash onClick={() => { deleteCluster(cluster?.cluster_id) }} className='hover:text-red-500 cursor-pointer' />
+                    <BsTrash onClick={() => { deleteClusterr(cluster?.cluster_id) }} className='hover:text-red-500 cursor-pointer' />
                   </div>
                 )) : <div className='w-full h-full flex justify-center items-center'>
                   <AiOutlineLoading className='animate-spin' />
