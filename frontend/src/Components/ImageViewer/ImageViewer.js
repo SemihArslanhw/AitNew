@@ -31,13 +31,18 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     }, [])
 
     const copyToClipboard = (e) => {
-        window.navigator.clipboard.writeText(selectedImageData.winPath)
+        var textField = document.createElement('textarea')
+        textField.innerText = selectedImageData.winPath
+        document.body.appendChild(textField)
+        textField.select()
+        document.execCommand('copy')
         setIsCopied(true)
         setTimeout(() => {
             setIsCopied(false)
         }
             , 1000)
-    }
+        document.body.removeChild(textField)
+        }
 
     const getAllClusters = async () => {
         setClusterLoading(true)
@@ -54,6 +59,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         setLabelsLoading(true)
         addLabelToFileService(selectedImageData._id, e.target.value).then((res) => {
             getFileById(selectedImageData._id).then((res) => {
+                let temp = allImages
+                temp[selectedIndex] = res.data
+                setAllImages(temp)
                 setSelectedImageData(res.data)
                 
             }
@@ -75,6 +83,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         setLabelsLoading(true)
         deleteLabelFromFileService(selectedImageData._id, label).then((res) => {
             getFileById(selectedImageData._id).then((res) => {
+                let temp = allImages
+                temp[selectedIndex] = res.data
+                setAllImages(temp)
                 setSelectedImageData(res.data)
             }
             ).catch((err) => {

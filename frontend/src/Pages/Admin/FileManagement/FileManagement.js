@@ -126,14 +126,14 @@ useEffect(() => {
        <div className='w-full h-full'>
                     <div className='w-full flex justify-between items-center h-10 px-5'>
               <p></p>
-              <h1 className='text-xl font-bold'>FILE MANAGEMENT</h1>
+              <h1 className='text-lg font-bold'>FILE MANAGEMENT</h1>
               <div onClick={()=>{setIsCalenderMode(true)}} title='Ayarla' className='p-2 cursor-pointer hover:bg-gray-400 bg-gray-500 rounded-lg'>
               <AiOutlineClockCircle className='w-7 h-7 rounded-lg '/>
               </div>
               
               </div>
             <div className='w-full h-full flex'>
-              <div className='w-1/2 font-extrabold h-full border-r-2 p-5 gap-5 flex flex-col'>
+              <div className='w-1/2 font-extrabold h-fit border-r border-gray-500 p-5 gap-5 flex flex-col'>
                 <p className='text-xl h-10 font-bold'>System Status : <span className='text-green-300 font-semibold'>{currentState}</span></p>
                 <div className='flex flex-col w-full'>
                   <h1 className='text-lg font-extrabold'>SCAN</h1>
@@ -143,7 +143,7 @@ useEffect(() => {
                       <p className=''>{scanned} / <span className='text-2xl'>{total}</span> Files</p>
                       <div className='flex gap-4'>
                         <p className='text-base'>Last Scan Date :</p>
-                        <p className='text-base'>{jobs?.find(e=>e.name === "scan")?.lastRun}</p>
+                        <p className='text-base min-w-32'>{jobs?.find(e=>e.name === "scan")?.lastRun}</p>
                       </div>
                     </div>
                     <ProgressBar heigth="10" value={scannedPercantage} />
@@ -157,7 +157,7 @@ useEffect(() => {
                       <p className='t'>{extracted} / <span className='text-2xl'>{total}</span> Files</p>
                       <div className='flex gap-4'>
                         <p className='text-base'>Last extract date :</p>
-                        <p className='text-base'>{jobs?.find(e=>e.name === "extract")?.lastRun}</p>
+                        <p className='text-base min-w-32'>{jobs?.find(e=>e.name === "extract")?.lastRun}</p>
                       </div>
                     </div>
                     <ProgressBar heigth="10" value={extractedPercantage} />
@@ -171,7 +171,7 @@ useEffect(() => {
                       <p className=''>{predicted} / <span className='text-2xl'>{total}</span> Files</p>
                       <div className='flex gap-4'>
                         <p className='text-base'>Last predict date :</p>
-                        <p className='text-base'>{jobs?.find(e=>e.name === "predict")?.lastRun}</p>
+                        <p className='text-base min-w-32'>{jobs?.find(e=>e.name === "predict")?.lastRun}</p>
                       </div>
                     </div>
                     <ProgressBar heigth="10" value={predictedPercantage} />

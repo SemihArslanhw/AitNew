@@ -3,6 +3,7 @@ import "./UserCreate.css"
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { registerCall } from '../../../Api/User/userController'
+import { useEscapeKey } from '../../../Hooks/UseEscape'
 
 function UserCreate({ setUserCreatingMode , getUserList , isUsersLoading }) {
 
@@ -10,6 +11,8 @@ function UserCreate({ setUserCreatingMode , getUserList , isUsersLoading }) {
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
 
+
+  useEscapeKey(()=>setUserCreatingMode(false))
 
   const createUser = (e) => {
     e.preventDefault()

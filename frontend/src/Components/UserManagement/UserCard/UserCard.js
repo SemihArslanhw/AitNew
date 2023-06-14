@@ -37,15 +37,15 @@ function UserCard({ user, getUserList , isGreen }) {
   }
 
   return (
-    <div className={`w-full flex ${isGreen ? "bg-slate-700" : "bg-gray-800"} justify-between items-center py-5`}>
+    <div className={`w-full flex ${isGreen ? "bg-gray-800" : "bg-gray-800"} justify-between border-b text-xs font-medium items-center py-2`}>
       <div className='w-2/6'>
         <div className='flex justify-center items-center'>
           {isUpdating ?
-            <input value={userName} onChange={(e)=>{setUserName(e.target.value)}} placeholder={user.username} autoFocus className='bg-slate-400 text-white rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
+            <input value={userName} onChange={(e)=>{setUserName(e.target.value)}} placeholder={user.username} autoFocus className='bg-gray-600 text-gray-200 border-gray-900 rounded p-3 w-5/6 h-5/6 flex items-center'>
 
             </input>
             :
-            <div className='bg-slate-400 rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
+            <div className='bg-gray-600 text-gray-200 border-gray-900 rounded p-3 w-5/6 h-5/6 flex items-center'>
               {user.username}
             </div>}
 
@@ -54,10 +54,10 @@ function UserCard({ user, getUserList , isGreen }) {
       <div className='w-2/6'>
         <div className='flex justify-center items-center'>
         {isUpdating ?
-            <input placeholder="Yeni Şifre" value={password} onChange={(e)=>{setPassword(e.target.value)}} className='bg-slate-400 text-white rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
+            <input placeholder="Yeni Şifre" value={password} onChange={(e)=>{setPassword(e.target.value)}} className='bg-gray-600 text-gray-200 border-gray-900 rounded p-3 w-5/6 h-5/6 flex items-center'>
             </input>
             :
-            <div className='bg-slate-400 rounded-lg p-3 w-5/6 h-5/6 flex items-center'>
+            <div className='bg-gray-600 text-gray-200 border-gray-900 rounded p-3 w-5/6 h-5/6 flex items-center'>
               ********
             </div>}
 
@@ -66,14 +66,13 @@ function UserCard({ user, getUserList , isGreen }) {
       <div className='ml-4 w-1/6'>
         {isUpdating ?
          <FormControl fullWidth>
-          <InputLabel style={{ color: "white" }} id="demo-simple-select-label">Role</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={userRole}
-            label="Role"
             onChange={(e)=>setUserRole(e.target.value)}
-            style={{ color: 'white' }}
+            style={{ color: '#E4E4E7' , fontSize:"12px" , fontWeight:"bold" }}
+            className='bg-gray-600 text-gray-200 h-10'
           >
             <MenuItem value={"Visitor"}>Visitor</MenuItem>
             <MenuItem value={"Admin"}>Admin</MenuItem>
