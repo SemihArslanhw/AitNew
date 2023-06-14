@@ -20,7 +20,21 @@ const addCluster = async (name) => {
     }
 }
 
+const deleteCluster = async (id) => {
+    try {
+        const res = await API.post("cluster/delete/", {
+            "cluster_id": id
+        });
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+
+
 export {
     getClusters,
-    addCluster
+    addCluster,
+    deleteCluster
 }

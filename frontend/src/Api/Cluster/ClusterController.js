@@ -18,7 +18,18 @@ const addCluster = async (name) => {
     }
 }
 
+const deleteCluster = async (id) => {
+    try {
+        const res = await ClusterService.deleteCluster(id);
+        return res;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+
 export {
     getClusters,
-    addCluster
+    addCluster,
+    deleteCluster
 }
