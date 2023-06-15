@@ -61,7 +61,7 @@ function Calender({ calenderData , setIsCalenderMode }) {
             <div className='w-full flex items-center justify-between'>
               <p>Working for</p>
               <div className='w-fit h-fit flex flex-col items-center'>
-                <p className='font-extralight text-gray-400 text-sm'>(Hour)</p>
+                <p className='font-extralight text-gray-400 text-sm'>(Hours)</p>
                 <input className='p-3 w-32 bg-slate-800 text-base' value={hour} placeholder={calenderData?.workingTime.hours} onChange={(e) => { setHour(e.target.value) }} type='number'></input>
               </div>
               <p>and</p>

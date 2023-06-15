@@ -4,28 +4,30 @@ import Viewer from 'react-viewer';
 import { AiFillEye, AiFillEyeInvisible, AiOutlineLoading } from 'react-icons/ai';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { addLabelToFileService, deleteLabelFromFileService, hideFileService, unhideFileService } from '../../Api/File/FileControler';
-import { GrClose } from 'react-icons/gr'
+import { GrClose, GrFormClose } from 'react-icons/gr'
 import { getFileById } from '../../Api/File/FileService';
 import { getClusters } from '../../Api/Cluster/ClusterController';
 import { useEscapeKey } from '../../Hooks/UseEscape';
 
 
 
-function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIsImageMode, allImages , setAllImages,  setSelectedImageData  }) {
+function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIsImageMode, allImages, setAllImages, setSelectedImageData }) {
 
     const [clusters, setClusters] = useState([]);
     const [clusterLoading, setClusterLoading] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const [labelsLoading, setLabelsLoading] = useState(false);
-     
-    console.log(selectedImageData)
-    selectedImageData.src = selectedImageData?.thumbnail?.url
+
     useEscapeKey(() => {
         setIsImageMode(false)
     }
     );
-    
+
     useEffect(() => {
+        console.log(selectedImageData)
+
+        selectedImageData.src = selectedImageData?.thumbnail?.url
+
         getAllClusters()
 
     }, [])
@@ -42,7 +44,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         }
             , 1000)
         document.body.removeChild(textField)
-        }
+    }
 
     const getAllClusters = async () => {
         setClusterLoading(true)
@@ -63,7 +65,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                 temp[selectedIndex] = res.data
                 setAllImages(temp)
                 setSelectedImageData(res.data)
-                
+
             }
             ).catch((err) => {
                 console.log(err)
@@ -103,17 +105,19 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     }
 
     const handleHideFile = () => {
-          hideFileService(selectedImageData._id).then((res) => {
+        hideFileService(selectedImageData._id).then((res) => {
             setAllImages(allImages.filter((image) => image._id !== selectedImageData._id))
-            setIsImageMode(false)})
-            .catch((err) => {console.log(err)})
-        }
-    
+            setIsImageMode(false)
+        })
+            .catch((err) => { console.log(err) })
+    }
+
     const handleUnHideFile = () => {
         unhideFileService(selectedImageData._id).then((res) => {
             setAllImages(allImages.filter((image) => image._id !== selectedImageData._id))
-            setIsImageMode(false)})
-            .catch((err) => {console.log(err)})
+            setIsImageMode(false)
+        })
+            .catch((err) => { console.log(err) })
     }
 
     return (
@@ -130,7 +134,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                     <div className='w-full h-[95%] flex items-center gap-5 justify-center'>
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
-                            images={[selectedImageData]}                  
+                            images={[selectedImageData]}
                             visible={true}
                             noClose={true}
                             className=''
@@ -138,43 +142,43 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                             spinner={() => <AiOutlineLoading className='animate-spin w-8 h-8' />}
                         />
 
-                        <div className='w-1/3 h-full font-bold text-black bg-slate-300 p-2 rounded-lg'>
+                        <div className='w-1/3 h-full font-bold text-black bg-gray-300 p-2 rounded-lg'>
 
-                            <div className='h-full border rounded-lg w-full flex flex-col bg-slate-300'>
+                            <div className='h-full border rounded-lg w-full flex flex-col bg-gray-300'>
                                 <div className='h-3/6 w-full p-3 px-5 flex flex-col justify-between items-center'>
-                                    <div className='w-full flex justify-between items-center'>
-                                        <div className='w-20 text-cyan-500 flex justify-between items-center'>
+                                    <div className='w-full flex justify-between items-center font-bold'>
+                                        <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Name</p><p>:</p>
                                         </div>
                                         <h1 title={selectedImageData.name} className='text-ellipsis inline-block whitespace-nowrap overflow-hidden'>{selectedImageData.name}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                     <div className='w-full flex justify-between items-center'>
-                                        <div className='w-20 text-cyan-500 flex justify-between items-center'>
+                                        <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Width</p><p>:</p>
                                         </div>
                                         <h1>{selectedImageData.width}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                     <div className='w-full flex justify-between items-center'>
-                                        <div className='w-20 text-cyan-500 flex justify-between items-center'>
+                                        <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Height</p><p>:</p>
                                         </div>
                                         <h1>{selectedImageData.height}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                     <div className='w-full flex justify-between items-center'>
-                                        <div className='w-20 text-cyan-500 flex justify-between items-center'>
+                                        <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Size</p><p>:</p>
                                         </div>
                                         <h1>{selectedImageData.size}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                     <div className='w-full flex justify-between items-center'>
-                                        <div className='w-20 text-cyan-500 flex justify-between items-center'>
+                                        <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Path</p><p>:</p>
                                         </div>
-                                        <h1 onClick={copyToClipboard} className='cursor-pointer hover:bg-cyan-500 hover:text-white text-cyan-500 p-2 border border-cyan-500 rounded-lg'>{!isCopied ? "Copy Path" : "Copied!"}</h1>
+                                        <h1 onClick={copyToClipboard} className='cursor-pointer hover:bg-cyan-500 hover:text-white text-cyan-600 p-2 border border-cyan-500 rounded-lg'>{!isCopied ? "Copy Path" : "Copied!"}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                 </div>
@@ -190,7 +194,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                                             onChange={handleOptionsChange}
                                             style={{ color: 'white' }}
                                         >
-                                            {clusterLoading ? <p>Loading....</p> : clusters?.map((cluster , i) => {
+                                            {clusterLoading ? <p>Loading....</p> : clusters?.map((cluster, i) => {
                                                 return (
                                                     <MenuItem key={i} value={cluster.cluster_id}>{cluster.cluster_name}</MenuItem>
                                                 )
@@ -201,11 +205,11 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                                 <div className='h-2/6 w-full flex flex-col gap-3 p-2 overflow-y-auto items-center'>
                                     {!labelsLoading ? selectedImageData?.ai_prediction?.labels?.map((label) => {
                                         return label !== null && (
-                                            <div className='flex bg-cyan-600 text-white p-3 rounded-lg justify-between items-center w-full'>
-                                                <p className='h-10 flex justify-center items-center'>{label.cluster_name}</p>
-                                                <div onClick={() => handleDeleteLabel(label.cluster_id)} className='hover:text-white cursor-pointer rounded-lg hover:bg-slate-400 h-10 px-2 flex items-center'>
-                                                    <p className='text-white'>X</p>
+                                            <div className='flex bg-cyan-600 text-white p-3 rounded-lg gap-2 font-sans font-normal text-sm items-center w-full'>
+                                                <div onClick={() => handleDeleteLabel(label.cluster_id)} className='hover:text-white cursor-pointer rounded-lg hover:bg-blue-800 h-10 px-1 flex items-center'>
+                                                    <img className='w-4' src='assets/images/close.png'></img>
                                                 </div>
+                                                <p className='h-10 flex justify-center items-center'>{label.cluster_name}</p>
                                             </div>
                                         )
                                     })
