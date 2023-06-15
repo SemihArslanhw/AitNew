@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AiOutlineEdit, AiOutlineDelete, AiOutlineLoading } from 'react-icons/ai'
 import { BsTrash } from 'react-icons/bs'
 import { deleteUser, updateCall } from '../../../Api/User/userController'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import {TiTickOutline} from 'react-icons/ti'
 import { TiTimes } from 'react-icons/ti'
+import { useIsOutsideClick } from '../../../Hooks/ListenClick'
 
 function UserCard({ user, getUserList , isGreen }) {
 
@@ -13,6 +14,14 @@ function UserCard({ user, getUserList , isGreen }) {
   const [userName, setUserName] = React.useState(user.username)
   const [password, setPassword] = React.useState("")
   const [userRole, setUserRole] = React.useState(user.role)
+  const cardRef = React.useRef()
+  const muiRef = React.useRef()
+
+  useIsOutsideClick(cardRef , (e)=>{
+    console.log("false")
+    setIsUpdating(false)
+    makeValuesInitial()
+  })
 
   const deleteUserr = async (id) => {
     setDeleteLoading(true)
@@ -36,8 +45,15 @@ function UserCard({ user, getUserList , isGreen }) {
       })
   }
 
+  const makeValuesInitial = (e) => {
+    setUserName(user.username)
+    setPassword("")
+    setUserRole(user.role)
+  }
+
+
   return (
-    <div className={`w-full flex ${isGreen ? "bg-gray-800" : "bg-gray-800"} justify-between border-b text-xs font-medium items-center py-2`}>
+    <div ref={cardRef} className={`w-full flex ${isGreen ? "bg-gray-800" : "bg-gray-800"} justify-between border-b text-sm font-medium items-center py-2`}>
       <div className='w-2/6'>
         <div className='flex justify-center items-center'>
           {isUpdating ?
@@ -67,19 +83,20 @@ function UserCard({ user, getUserList , isGreen }) {
         {isUpdating ?
          <FormControl fullWidth>
           <Select
+            ref={muiRef}
             labelId="demo-simple-select-label"
-            id="demo-simple-select"
+            id="mui-dropdown"
             value={userRole}
             onChange={(e)=>setUserRole(e.target.value)}
             style={{ color: '#E4E4E7' , fontSize:"12px" , fontWeight:"bold" }}
-            className='bg-gray-600 text-gray-200 h-10'
+            className='bg-gray-600 font-normal text-gray-200 h-10'
           >
             <MenuItem value={"Visitor"}>Visitor</MenuItem>
             <MenuItem value={"Admin"}>Admin</MenuItem>
             <MenuItem value={"User"}>User</MenuItem>
           </Select>
         </FormControl> :
-          user.role
+          <div className='h-10 w-32 justify-center rounded font-normal bg-gray-600 flex items-center'>{user.role}</div>
         }
       </div>
       <div className='w-1/6 flex items-center justify-between'>
@@ -89,13 +106,13 @@ function UserCard({ user, getUserList , isGreen }) {
       {isUpdating ? 
       <div className='w-1/6 flex gap-5'>
       <button onClick={() => { updateUserr(user._id); }} title='düzenle' className='bg-green-500 p-2 rounded-lg w-10 font-bold hover:bg-green-400 flex items-center justify-center'><TiTickOutline /></button>
-      <button onClick={() => { setIsUpdating(!isUpdating); }} title='kapat' className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><TiTimes /></button>
+      <button onClick={(e) => { setIsUpdating(false) ; makeValuesInitial(e) }} title='kapat' className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><TiTimes /></button>
     </div>
       : <div className='w-1/6 flex gap-5'>
-      <button onClick={() => { setIsUpdating(!isUpdating); }} title='düzenle' className='bg-yellow-500 p-2 rounded-lg w-10 font-bold hover:bg-yellow-400 flex items-center justify-center'><AiOutlineEdit /></button>
+      <button onClick={() => { setIsUpdating(true);console.log("click") }} title='düzenle' className='bg-yellow-500 p-2 rounded-lg w-10 font-bold hover:bg-yellow-400 flex items-center justify-center'><AiOutlineEdit className='pointer-events-none'/></button>
       {deleteLoading ? <button title='bekle' disabled className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><AiOutlineLoading className='animate-spin' /></button>
         :
-        <button onClick={() => { deleteUserr(user._id) }} title='sil' className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><AiOutlineDelete /></button>
+        <button onClick={(e) => { deleteUserr(user._id) }} title='sil' className='bg-red-500 p-2 rounded-lg w-10 font-bold hover:bg-red-400 flex items-center justify-center'><AiOutlineDelete /></button>
       }
     </div>}
       
