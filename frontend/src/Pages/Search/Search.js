@@ -80,7 +80,7 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
                     <LazyLoadImage
                       tabIndex={i}
                       key={i}
-                      onClick={() => { setIsImageMode(true); setSelectedIndex(i);setSelectedImageData(image.src = image.thumbnail.url) ; getImages(image) }}
+                      onClick={() => { setIsImageMode(true); setSelectedIndex(i);setSelectedImageData(image) ; getImages(image) }}
                       className='w-96 cursor-pointer object-cover rounded-md'
                       src={ image.thumbnail.url} // use normal <img> attributes as props
                     />

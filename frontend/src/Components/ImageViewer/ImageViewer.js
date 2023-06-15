@@ -11,25 +11,77 @@ import { useEscapeKey } from '../../Hooks/UseEscape';
 
 
 
-function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIsImageMode, allImages, setAllImages, setSelectedImageData }) {
+function ImageViewer({  selectedImageData, setIsImageMode, allImages, setAllImages, setSelectedImageData }) {
 
     const [clusters, setClusters] = useState([]);
     const [clusterLoading, setClusterLoading] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const [labelsLoading, setLabelsLoading] = useState(false);
+    const [localSelectedIndex, setLocalSelectedIndex] = useState(0);
 
     useEscapeKey(() => {
         setIsImageMode(false)
     }
     );
 
+    const fakeGroupData = [
+        {
+            name: "3.png",
+            ai_prediction : {labels: [
+                {
+                    cluster_name: "Label 1"
+                },
+                {
+                    cluster_name: "Label 1"
+                }]},
+            path: "C:/Users/DELL/Desktop/3.png",
+            size: "10000 MB",
+            width: "1920",
+            height: "100",
+            src: "assets/images/desen.png"
+
+        },
+        {
+            name: "4.png",
+            ai_prediction : {labels: [
+                {
+                    cluster_name: "Label 1"
+                },
+                {
+                    cluster_name: "Label 1"
+                },
+                {
+                    cluster_name: "Label 1"
+                }]},
+            path: "C:/Users/DELL/Desktop/4.png",
+            size: "200 MB",
+            width: "1000",
+            height: "1080",
+            src: "assets/images/desen.png"
+            },
+        {
+            name: "5.png",
+            ai_prediction : {labels: [
+                {
+                    cluster_name: "Label 1"
+                },
+                {
+                    cluster_name: "Label 1"
+                },
+                {
+                    cluster_name: "Label 1"
+                }]},
+            path: "C:/Users/DELL/Desktop/5.png",
+            size: "1.2 MB",
+            width: "1920",
+            height: "1080",
+            src: "assets/images/desen.png"
+            }
+    ]
+
+
     useEffect(() => {
-        console.log(selectedImageData)
-
-        selectedImageData.src = selectedImageData?.thumbnail?.url
-
         getAllClusters()
-
     }, [])
 
     const copyToClipboard = (e) => {
@@ -62,7 +114,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         addLabelToFileService(selectedImageData._id, e.target.value).then((res) => {
             getFileById(selectedImageData._id).then((res) => {
                 let temp = allImages
-                temp[selectedIndex] = res.data
+                temp[localSelectedIndex] = res.data
                 setAllImages(temp)
                 setSelectedImageData(res.data)
 
@@ -86,7 +138,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
         deleteLabelFromFileService(selectedImageData._id, label).then((res) => {
             getFileById(selectedImageData._id).then((res) => {
                 let temp = allImages
-                temp[selectedIndex] = res.data
+                temp[localSelectedIndex] = res.data
                 setAllImages(temp)
                 setSelectedImageData(res.data)
             }
@@ -134,7 +186,9 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                     <div className='w-full h-[95%] flex items-center gap-5 justify-center'>
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
-                            images={[selectedImageData]}
+                            images={fakeGroupData}
+                            onChange={(e, i) => { setSelectedImageData(e); setLocalSelectedIndex(i); console.log(e) }}
+                            activeIndex={localSelectedIndex}
                             visible={true}
                             noClose={true}
                             className=''
