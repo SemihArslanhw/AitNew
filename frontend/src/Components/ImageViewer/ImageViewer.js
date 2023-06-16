@@ -23,6 +23,8 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     }
     );
 
+    selectedImageData.src = selectedImageData?.thumbnail?.url
+
     useEffect(() => {
         console.log(selectedImageData)
 
@@ -205,7 +207,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                                 <div className='h-2/6 w-full flex flex-col gap-3 p-2 overflow-y-auto items-center'>
                                     {!labelsLoading ? selectedImageData?.ai_prediction?.labels?.map((label) => {
                                         return label !== null && (
-                                            <div className='flex bg-cyan-600 text-white p-3 rounded-lg gap-2 font-sans font-normal text-sm items-center w-full'>
+                                            <div className='flex bg-cyan-600 shadow-md text-white p-3 rounded-lg gap-2 font-sans font-normal text-sm items-center w-full'>
                                                 <div onClick={() => handleDeleteLabel(label.cluster_id)} className='hover:text-white cursor-pointer rounded-lg hover:bg-blue-800 h-10 px-1 flex items-center'>
                                                     <img className='w-4' src='assets/images/close.png'></img>
                                                 </div>
