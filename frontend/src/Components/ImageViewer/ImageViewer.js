@@ -133,7 +133,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                             <AiFillEye className='cursor-pointer hover:bg-cyan-500 hover:text-white text-cyan-500 h-7 w-10 border border-cyan-500 rounded-lg' onClick={() => { handleUnHideFile() }}></AiFillEye>}
                         <GrClose onClick={(e) => { setIsImageMode(false) }} className='cursor-pointer text-black h-8 mr-2'>X</GrClose>
                     </div>
-                    <div className='w-full h-[95%] flex items-center gap-5 justify-center'>
+                    <div className='w-full h-[95%] flex items-center justify-center'>
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
                             images={[selectedImageData]}
