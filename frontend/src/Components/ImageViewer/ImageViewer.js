@@ -23,6 +23,8 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     }
     );
 
+    selectedImageData.src = selectedImageData?.thumbnail?.url
+
     useEffect(() => {
         console.log(selectedImageData)
 
@@ -131,7 +133,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                             <AiFillEye className='cursor-pointer hover:bg-cyan-500 hover:text-white text-cyan-500 h-7 w-10 border border-cyan-500 rounded-lg' onClick={() => { handleUnHideFile() }}></AiFillEye>}
                         <GrClose onClick={(e) => { setIsImageMode(false) }} className='cursor-pointer text-black h-8 mr-2'>X</GrClose>
                     </div>
-                    <div className='w-full h-[95%] flex items-center gap-5 justify-center'>
+                    <div className='w-full h-[95%] flex items-center justify-center'>
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
                             images={[selectedImageData]}
@@ -205,7 +207,7 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                                 <div className='h-2/6 w-full flex flex-col gap-3 p-2 overflow-y-auto items-center'>
                                     {!labelsLoading ? selectedImageData?.ai_prediction?.labels?.map((label) => {
                                         return label !== null && (
-                                            <div className='flex bg-cyan-600 text-white p-3 rounded-lg gap-2 font-sans font-normal text-sm items-center w-full'>
+                                            <div className='flex bg-cyan-600 shadow-md text-white p-3 rounded-lg gap-2 font-sans font-normal text-sm items-center w-full'>
                                                 <div onClick={() => handleDeleteLabel(label.cluster_id)} className='hover:text-white cursor-pointer rounded-lg hover:bg-blue-800 h-10 px-1 flex items-center'>
                                                     <img className='w-4' src='assets/images/close.png'></img>
                                                 </div>

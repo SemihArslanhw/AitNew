@@ -8,8 +8,8 @@ import { Checkbox, FormControlLabel, LinearProgress } from '@mui/material'
 import * as API from '../../Api/index'
 import { filterByLabel, getAllImagesFull, getHiddenFilesService, searchByFileNameService, uploadFileService } from '../../Api/File/FileControler'
 import SearchPagination from '../../Components/Search/SearchPagination/SearchPagination';
-import {useDropzone} from 'react-dropzone'
-import { addCluster, getClusters , deleteCluster } from '../../Api/Cluster/ClusterController'
+import { useDropzone } from 'react-dropzone'
+import { addCluster, getClusters, deleteCluster } from '../../Api/Cluster/ClusterController'
 
 
 function LeftBar({ children }) {
@@ -21,6 +21,7 @@ function LeftBar({ children }) {
   const [file, setFile] = React.useState(null)
   const [clusters, setClusters] = React.useState([])
   const [isClusterOpen, setIsClusterOpen] = React.useState(false)
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false)
   const [clusterName, setClusterName] = React.useState('')
   const [page, setPage] = React.useState(1)
   const [totalPage, setTotalPage] = React.useState(1)
@@ -157,10 +158,9 @@ function LeftBar({ children }) {
     setFile(acceptedFiles[0])
     search(acceptedFiles[0])
   }, [])
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     paramName: "file",
-    maxFilesize: 40, // MB
     maxFiles: 1,
     addRemoveLinks: true,
     uploadMultiple: false,
@@ -170,24 +170,24 @@ function LeftBar({ children }) {
   const optionSend = () => {
     var temp = clusters
     let tempArr = []
-    temp.map((cluster) => {if(cluster.checked){ tempArr.push(cluster.cluster_id)}})
+    temp.map((cluster) => { if (cluster.checked) { tempArr.push(cluster.cluster_id) } })
     //Make tempArr {cluster[] : cluster._id}
     tempArr = tempArr.map((cluster) => { return cluster })
-    if(tempArr.length === 0){
+    if (tempArr.length === 0) {
       getPage()
-    }else{
-          setIsSearching(true)
-    filterByLabel(page ,{ clusters : tempArr}).then((res) => {
-      console.log(res.data.files)
-      setImages(res.data.files)
-    }
-    ).catch((err) => {
-      console.log(err)
-    }
-    ).finally(() => {
-      setIsSearching(false)
-    }
-    )
+    } else {
+      setIsSearching(true)
+      filterByLabel(page, { clusters: tempArr }).then((res) => {
+        console.log(res.data.files)
+        setImages(res.data.files)
+      }
+      ).catch((err) => {
+        console.log(err)
+      }
+      ).finally(() => {
+        setIsSearching(false)
+      }
+      )
     }
 
   }
@@ -230,30 +230,31 @@ function LeftBar({ children }) {
             }
           </div>
           <div style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between gap-4 flex flex-col items-center py-5'>
-            <div className='w-full p-2 flex justify-between items-center'><MdImageSearch /><p> Ai Search </p><p className='w-2'></p></div>
-            <div className='w-full h-fit rounded-lg' {...getRootProps()}>
-      <input {...getInputProps()} />
-      {
-        isDragActive ?
-        <div className='w-full h-56  rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
-        <div
-          className="w-full h-full flex flex-col  justify-center items-center  rounded-lg"
-        >
-   
-          <AiOutlineCloudDownload  className='text-5xl animate-bounce' />
-          <p  className='text-xl'>Drop File Here</p>
-        </div>
-      </div> :
-           <div  className='rounded-lg h-fit cursor-pointer border-2 border-[#4a5568] p-5 hover:bg-gray-500 border-dashed w-full min-h-[200px] flex items-center justify-center'>
-           {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64 min-h-54' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full  justify-between items-center flex-col'><LinearProgress className='w-full h-10' /></div>}</div>
-             :
-             <div className='flex flex-col items-center justify-center'>
-               <div className='w-16 h-16 bg-green-500 text-2xl rounded-full flex justify-center items-center'>+</div>
-             </div>}
-         </div>
-      }
-    </div>
-    {file && <p onClick={()=>{setFile(null); getPage()}} className='hover:border-b text-white text-sm cursor-pointer'>Remove file</p>}
+            <div onClick={()=>{setIsSearchOpen(!isSearchOpen); console.log("click")}} className='w-full cursor-pointer hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><MdImageSearch /><p> Ai Search </p>{!isSearchOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
+            {isSearchOpen &&       <div className='w-full h-fit rounded-lg' {...getRootProps()}>
+              <input {...getInputProps()} />
+              {
+                isDragActive ?
+                  <div className='w-full h-56  rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
+                    <div
+                      className="w-full h-full flex flex-col  justify-center items-center  rounded-lg"
+                    >
+
+                      <AiOutlineCloudDownload className='text-5xl animate-bounce' />
+                      <p className='text-xl'>Drop File Here</p>
+                    </div>
+                  </div> :
+                  <div className='rounded-lg h-fit cursor-pointer border-2 border-[#4a5568] p-5 hover:bg-gray-500 border-dashed w-full min-h-[200px] flex items-center justify-center'>
+                    {file ? <div className='h-full w-full flex flex-col items-center gap-5 justify-center'><img alt='file-images' className='max-h-64 min-h-54' src={URL.createObjectURL(file)}></img>{isSearching && <div className='w-full  justify-between items-center flex-col'><LinearProgress className='w-full h-10' /></div>}</div>
+                      :
+                      <div className='flex flex-col items-center justify-center'>
+                        <div className='w-16 h-16 bg-green-500 text-2xl rounded-full flex justify-center items-center'>+</div>
+                      </div>}
+                  </div>
+              }
+            </div>}
+      
+            {isSearchOpen && file && <p onClick={() => { setFile(null); getPage() }} className='hover:border-b text-white text-sm cursor-pointer'>Remove file</p>}
             {/* {dragging ? <div className='w-full h-56  rounded-lg border-2 border-[#4a5568] border-dashed flex justify-center items-center'>
               <div
                 className="w-full h-full flex flex-col  justify-center items-center  rounded-lg"
@@ -290,7 +291,7 @@ function LeftBar({ children }) {
             <div onClick={() => { getHiddenImages(page) }} className='w-full p-2 flex justify-between items-center hover:bg-slate-600 rounded-lg'><BsTrash /><p> Recycle </p><p className='w-8'></p></div>
           </div>
         </div>
-          <a style={{ display: "flex" }} target='_blank' rel='noreferrer' href='https://www.ai.ait.com.tr' className='w-full h-fit mb-10  text-gray-500 justify-between hover:bg-slate-600 flex items-center p-5'>
+        <a style={{ display: "flex" }} target='_blank' rel='noreferrer' href='https://www.ai.ait.com.tr' className='w-full h-fit mb-10  text-gray-500 justify-between hover:bg-slate-600 flex items-center p-5'>
           <p className='w-1' /><p> Archivist 0.0.1 </p><p className='w-1'></p>
         </a>
       </div>
@@ -301,7 +302,7 @@ function LeftBar({ children }) {
         </div>
         {/* children[1] is the Body component */}
         <div className='h-[94vh] w-full flex items-center justify-center'>
-          {cloneElement(children[1], {  mapingType, isSearching, images, setImages })}
+          {cloneElement(children[1], { mapingType, isSearching, images, setImages })}
         </div>
 
       </div>
