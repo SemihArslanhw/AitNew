@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { AiOutlineEdit, AiOutlineDelete, AiOutlineLoading } from 'react-icons/ai'
-import { BsTrash } from 'react-icons/bs'
 import { deleteUser, updateCall } from '../../../Api/User/userController'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import {TiTickOutline} from 'react-icons/ti'
 import { TiTimes } from 'react-icons/ti'
-import { useIsOutsideClick } from '../../../Hooks/ListenClick'
 
 function UserCard({ user, getUserList , isGreen }) {
 
@@ -14,14 +12,6 @@ function UserCard({ user, getUserList , isGreen }) {
   const [userName, setUserName] = React.useState(user.username)
   const [password, setPassword] = React.useState("")
   const [userRole, setUserRole] = React.useState(user.role)
-  const cardRef = React.useRef()
-  const muiRef = React.useRef()
-
-  useIsOutsideClick(cardRef , (e)=>{
-    console.log("false")
-    setIsUpdating(false)
-    makeValuesInitial()
-  })
 
   const deleteUserr = async (id) => {
     setDeleteLoading(true)
@@ -53,7 +43,7 @@ function UserCard({ user, getUserList , isGreen }) {
 
 
   return (
-    <div ref={cardRef} className={`w-full flex ${isGreen ? "bg-gray-800" : "bg-gray-800"} justify-between border-b text-sm font-medium items-center py-2`}>
+    <div className={`w-full flex ${isGreen ? "bg-gray-800" : "bg-gray-800"} justify-between border-b text-sm font-medium items-center py-2`}>
       <div className='w-2/6'>
         <div className='flex justify-center items-center'>
           {isUpdating ?
@@ -83,13 +73,12 @@ function UserCard({ user, getUserList , isGreen }) {
         {isUpdating ?
          <FormControl fullWidth>
           <Select
-            ref={muiRef}
             labelId="demo-simple-select-label"
             id="mui-dropdown"
             value={userRole}
             onChange={(e)=>setUserRole(e.target.value)}
             style={{ color: '#E4E4E7' , fontSize:"12px" , fontWeight:"bold" }}
-            className='bg-gray-600 font-normal text-gray-200 h-10'
+            className='bg-gray-600 w-32 font-normal text-gray-200 h-10'
           >
             <MenuItem value={"Visitor"}>Visitor</MenuItem>
             <MenuItem value={"Admin"}>Admin</MenuItem>
