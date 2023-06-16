@@ -5,15 +5,13 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { ImageList, ImageListItem } from '@mui/material'
 
 
-function Search({ handleDragOver , handleDragStart, mapingType , isSearching , images , setImages }) {
+function Search({ ultimateFakeData , mapingType , isSearching , images , setImages }) {
 
   const handleRef = React.useRef(null)
   const [isImageMode, setIsImageMode] = React.useState(false)
   const [selectedImageData, setSelectedImageData] = React.useState()
   const [selectedIndex, setSelectedIndex] = React.useState(2)
   const [cols , setCols] = React.useState(7)
-  const [showingImages , setShowingImages] = React.useState([])
-
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -40,18 +38,10 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
     };
   },[]);
 
-  const getImages = (selectedImg) => {
-    setSelectedImageData(selectedImg)
-    const temp = images
-    console.log(images)
-    temp.filter((image) => image._id === selectedImg._id).src = selectedImg?.thumbnail?.url
-    console.log(temp)
-    setShowingImages(temp.slice())
-    }
-
+  
   return (
     <div ref={handleRef} className='w-full h-full p-5 px-10 bg-slate-200'>
-      {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} showingImages={showingImages} setIsImageMode={setIsImageMode} />}
+      {isImageMode && <ImageViewer setAllImages={setImages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} setSelectedImageData={setSelectedImageData} selectedImageData={selectedImageData} allImages={images} setIsImageMode={setIsImageMode} />}
       <div className='w-full h-full bg-slate-300 rounded-lg p-4'>
         <div className='w-full gap-5 h-full flex-col bg-gray-700 p-2 rounded-lg border-2 border-[#4a5568] flex items-center'>
           {/* <div className='text-[#4a5568] bg-blue-400 rounded-lg flex flex-col w-1/4 h-full items-center justify-center text-2xl font-bold'>Drag and Drop File Or Click Here 
@@ -73,16 +63,16 @@ function Search({ handleDragOver , handleDragStart, mapingType , isSearching , i
             </div>
             :
             <div className='w-full overflow-y-auto gap-5 flex flex-wrap '>
-              {images?.length === 0 && <p className='text-xl p-10'>No Files Founded !</p>}
+              {ultimateFakeData?.length === 0 && <p className='text-xl p-10'>No Files Founded !</p>}
               <ImageList variant={mapingType}  cols={cols} gap={8}>
-                {images?.map((image, i) => ( 
+                {ultimateFakeData?.map((image, i) => ( 
                   <ImageListItem key={i}>
                     <LazyLoadImage
                       tabIndex={i}
                       key={i}
-                      onClick={() => { setIsImageMode(true); setSelectedIndex(i);setSelectedImageData(image) ; getImages(image) }}
+                      onClick={() => { setIsImageMode(true); setSelectedIndex(i);setSelectedImageData(image) }}
                       className='w-96 cursor-pointer object-cover rounded-md'
-                      src={ image.thumbnail.url} // use normal <img> attributes as props
+                      src={ image[0].thumbnail.url} // use normal <img> attributes as props
                     />
                   </ImageListItem>
                 ))}

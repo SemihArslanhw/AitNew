@@ -18,69 +18,30 @@ function ImageViewer({  selectedImageData, setIsImageMode, allImages, setAllImag
     const [isCopied, setIsCopied] = useState(false);
     const [labelsLoading, setLabelsLoading] = useState(false);
     const [localSelectedIndex, setLocalSelectedIndex] = useState(0);
+    const [localSelectedImage, setLocalSelectedImage] = useState(selectedImageData[localSelectedIndex]);
 
     useEscapeKey(() => {
         setIsImageMode(false)
     }
     );
 
-    const fakeGroupData = [
-        {
-            name: "3.png",
-            ai_prediction : {labels: [
-                {
-                    cluster_name: "Label 1"
-                },
-                {
-                    cluster_name: "Label 1"
-                }]},
-            path: "C:/Users/DELL/Desktop/3.png",
-            size: "10000 MB",
-            width: "1920",
-            height: "100",
-            src: "assets/images/desen.png"
-
-        },
-        {
-            name: "4.png",
-            ai_prediction : {labels: [
-                {
-                    cluster_name: "Label 1"
-                },
-                {
-                    cluster_name: "Label 1"
-                },
-                {
-                    cluster_name: "Label 1"
-                }]},
-            path: "C:/Users/DELL/Desktop/4.png",
-            size: "200 MB",
-            width: "1000",
-            height: "1080",
-            src: "assets/images/desen.png"
-            },
-        {
-            name: "5.png",
-            ai_prediction : {labels: [
-                {
-                    cluster_name: "Label 1"
-                },
-                {
-                    cluster_name: "Label 1"
-                },
-                {
-                    cluster_name: "Label 1"
-                }]},
-            path: "C:/Users/DELL/Desktop/5.png",
-            size: "1.2 MB",
-            width: "1920",
-            height: "1080",
-            src: "assets/images/desen.png"
-            }
-    ]
-
-
     useEffect(() => {
+        if(localSelectedImage.name.includes(".mif"))
+        {
+            let temp = localSelectedImage
+            let tempArr = []
+            tempArr.push(localSelectedImage)
+            temp.variants.map((variant) => {
+                let tempSrc = {}
+                tempSrc = localSelectedImage
+                tempSrc.src = variant.thumbnail.url
+                tempArr.push({
+                    ...tempSrc   
+                })
+            })
+            setSelectedImageData(tempArr.slice())
+            console.log(tempArr)
+        }
         getAllClusters()
     }, [])
 
@@ -186,8 +147,8 @@ function ImageViewer({  selectedImageData, setIsImageMode, allImages, setAllImag
                     <div className='w-full h-[95%] flex items-center gap-5 justify-center'>
                         <div id="container" className="w-2/3 h-full m-0" />
                         <Viewer
-                            images={fakeGroupData}
-                            onChange={(e, i) => { setSelectedImageData(e); setLocalSelectedIndex(i); console.log(e) }}
+                            images={selectedImageData}
+                            onChange={(e, i) => { setLocalSelectedImage(selectedImageData[i]); setLocalSelectedIndex(i) }}
                             activeIndex={localSelectedIndex}
                             visible={true}
                             noClose={true}
@@ -204,28 +165,28 @@ function ImageViewer({  selectedImageData, setIsImageMode, allImages, setAllImag
                                         <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Name</p><p>:</p>
                                         </div>
-                                        <h1 title={selectedImageData.name} className='text-ellipsis inline-block whitespace-nowrap overflow-hidden'>{selectedImageData.name}</h1>
+                                        <h1 title={localSelectedImage.name} className='text-ellipsis inline-block whitespace-nowrap overflow-hidden'>{localSelectedImage.name}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                     <div className='w-full flex justify-between items-center'>
                                         <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Width</p><p>:</p>
                                         </div>
-                                        <h1>{selectedImageData.width}</h1>
+                                        <h1>{localSelectedImage.width}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                     <div className='w-full flex justify-between items-center'>
                                         <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Height</p><p>:</p>
                                         </div>
-                                        <h1>{selectedImageData.height}</h1>
+                                        <h1>{localSelectedImage.height}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                     <div className='w-full flex justify-between items-center'>
                                         <div className='w-20 text-cyan-600 flex justify-between items-center'>
                                             <p>Size</p><p>:</p>
                                         </div>
-                                        <h1>{selectedImageData.size}</h1>
+                                        <h1>{localSelectedImage.size}</h1>
                                         <p className='w-3'></p>
                                     </div>
                                     <div className='w-full flex justify-between items-center'>
@@ -257,9 +218,9 @@ function ImageViewer({  selectedImageData, setIsImageMode, allImages, setAllImag
                                     </FormControl>
                                 </div>
                                 <div className='h-2/6 w-full flex flex-col gap-3 p-2 overflow-y-auto items-center'>
-                                    {!labelsLoading ? selectedImageData?.ai_prediction?.labels?.map((label) => {
+                                    {!labelsLoading ? localSelectedImage?.ai_prediction?.labels?.map((label , i) => {
                                         return label !== null && (
-                                            <div className='flex bg-cyan-600 text-white p-3 rounded-lg gap-2 font-sans font-normal text-sm items-center w-full'>
+                                            <div key={i} className='flex bg-cyan-600 text-white p-3 rounded-lg gap-2 font-sans font-normal text-sm items-center w-full'>
                                                 <div onClick={() => handleDeleteLabel(label.cluster_id)} className='hover:text-white cursor-pointer rounded-lg hover:bg-blue-800 h-10 px-1 flex items-center'>
                                                     <img className='w-4' src='assets/images/close.png'></img>
                                                 </div>
