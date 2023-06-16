@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import "./ImageViewer.css"
 import Viewer from 'react-viewer';
-import { AiFillEye, AiFillEyeInvisible, AiOutlineLoading } from 'react-icons/ai';
+import { AiFillEye, AiFillEyeInvisible, AiOutlineFullscreen, AiOutlineLoading } from 'react-icons/ai';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { addLabelToFileService, deleteLabelFromFileService, hideFileService, unhideFileService } from '../../Api/File/FileControler';
 import { GrClose, GrFormClose } from 'react-icons/gr'
 import { getFileById } from '../../Api/File/FileService';
 import { getClusters } from '../../Api/Cluster/ClusterController';
 import { useEscapeKey } from '../../Hooks/UseEscape';
+import OpenSeadragon from 'openseadragon';
 
 
 
@@ -26,8 +27,49 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
     selectedImageData.src = selectedImageData?.thumbnail?.url
 
     useEffect(() => {
-        console.log(selectedImageData)
-
+        const viewer = OpenSeadragon({
+            id: "openseadragon1",
+            tileSources:[
+                {
+                    type: 'image',
+                    url: "assets/images/desen.png"  ,
+                    buildPyramid: false,
+                },
+                {
+                    type: 'image',
+                    url: selectedImageData.src,
+                    buildPyramid: false,
+                },
+                {
+                    type: 'image',
+                    url: "assets/images/desen.png"  ,
+                    buildPyramid: false,
+                },
+                {
+                    type: 'image',
+                    url: "assets/images/desen.png"  ,
+                    buildPyramid: false,
+                },
+                {
+                    type: 'image',
+                    url: "assets/images/desen.png"  ,
+                    buildPyramid: false,
+                },    
+            ],
+            showReferenceStrip: true,
+            sequenceMode: true,
+            animationTime:0,
+            blendTime:0,
+            showRotationControl: false,
+            showHomeControl: false,
+            showSequenceControl:true,
+            nextButton: 'next',
+            previousButton: 'prev',
+            fullPageButton: 'full',
+        })
+        viewer.addHandler('page', function (e) {
+            console.log(e.page);
+        });
         selectedImageData.src = selectedImageData?.thumbnail?.url
 
         getAllClusters()
@@ -134,15 +176,17 @@ function ImageViewer({ setSelectedIndex, selectedIndex, selectedImageData, setIs
                         <GrClose onClick={(e) => { setIsImageMode(false) }} className='cursor-pointer text-black h-8 mr-2'>X</GrClose>
                     </div>
                     <div className='w-full h-[95%] flex items-center gap-5 justify-center'>
-                        <div id="container" className="w-2/3 h-full m-0" />
-                        <Viewer
-                            images={[selectedImageData]}
-                            visible={true}
-                            noClose={true}
-                            className=''
-                            container={document.getElementById("container")}
-                            spinner={() => <AiOutlineLoading className='animate-spin w-8 h-8' />}
-                        />
+                   <div id='openseadragon1' className='w-2/3 bg-gray-300 rounded-lg flex flex-col justify-between h-[100%]'>
+                    <div className='w-full bg-gray-300 p-1 rounded-md'>
+                    <div className='w-full bg-gray-300 border rounded-md'>
+                        <button id='prev' className='w-16 h-10 bg-gray-500 border rounded-md'>Prev</button>
+                        <button id='next' className='w-16 h-10 bg-gray-500 border rounded-md'>Next</button>
+                        <button id='full' className='w-16 h-10 bg-gray-500 border rounded-md'>Full</button>
+ 
+                    </div>
+                    </div>
+
+                   </div>
 
                         <div className='w-1/3 h-full font-bold text-black bg-gray-300 p-2 rounded-lg'>
 
