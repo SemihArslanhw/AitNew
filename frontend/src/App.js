@@ -28,12 +28,12 @@ function App() {
 
         <Route path="/home"
           element={
-            <ProtectedRoute permissions={["Developer" , "User" , "Admin"]}>
+            <ProtectedRoute permissions={["Developer" , "Visitor" , "Admin"]}>
               <LeftBar><Header /><SearchPage /></LeftBar>
             </ProtectedRoute>
           } />
         <Route path="/" element={
-          <ProtectedRoute permissions={["Developer" , "User" , "Admin"]}>
+          <ProtectedRoute permissions={["Developer" , "Visitor" , "Admin"]}>
             <LeftBarUserManagement><Header /><HomePage /></LeftBarUserManagement>
           </ProtectedRoute>
         } />
