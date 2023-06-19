@@ -229,7 +229,7 @@ function LeftBar({ children }) {
             </div>
             }
           </div>
-          <div style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between gap-4 flex flex-col items-center py-5'>
+          <div style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between gap-4 flex flex-col items-center '>
             <div onClick={()=>{setIsSearchOpen(!isSearchOpen); console.log("click")}} className='w-full cursor-pointer hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><MdImageSearch /><p> Ai Search </p>{!isSearchOpen ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}</div>
             {isSearchOpen &&       <div className='w-full h-fit rounded-lg' {...getRootProps()}>
               <input {...getInputProps()} />
