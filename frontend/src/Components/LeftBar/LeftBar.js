@@ -2,7 +2,7 @@ import React, { cloneElement, useCallback, useEffect } from 'react'
 import { AiOutlineCloudDownload, AiOutlineCluster, AiOutlineLoading } from 'react-icons/ai'
 import { AiOutlineArrowUp } from 'react-icons/ai'
 import { AiOutlineArrowDown } from 'react-icons/ai'
-import { MdImageSearch } from 'react-icons/md'
+import { MdImageSearch, MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md'
 import { BsTrash } from 'react-icons/bs'
 import { Checkbox, FormControlLabel, LinearProgress } from '@mui/material'
 import * as API from '../../Api/index'
@@ -201,7 +201,7 @@ function LeftBar({ children }) {
             <img alt='ait-logo' className='w-[50px]' src='assets/images/rounded-logo.png'></img>
           </div>
           <div style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between flex flex-col items-center'>
-            <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full cursor-pointer hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
+            <div onClick={() => { setIsClusterOpen(!isClusterOpen) }} className='w-full cursor-pointer hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><AiOutlineCluster /><p> Clusters </p>{!isClusterOpen ?  <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}</div>
             {isClusterOpen && <div className='w-full  gap-5 flex flex-col items-center justify-center'>
               <div className='w-full overflow-x-hidden text-white bg-slate-700 rounded-lg h-52 overflow-y-auto flex flex-col'>
                 {!clusterLoading ? clusters?.map((cluster, i) => (
@@ -230,7 +230,7 @@ function LeftBar({ children }) {
             }
           </div>
           <div style={{ display: "flex" }} className='w-full h-fit border-t  p-2 border-gray-900 justify-between gap-4 flex flex-col items-center py-5'>
-            <div onClick={()=>{setIsSearchOpen(!isSearchOpen); console.log("click")}} className='w-full cursor-pointer hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><MdImageSearch /><p> Ai Search </p>{!isSearchOpen ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</div>
+            <div onClick={()=>{setIsSearchOpen(!isSearchOpen); console.log("click")}} className='w-full cursor-pointer hover:bg-slate-600 p-2 mb-1 rounded-lg flex justify-between items-center'><MdImageSearch /><p> Ai Search </p>{!isSearchOpen ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}</div>
             {isSearchOpen &&       <div className='w-full h-fit rounded-lg' {...getRootProps()}>
               <input {...getInputProps()} />
               {
